@@ -1,4 +1,4 @@
 clarango
 ========
 
-A Clojure Driver for ArangoDB
+work in progress... please contact the two repository owners
