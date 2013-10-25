@@ -15,7 +15,7 @@
 * Others as: Index, Cap, Hash, Skip-List, Geo, Fulltext, Transaction, Graphs,
 bulk, Batch, User-Functions, Admin / monitor, User-Management, misc, 
 
-##Libraries to help:
+## Libraries to help:
 * REST: Liberator, clj-http, clj-http.client, DAKRONE, http.async.client
 * JSON: cheshire.core, data.json
 * URLS: java.net.URLEncoder
