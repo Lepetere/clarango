@@ -16,7 +16,7 @@
 bulk, Batch, User-Functions, Admin / monitor, User-Management, misc, 
 
 ## Libraries to help:
-* REST: Liberator, clj-http, clj-http.client, DAKRONE, http.async.client
+* REST: clj-http, clj-http.client, DAKRONE, http.async.client, (Test with http://www.jsontest.com) (Liberator only for Server)
 * JSON: cheshire.core, data.json
 * URLS: java.net.URLEncoder
 
