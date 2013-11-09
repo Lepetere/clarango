@@ -6,7 +6,7 @@ work in progress... please contact the two repository owners
 The expected roadmap is:
 * in 2013: Simple Read, Write, Update, Delete.
 * Spring 2014: more sophisticated CRUD and Queries
-* Late 2014: stable 1.0 with management / admin, graph, ... and all many features the REST API exposes.
+* Late 2014: stable 1.0 with management / admin, graph, ... and all the features exposed by the REST API.
 
 ## Features
 
