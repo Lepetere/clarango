@@ -14,7 +14,14 @@ The expected roadmap is:
 
 ## Installation
 
-...
+The driver is hosted on [Clojars](https://clojars.org/clarango). Add this leiningen dependency to your project.clj (no stable release available yet):
+```
+[clarango "0.0.2-SNAPSHOT"]
+```
+Then require the lib in your clojure file:
+``` Clojure
+(:require [clarango.core :as yourshortcut])
+```
 
 ## Usage
 
