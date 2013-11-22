@@ -14,7 +14,7 @@ The expected roadmap is:
 
 ## Installation
 
-The driver is hosted on [Clojars](https://clojars.org/clarango). Add this leiningen dependency to your project.clj (no stable release available yet):
+The driver is hosted on [Clojars](https://clojars.org/clarango). Add this Leiningen dependency to your project.clj (no stable release available yet):
 ```
 [clarango "0.0.2-SNAPSHOT"]
 ```
