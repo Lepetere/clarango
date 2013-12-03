@@ -6,7 +6,8 @@
 (declare READ) ;; just for testing with main, lib does not need this later
 
 ;; maybe a universal defrecord is better like neocons does
-(def conn-adr "http://localhost:8529/_db/_system/_api/document/persons/16600192")
+;;; (def conn-adr "http://localhost:8529/_db/_system/_api/document/persons/16600192")
+(def conn-adr "http://localhost:8529/_api/document/persons/23478695")
 
 (defn READ [url] ;; define timeout?
 	(parse-string (:body (http/get url))))
@@ -18,7 +19,7 @@
 		(println "RAW:")
 		(pprint result)
 		(println "\nSTRIPPED:")
-		(pprint  (get result "001")))) ;; strip off the rest, select key to get the real content
+		(pprint  (get result "002")))) ;; strip off the rest, select key to get the real content
 
 ;; Test adresses:
 ;; http://echo.jsontest.com/key/value/one/two
