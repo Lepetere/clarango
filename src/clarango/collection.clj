@@ -1,6 +1,7 @@
 (ns clarango.collection
 	(:require [clj-http.client :as http] ;; https://github.com/dakrone/clj-http
 		        [cheshire.core :refer :all]) ;; https://github.com/dakrone/cheshire for custom coding
+  (:require [clarango.core :as clarango.core])
 	(:use clojure.pprint))
 
 (defn create

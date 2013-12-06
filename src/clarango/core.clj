@@ -1,19 +1,24 @@
 (ns clarango.core
 	(:require [clj-http.client :as http] ;; https://github.com/dakrone/clj-http
 		        [cheshire.core :refer :all]) ;; https://github.com/dakrone/cheshire for custom coding
-	(:require [clarango.collection :as collection]
-				[clarango.document :as document]
-				[clarango.test :as test])
 	(:use clojure.pprint))
 
-(defn -main []
-	(test/run-simple-test)
-	)
+(declare clarango-connection)
 
 (defn connect!
   "connects permanently to an ArangoDB host by setting a global variable"
   [url]
-  nil)
+  ;; TODO: test if url is string and starts with http://
+  ;; TODO: test if there is a database server available
+  (def clarango-connection url)
+  )
+
+(defn get-connection-url
+  "returns the db server connection url to other namespaces"
+  []
+  clarango-connection
+  ;; TODO: throw exception if no server url is set
+  )
 
 (defn connect
   "connects to an ArangoDB host by returning a reference to it"
