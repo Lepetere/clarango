@@ -8,5 +8,5 @@
 	(:use clojure.pprint))
 
 (defn -main []
-  (clarango.core/connect! "http://localhost:8529/")
+  (clarango.core/connect! {:connection-url  "http://localhost:8529/"})
 	(test/run-simple-test))
