@@ -10,12 +10,10 @@
 ;; DEMO to call lein run and test it without the lib usage
 (defn run-simple-test []
 	
-	(let [result (document/get conn-path)]
-		(println "RAW:")
-		(pprint result)
-		(println "\nSTRIPPED:")
-		(pprint  (get result "002")))
-	)
+	(let [result1 (document/get-key conn-path "001")
+			result2 (document/get-key conn-path "002")]
+		(pprint result1)
+		(pprint result2)))
 
 ;; TODO next: 
 ;; - document get method should determine if there is a global object set
