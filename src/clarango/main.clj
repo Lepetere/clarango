@@ -7,14 +7,19 @@
 	(:use clojure.pprint))
 
 (def conn-path "_api/document/persons/23478695")
+;; why does the follwing not work? -> (def conn-path "_db/_system/_api/document/persons/23478695")
 
 ;; DEMO to call lein run and test it without the lib usage
 (defn -main []
   (clarango.core/connect! {:connection-url  "http://localhost:8529/"})
-  (let [result1 (document/get-key conn-path "001")
-    result2 (document/get-key conn-path "002")]
-      (pprint result1)
-      (pprint result2)))
+  (let [result (document/get-by-key conn-path "001")]
+      (println "test without db name")
+      (pprint result))
+  (clarango.core/connect! {:connection-url  "http://localhost:8529/"
+  							:db-name "_system"})
+  (let [result (document/get-by-key conn-path "002")]
+      (println "test with db name")
+      (pprint result)))
 
 ;; TODO next: 
 ;; - document get method should determine if there is a global object set, overload it

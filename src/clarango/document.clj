@@ -21,11 +21,14 @@
   nil)
 
 ;; Can hide clojure.core/get
-(defn get-key
-  "Gets a document by its id. Returns either a hash that represents the document if it exists or nil if it doesn't."
+(defn get-by-key
+  "Gets a document by its key. Returns either a hash that represents the document if it exists or nil if it doesn't."
   ;;[database collection document-id]
   [conn-path key]
-  (let [conn-adr (str (:connection-url (clarango.core/get-connection)) conn-path)
+  (let [conn-map (clarango.core/get-connection)
+        db-path (if (contains? conn-map :db-name) (str "_db/" (:db-name conn-map) "/") (str ""))
+        ;;db-path (str "_db/" (:db-name conn-map) "/")
+        conn-adr (str (:connection-url conn-map) db-path conn-path)
         result-map (READ conn-adr)]
       (get result-map key)))
 
