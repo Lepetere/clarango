@@ -1,7 +1,4 @@
-(ns clarango.core
-	(:require [clj-http.client :as http] ;; https://github.com/dakrone/clj-http
-		        [cheshire.core :refer :all]) ;; https://github.com/dakrone/cheshire for custom coding
-	(:use clojure.pprint))
+(ns clarango.core)
 
 (declare clarango-connection)
 
@@ -11,14 +8,25 @@
   ;; TODO: test if url is string and starts with http://
   ;; TODO: test if there is a database server available
   (def clarango-connection connection-map)
+
+  ;;; This is what the connection map should look like:
+  ;; {
+  ;; :conn-url  myconnurl, ;; hat url and ports 
+  ;; :db-name mydbname ;; kann fehlen und ggf. per Arg
+  ;; :collection-name ;; kann fehlen und ggf. per Argument angegeben werden
+  ;; }
   )
 
 (defn get-connection
   "Returns the db server connection map to other namespaces."
   []
   clarango-connection
-  ;; TODO: throw exception if no server url is set?
   )
+
+(defn connection-set?
+  "Returns true if a global connection map is set."
+  []
+  (if (= clarango-connection nil) (false) (true)))
 
 (defn create-database
   "Creates a database with the given name."
@@ -27,5 +35,15 @@
 
 (defn get-database
   "Returns a reference to a given database."
+  [database-name]
+  nil)
+
+(defn set-default-db!
+  "Sets a default database."
+  [database-name]
+  nil)
+
+(defn set-default-collection!
+  "Sets a default collection."
   [database-name]
   nil)

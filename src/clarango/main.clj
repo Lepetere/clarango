@@ -1,6 +1,4 @@
 (ns clarango.main
-	(:require [clj-http.client :as http] ;; https://github.com/dakrone/clj-http
-		        [cheshire.core :refer :all]) ;; https://github.com/dakrone/cheshire for custom coding
 	(:require [clarango.core :as clarango.core]
 				[clarango.collection :as collection]
 				[clarango.document :as document])
@@ -23,7 +21,9 @@
 
 ;; TODO next: 
 ;; - document get method should determine if there is a global object set, overload it
-;; - put READ method to clarango.core?
+;; - put READ method to clarango.core?         - to utility ns? -> should not be visible from the outside
+;; - create build-REST-URI function in core ns _ |
+;; - only get document from the server, not the whole collection
 
 ;; Test adresses:
 ;; http://echo.jsontest.com/key/value/one/two

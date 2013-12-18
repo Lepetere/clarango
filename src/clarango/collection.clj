@@ -1,8 +1,5 @@
 (ns clarango.collection
-	(:require [clj-http.client :as http] ;; https://github.com/dakrone/clj-http
-		        [cheshire.core :refer :all]) ;; https://github.com/dakrone/cheshire for custom coding
-  (:require [clarango.core :as clarango.core])
-	(:use clojure.pprint))
+  (:require [clarango.core :as clarango.core]))
 
 (defn create
   "Creates a collection and returns a reference to it. Returns nil if the collection already exists."

@@ -1,13 +1,7 @@
 (ns clarango.document
-	(:require [clj-http.client :as http] ;; https://github.com/dakrone/clj-http
-		        [cheshire.core :refer :all]) ;; https://github.com/dakrone/cheshire for custom coding
-  (:require [clarango.core :as clarango.core])
-	(:use clojure.pprint))
-
-;;; utilities
-(defn READ [url] ;; define timeout?
-  (println "connection address: " url)
-  (parse-string (:body (http/get url))))
+  (:require [clarango.core :as clarango.core]
+            [clarango.core-utility :as core-utility]
+            [clarango.collection-utility :as collection-utility]))
 
 ;;; public interface
 (defn post
@@ -29,7 +23,7 @@
         db-path (if (contains? conn-map :db-name) (str "_db/" (:db-name conn-map) "/") (str ""))
         ;;db-path (str "_db/" (:db-name conn-map) "/")
         conn-adr (str (:connection-url conn-map) db-path conn-path)
-        result-map (READ conn-adr)]
+        result-map (core-utility/read-uri conn-adr)]
       (get result-map key)))
 
 (defn delete
