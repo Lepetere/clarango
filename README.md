@@ -25,14 +25,11 @@ Then require the lib in your clojure file:
 
 ## Usage
 
-Getting a document by an existing key:
+Getting a document by existing key:
 
 ```clojure
-(clarango.core/connect! 
-  {
-    :connection-url  "http://localhost:8529/"
-  })
-(let [result (document/get-by-key "my-db" "my-collection" "document-key")]
+(clarango.core/connect! {:connection-url "http://localhost:8529/"})
+(let [result (clarango.document/get-by-key "my-db" "my-collection" "document-key")]
       (clojure.pprint result))
 ```
 
@@ -41,20 +38,20 @@ or
 ```clojure
 (clarango.core/connect! 
   {
-    :connection-url  "http://localhost:8529/"
+    :connection-url "http://localhost:8529/"
     :db-name "my-db"
     :collection-name "my-collection"
   })
-(let [result (document/get-by-key "document-key")]
+(let [result (clarango.document/get-by-key "document-key")]
       (clojure.pprint result))
 ```
 
 or
 
 ```clojure
-(clarango.core/connect! {:connection-url  "http://localhost:8529/"})
+(clarango.core/connect! {:connection-url "http://localhost:8529/"})
 (clarango.core/set-default-db! "my-db")
-(let [result (document/get-by-key "my-collection" "document-key")]
+(let [result (clarango.document/get-by-key "my-collection" "document-key")]
       (clojure.pprint result))
 ```
 
