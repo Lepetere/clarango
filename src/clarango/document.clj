@@ -3,7 +3,6 @@
             [clarango.core-utility :as core-utility]
             [clarango.collection-utility :as collection-utility]))
 
-;;; public interface
 (defn post
   "Creates a document. Takes a hash that represents the document."
   [database collection document-hash]
@@ -14,8 +13,7 @@
   [database collection key value]
   nil)
 
-;; Can hide clojure.core/get
-(defn get-by-key
+(defn get-by-key-old
   "Gets a document by its key. Returns either a hash that represents the document if it exists or nil if it doesn't."
   ;;[database collection document-id]
   [conn-path key]
@@ -26,12 +24,18 @@
         result-map (core-utility/read-uri conn-adr)]
       (get result-map key)))
 
+(defn get-by-key
+  "Gets a document by its key. Returns either a hash that represents the document if it exists or nil if it doesn't."
+  ([document-key] nil)
+  ([collection-name document-key] nil)
+  ([db-name collection-name document-key] nil))
+
 (defn delete
   "Deletes a document by its id. Returns either a hash that represents the document if it existed or nil if it didn't."
   [database collection document-id]
   nil)
 
-(defn update
+(defn update-by-key
   "Updates the document that matches the given key and value."
   [database collection key-to-find value-to-find key-to-add value-to-add]
   nil)
