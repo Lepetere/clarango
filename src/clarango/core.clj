@@ -1,6 +1,6 @@
-(ns clarango.core)
+(ns clarango.core )
 
-(declare clarango-connection)
+(def clarango-connection nil)
 
 (defn connect!
   "Connects permanently to an ArangoDB host by setting the connection map as a global variable."
@@ -24,9 +24,9 @@
   )
 
 (defn connection-set?
-  "Returns true if a global connection map is set."
+  "Returns true if a connection is set."
   []
-  (if (= clarango-connection nil) (false) (true)))
+  (not (nil? clarango-connection)))
 
 (defn create-database
   "Creates a database with the given name."
@@ -38,12 +38,17 @@
   [database-name]
   nil)
 
+(defn ^:private change-value-in-connection!
+  [key value]
+  (let [connection-map (if (connection-set?) (get-connection) (hash-map))]
+    (connect! (assoc connection-map key value))))
+
 (defn set-default-db!
   "Sets a default database."
   [database-name]
-  nil)
+  (change-value-in-connection! :db-name database-name))
 
 (defn set-default-collection!
   "Sets a default collection."
-  [database-name]
-  nil)
+  [collection-name]
+  (change-value-in-connection! :collection-name collection-name))
