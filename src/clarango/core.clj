@@ -11,7 +11,7 @@
 
   ;;; This is what the connection map should look like:
   ;; {
-  ;; :conn-url  myconnurl, ;; hat url and ports 
+  ;; :connection-url  myconnurl, ;; hat url and ports 
   ;; :db-name mydbname ;; kann fehlen und ggf. per Arg
   ;; :collection-name ;; kann fehlen und ggf. per Argument angegeben werden
   ;; }

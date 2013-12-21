@@ -13,7 +13,7 @@
   [database collection key value]
   nil)
 
-(defn get-by-key-old
+(defn- get-by-key-old
   "Gets a document by its key. Returns either a hash that represents the document if it exists or nil if it doesn't."
   ;;[database collection document-id]
   [conn-path key]
@@ -25,10 +25,13 @@
       (get result-map key)))
 
 (defn get-by-key
-  "Gets a document by its key. Returns either a hash that represents the document if it exists or nil if it doesn't."
-  ([document-key] nil)
-  ([collection-name document-key] nil)
-  ([db-name collection-name document-key] nil))
+  "Gets a document by its key. Returns either a hash that represents the document if it exists or nil if it doesn't.
+  Takes the document key as first argument. Takes optional a db and a collection name as second argument.
+  If omitted by user, the default db and collection will be used."
+  ([document-key]
+    (get (core-utility/read-uri (collection-utility/build-collection-URI)) document-key))
+  ([document-key & further-args]
+    (get (core-utility/read-uri (apply collection-utility/build-collection-URI further-args)) document-key)))
 
 (defn delete
   "Deletes a document by its id. Returns either a hash that represents the document if it existed or nil if it didn't."
