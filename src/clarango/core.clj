@@ -2,7 +2,7 @@
 
 (def clarango-connection nil)
 
-(defn connect!
+(defn set-connection!
   "Connects permanently to an ArangoDB host by setting the connection map as a global variable."
   [connection-map]
   ;; TODO: test if url is string and starts with http://
@@ -20,8 +20,7 @@
 (defn get-connection
   "Returns the db server connection map to other namespaces."
   []
-  clarango-connection
-  )
+  clarango-connection)
 
 (defn connection-set?
   "Returns true if a connection is set."
@@ -41,7 +40,7 @@
 (defn ^:private change-value-in-connection!
   [key value]
   (let [connection-map (if (connection-set?) (get-connection) (hash-map))]
-    (connect! (assoc connection-map key value))))
+    (set-connection! (assoc connection-map key value))))
 
 (defn set-default-db!
   "Sets a default database."

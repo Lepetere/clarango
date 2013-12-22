@@ -29,7 +29,7 @@ Then require the lib in your clojure file:
 Getting a document by existing key:
 
 ```clojure
-(clarango.core/connect! {:connection-url "http://localhost:8529/"})
+(clarango.core/set-connection! {:connection-url "http://localhost:8529/"})
 (let [result (document/get-by-key "document-key" "my-db" "my-collection")]
       (clojure.pprint result))
 ```
@@ -37,7 +37,7 @@ Getting a document by existing key:
 or
 
 ```clojure
-(clarango.core/connect! 
+(clarango.core/set-connection! 
   {
     :connection-url "http://localhost:8529/"
     :db-name "my-db"
@@ -50,7 +50,7 @@ or
 or
 
 ```clojure
-(clarango.core/connect! {:connection-url "http://localhost:8529/"})
+(clarango.core/set-connection! {:connection-url "http://localhost:8529/"})
 (clarango.core/set-default-db! "my-db")
 (let [result (document/get-by-key "document-key" "my-collection")]
       (clojure.pprint result))
