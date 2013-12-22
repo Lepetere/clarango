@@ -1,4 +1,4 @@
-(ns clarango.core )
+(ns clarango.core)
 
 (def clarango-connection nil)
 
@@ -27,16 +27,6 @@
   "Returns true if a connection is set."
   []
   (not (nil? clarango-connection)))
-
-(defn create-database
-  "Creates a database with the given name."
-  [database-name]
-  nil)
-
-(defn get-database
-  "Returns a reference to a given database."
-  [database-name]
-  nil)
 
 (defn ^:private change-value-in-connection!
   [key value]
