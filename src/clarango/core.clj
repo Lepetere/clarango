@@ -3,11 +3,12 @@
 (def clarango-connection nil)
 
 (defn set-connection!
-  "Connects permanently to an ArangoDB host by setting the connection map as a global variable."
-  [connection-map]
-  ;; TODO: test if url is string and starts with http://
-  ;; TODO: test if there is a database server available
-  (def clarango-connection connection-map)
+  "Connects permanently to an ArangoDB host by setting the connection map as a global variable.
+  If called without arguments set default connection at localhost:8529 with _system db."
+  ([]
+    (def clarango-connection {:connection-url "http://localhost:8529/", :db-name "_system"}))
+  ([connection-map]
+    (def clarango-connection connection-map))
 
   ;;; This is what the connection map should look like:
   ;; {

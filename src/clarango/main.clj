@@ -7,6 +7,12 @@
 ;; DEMO to call lein run and test it without the lib usage
 (defn -main []
   (let [key "001"]
+    (println "test 0: get key " + key)
+    (clarango.core/set-connection!)
+    (let [result (document/get-by-key key "persons/23478695")]
+      (pprint result)))
+
+  (let [key "001"]
     (println "test 1: get key " + key)
     (clarango.core/set-connection! {:connection-url "http://localhost:8529/"})
     (let [result (document/get-by-key key "_system" "persons/23478695")]
