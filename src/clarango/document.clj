@@ -1,7 +1,7 @@
 (ns clarango.document
   (:require [clarango.core :as clarango.core]
             [clarango.core-utility :as core-utility]
-            [clarango.collection-utility :as collection-utility]))
+            [clarango.document-utility :as document-utility]))
 
 (defn post
   "Creates a document. Takes a hash that represents the document."
@@ -28,10 +28,8 @@
   "Gets a document by its key. Returns either a hash that represents the document if it exists or nil if it doesn't.
   Takes the document key as first argument. Takes optional a db and a collection name as second argument.
   If omitted by user, the default db and collection will be used."
-  ([document-key]
-    (get (core-utility/read-uri (collection-utility/build-collection-URI)) document-key))
-  ([document-key & further-args]
-    (get (core-utility/read-uri (apply collection-utility/build-collection-URI further-args)) document-key)))
+  [& args]
+  (core-utility/read-uri (apply document-utility/build-document-uri args)))
 
 (defn delete
   "Deletes a document by its id. Returns either a hash that represents the document if it existed or nil if it didn't."

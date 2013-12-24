@@ -10,6 +10,8 @@ The expected roadmap is:
 
 ## Features
 
+* Document READ
+
 ...
 
 ## Installation
@@ -30,7 +32,7 @@ Getting a document by existing key:
 
 ```clojure
 (clarango.core/set-connection! {:connection-url "http://localhost:8529/"})
-(let [result (document/get-by-key "document-key" "my-db" "my-collection")]
+(let [result (document/get-by-key "document-key" "my-collection" "my-db")]
       (clojure.pprint result))
 ```
 
