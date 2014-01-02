@@ -17,6 +17,9 @@
     (clarango.core/set-connection! {:connection-url "http://localhost:8529/"})
     (let [result (document/get-by-key key "persons" "_system")]
       (pprint result)))
+  #_(let [key "errorTest"
+        result (clarango.document/get-by-key key "persons" "_system")]
+          (pprint result))
   (let [key "42025383"]
     (println "test 2: get key " + key)
     (clarango.core/set-connection! 

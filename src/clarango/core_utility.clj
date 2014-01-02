@@ -1,11 +1,24 @@
 (ns clarango.core-utility
 	(:require [clj-http.client :as http]
-		        [cheshire.core :refer :all]))
+		        [cheshire.core :refer :all])
+  (:use clojure.pprint))
 
-(defn read-uri [uri] ;; define timeout?
+(defn- build-exception-string
+  [error]
+  (str "Clarango: There was an error trying to access a resource: " 
+    (.getMessage error) 
+    "; body: " 
+    (parse-string (:body (:object (.getData error))))))
+
+(defn- handle-error
+  [error]
+  (throw (Exception. (build-exception-string error))))
+
+(defn read-uri [uri]
   (println "connection address: " uri)
-  (parse-string (:body (http/get uri)))) 
-  ;; TO DO: throw exception including the error message if ArangoDB returns an error
+  (try (let [response (http/get uri)]
+        (parse-string (:body response)))
+        (catch Exception e (handle-error e))))
 
 (defn get-connection-url
   "Gets the globally in clarango.core set connection url. If no url is set, an exception is thrown."
