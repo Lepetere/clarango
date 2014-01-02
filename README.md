@@ -11,6 +11,7 @@ The expected roadmap is:
 ## Features
 
 * Document READ
+* simple exception handling
 
 ...
 
