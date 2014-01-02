@@ -13,15 +13,22 @@
 (defn- build-connection-exception-string
   [error]
   (str (.getMessage error)
-    "; There is probably something wrong with the server. Did you set the right connection-url?"))
+    "; There is probably something wrong with the server. "
+    "Is the server running and did you set the right connection-url?"))
 
-(defn- handle-error
+(defmulti handle-error
+  "Handle an error trying to access a resource."
+  (fn [error] (type error)))
+(defmethod handle-error java.net.ConnectException
   [error]
-  (println (type error))
-  (if (= (type error) java.net.ConnectException)
-    (throw (Exception. (build-connection-exception-string error)))
-    (if (= (type error) clojure.lang.ExceptionInfo) 
-      (throw (Exception. (build-server-exception-string error))))))
+  (throw (Exception. (build-connection-exception-string error))))
+(defmethod handle-error clojure.lang.ExceptionInfo
+  [error]
+  (throw (Exception. (build-server-exception-string error))))
+(defmethod handle-error :default
+  [error]
+  (throw error))
+;; TO DO: create custom exceptions for Clarango?
 
 (defn read-uri [uri]
   (println "connection address: " uri)
