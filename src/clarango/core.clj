@@ -28,10 +28,15 @@
   []
   (not (nil? clarango-connection)))
 
-(defn ^:private change-value-in-connection!
+(defn- change-value-in-connection!
   [key value]
   (let [connection-map (if (connection-set?) (get-connection) (hash-map))]
     (set-connection! (assoc connection-map key value))))
+
+(defn set-connection-url!
+  "Sets the server url."
+  [connection-url]
+  (change-value-in-connection! :connection-url connection-url))
 
 (defn set-default-db!
   "Sets a default database."

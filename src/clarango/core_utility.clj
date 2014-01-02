@@ -3,16 +3,25 @@
 		        [cheshire.core :refer :all])
   (:use clojure.pprint))
 
-(defn- build-exception-string
+(defn- build-server-exception-string
   [error]
   (str "Clarango: There was an error trying to access a resource: " 
     (.getMessage error) 
     "; body: " 
     (parse-string (:body (:object (.getData error))))))
 
+(defn- build-connection-exception-string
+  [error]
+  (str (.getMessage error)
+    "; There is probably something wrong with the server. Did you set the right connection-url?"))
+
 (defn- handle-error
   [error]
-  (throw (Exception. (build-exception-string error))))
+  (println (type error))
+  (if (= (type error) java.net.ConnectException)
+    (throw (Exception. (build-connection-exception-string error)))
+    (if (= (type error) clojure.lang.ExceptionInfo) 
+      (throw (Exception. (build-server-exception-string error))))))
 
 (defn read-uri [uri]
   (println "connection address: " uri)
