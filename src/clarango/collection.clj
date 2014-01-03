@@ -18,10 +18,12 @@
   [database collection-name collection-new-name]
   nil)
 
-;; Name too verbose? "get" would get confused with the document/get method. "load" is also not very good because it would suggest a different behaviour than the core/get-database method, although it does the same, just for collections.
-(defn get-collection
+(defn get
   "Loads a collection and returns a reference to it."
   [database collection-name]
   nil)
 
-;;; Maybe make it possible in all these methods to pass either a reference to the database or just the database name?
+(defn get-all-documents ; in the ArangoDB REST API this method is part of the Document API, but is this here not a better place?
+  "Returns all documents of a collection."
+  [database collection document-id]
+  nil)

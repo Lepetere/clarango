@@ -29,6 +29,7 @@
   [error]
   (throw error))
 ;; TO DO: create custom exceptions for Clarango?
+;; TO DO: later put exception handling into it's own namespace?
 
 (defn read-uri [uri]
   (println "connection address: " uri)

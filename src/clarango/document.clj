@@ -3,46 +3,83 @@
             [clarango.core-utility :as core-utility]
             [clarango.document-utility :as document-utility]))
 
-(defn post
-  "Creates a document. Takes a hash that represents the document."
-  [database collection document-hash]
-  nil)
-
-(defn put
-  "Updates a document with a given key value pair."
-  [database collection key value]
-  nil)
-
-(defn- get-by-key-old
-  "Gets a document by its key. Returns either a hash that represents the document if it exists or nil if it doesn't."
-  ;;[database collection document-id]
-  [conn-path key]
-  (let [conn-map (clarango.core/get-connection)
-        db-path (if (contains? conn-map :db-name) (str "_db/" (:db-name conn-map) "/") (str ""))
-        ;;db-path (str "_db/" (:db-name conn-map) "/")
-        conn-adr (str (:connection-url conn-map) db-path conn-path)
-        result-map (core-utility/read-uri conn-adr)]
-      (get result-map key)))
-
 (defn get-by-key
-  "Gets a document by its key. Returns either a hash that represents the document if it exists or nil if it doesn't.
-  Takes the document key as first argument. Takes optional a db and a collection name as second argument.
+  "Gets a document by its key.
+
+  Takes the document key as first argument. 
+
+  Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used."
   [& args]
   (core-utility/read-uri (apply document-utility/build-document-uri args)))
 
-(defn delete
-  "Deletes a document by its id. Returns either a hash that represents the document if it existed or nil if it didn't."
-  [database collection document-id]
+(defn create
+  "Creates a document. 
+
+  First argument: A hash that represents the document.
+
+  Takes optional a collection name and a db name as further arguments.
+  If omitted by user, the default db and collection will be used.
+
+  Also optional as argument is another hash containing further options:
+  {createCollection: true/false, waitForSync: true/false}
+  - createCollection meaning if the collection should be created if it does not exist yet;
+  - waitForSync meaning if the server response should wait until the document is saved to disk;
+  This hash might be passed in an arbitrary position after the first argument."
+  [document &args]
+  nil)
+
+(defn replace-by-key
+  "Replaces a document with a number of key/value pairs.
+
+  First argument: A hash representing the new document.
+  Second argument: The document key.
+
+  Takes optional a collection name and a db name as further arguments.
+  If omitted by user, the default db and collection will be used.
+
+  Also optional as argument is another hash containing further options:
+  {waitForSync: true/false, rev: 'revision_id', policy: 'desired_behaviour'}
+  - waitForSync meaning if the server response should wait until the document is saved to disk;
+  - rev meaning ...
+  - policy meaning ...
+  This hash might be passed in an arbitrary position after the first two arguments."
+  [document &args]
   nil)
 
 (defn update-by-key
-  "Updates the document that matches the given key and value."
-  [database collection key-to-find value-to-find key-to-add value-to-add]
+  "Updates a document with a number of key value pairs. Inserts them into the existing document.
+
+  First argument: A hash containing the new key/value pairs.
+  Second argument: The document key.
+
+  Takes optional a collection name and a db name as further arguments.
+  If omitted by user, the default db and collection will be used.
+
+  Also optional as argument is another hash containing further options:
+  {waitForSync: true/false, keepNull: true/false, rev: 'revision_id', policy: 'desired_behaviour'}
+  - waitForSync meaning if the server response should wait until the document is saved to disk;
+  - keepNull meaning if the key/value pair should be deleted in the document 
+    if the argument hash contains it with a null as value;
+  - rev meaning ...
+  - policy meaning ...
+  This hash might be passed in an arbitrary position after the first two arguments."
+  [document &args]
   nil)
 
-;; ?
-(defn update-by-id
-  ""
-  [database collection]
+(defn delete-by-key
+  "Deletes a document by its id.
+
+  Takes the document key as first argument. 
+
+  Takes optional a collection name and a db name as further arguments.
+  If omitted by user, the default db and collection will be used.
+
+  Also optional as argument is another hash containing further options:
+  {waitForSync: true/false, rev: 'revision_id', policy: 'desired_behaviour'}
+  - waitForSync meaning if the server response should wait until the document is saved to disk;
+  - rev meaning ...
+  - policy meaning ...
+  This hash might be passed in an arbitrary position after the first argument."
+  [& args]
   nil)
