@@ -1,3 +1,6 @@
+;; Please note:
+;; The methods in this namespace are only intended for internal use.
+
 (ns clarango.core-utility
 	(:require [clj-http.client :as http]
 		        [cheshire.core :refer :all])

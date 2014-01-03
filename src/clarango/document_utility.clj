@@ -1,3 +1,6 @@
+;; Please note:
+;; The methods in this namespace are only intended for internal use.
+
 (ns clarango.document-utility
   (:use [clarango.core-utility :only [connect-url-parts get-safe-connection-url get-default-db get-default-collection-name]]))
 
