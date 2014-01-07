@@ -11,7 +11,7 @@
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used."
   [& args]
-  (core-utility/read-uri (apply document-utility/build-document-uri args)))
+  (core-utility/get-uri (apply document-utility/build-document-uri args)))
 
 (defn create
   "Creates a document. 
@@ -41,8 +41,8 @@
   Also optional as argument is another hash containing further options:
   {waitForSync: true/false, rev: 'revision_id', policy: 'desired_behaviour'}
   - waitForSync meaning if the server response should wait until the document is saved to disk;
-  - rev meaning ...
-  - policy meaning ...
+  - rev is the document revision
+  - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
   This hash might be passed in an arbitrary position after the first two arguments."
   [document &args]
   nil)
@@ -61,8 +61,8 @@
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   - keepNull meaning if the key/value pair should be deleted in the document 
     if the argument hash contains it with a null as value;
-  - rev meaning ...
-  - policy meaning ...
+  - rev is the document revision
+  - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
   This hash might be passed in an arbitrary position after the first two arguments."
   [document &args]
   nil)
@@ -78,8 +78,8 @@
   Also optional as argument is another hash containing further options:
   {waitForSync: true/false, rev: 'revision_id', policy: 'desired_behaviour'}
   - waitForSync meaning if the server response should wait until the document is saved to disk;
-  - rev meaning ...
-  - policy meaning ...
+  - rev is the document revision
+  - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
   This hash might be passed in an arbitrary position after the first argument."
   [& args]
   nil)

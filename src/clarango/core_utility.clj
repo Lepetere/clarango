@@ -34,7 +34,7 @@
 ;; TO DO: create custom exceptions for Clarango?
 ;; TO DO: later put exception handling into it's own namespace?
 
-(defn read-uri [uri]
+(defn get-uri [uri]
   (println "connection address: " uri)
   (try (let [response (http/get uri)]
         (parse-string (:body response)))
