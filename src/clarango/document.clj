@@ -16,7 +16,7 @@
 (defn create
   "Creates a document. 
 
-  First argument: A hash that represents the document.
+  First argument: A hash-map that represents the document.
 
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used.
@@ -30,7 +30,7 @@
   nil)
 
 (defn replace-by-key
-  "Replaces a document with a number of key/value pairs.
+  "Replaces a document with a hash-map representing the new document.
 
   First argument: A hash representing the new document.
   Second argument: The document key.
@@ -50,7 +50,7 @@
 (defn update-by-key
   "Updates a document with a number of key value pairs. Inserts them into the existing document.
 
-  First argument: A hash containing the new key/value pairs.
+  First argument: A hash-map containing the new key/value pairs.
   Second argument: The document key.
 
   Takes optional a collection name and a db name as further arguments.
