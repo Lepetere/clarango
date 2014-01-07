@@ -36,31 +36,37 @@
 
 (defn get-uri [uri]
   (println "GET connection address: " uri)
-  (try (let [response (http/get uri)]
+  (try (let [response (http/request (merge {:method :get :url uri} {}))] ; activate debugging passing :debug true in options
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
 (defn head-uri [uri]
   (println "HEAD connection address: " uri)
-  (try (let [response (http/get uri)]
+  (try (let [response (http/request (merge {:method :head :url uri} {}))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
 (defn post-uri [uri body params]
   (println "POST connection address: " uri)
-  (try (let [response (http/post uri {:form-params params :body (generate-string body)})]
+  (try (let [response (http/request (merge {:method :post :url uri} {:form-params params :body (generate-string body)}))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
 (defn put-uri [uri]
   (println "PUT connection address: " uri)
-  (try (let [response (http/get uri)]
+  (try (let [response (http/request (merge {:method :put :url uri} {}))]
+        (parse-string (:body response)))
+        (catch Exception e (handle-error e))))
+
+(defn patch-uri [uri]
+  (println "PATCH connection address: " uri)
+  (try (let [response (http/request (merge {:method :patch :url uri} {}))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
 (defn delete-uri [uri]
   (println "DELETE connection address: " uri)
-  (try (let [response (http/get uri)]
+  (try (let [response (http/request (merge {:method :delete :url uri} {}))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
