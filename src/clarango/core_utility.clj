@@ -34,39 +34,48 @@
 ;; TO DO: create custom exceptions for Clarango?
 ;; TO DO: later put exception handling into it's own namespace?
 
+(defn debugging-activated? []
+  false)
+
 (defn get-uri [uri]
   (println "GET connection address: " uri)
-  (try (let [response (http/request (merge {:method :get :url uri} {}))] ; activate debugging passing :debug true in options
+  (try (let [opts {:debug (debugging-activated?)}
+              response (http/request (merge {:method :get :url uri} opts))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
 (defn head-uri [uri]
   (println "HEAD connection address: " uri)
-  (try (let [response (http/request (merge {:method :head :url uri} {}))]
+  (try (let [opts {:debug (debugging-activated?)}
+              response (http/request (merge {:method :head :url uri} opts))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
 (defn post-uri [uri body params]
   (println "POST connection address: " uri)
-  (try (let [response (http/request (merge {:method :post :url uri} {:form-params params :body (generate-string body)}))]
+  (try (let [opts {:debug (debugging-activated?) :form-params params :body (generate-string body)}
+              response (http/request (merge {:method :post :url uri} opts))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
 (defn put-uri [uri]
   (println "PUT connection address: " uri)
-  (try (let [response (http/request (merge {:method :put :url uri} {}))]
+  (try (let [opts {:debug (debugging-activated?)}
+              response (http/request (merge {:method :put :url uri} opts))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
 (defn patch-uri [uri]
   (println "PATCH connection address: " uri)
-  (try (let [response (http/request (merge {:method :patch :url uri} {}))]
+  (try (let [opts {:debug (debugging-activated?)}
+              response (http/request (merge {:method :patch :url uri} opts))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
 (defn delete-uri [uri]
   (println "DELETE connection address: " uri)
-  (try (let [response (http/request (merge {:method :delete :url uri} {}))]
+  (try (let [opts {:debug (debugging-activated?)}
+              response (http/request (merge {:method :delete :url uri} opts))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
