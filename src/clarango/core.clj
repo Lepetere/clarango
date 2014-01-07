@@ -8,15 +8,7 @@
   ([]
     (def clarango-connection {:connection-url "http://localhost:8529/", :db-name "_system"}))
   ([connection-map]
-    (def clarango-connection connection-map))
-
-  ;;; This is what the connection map should look like:
-  ;; {
-  ;; :connection-url  myconnurl, ;; hat url and ports 
-  ;; :db-name mydbname ;; kann fehlen und ggf. per Arg
-  ;; :collection-name ;; kann fehlen und ggf. per Argument angegeben werden
-  ;; }
-  )
+    (def clarango-connection connection-map)))
 
 (defn get-connection
   "Returns the db server connection map to other namespaces."
