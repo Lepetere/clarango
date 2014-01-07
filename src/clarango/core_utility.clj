@@ -44,7 +44,7 @@
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
-(defn head-uri [uri]
+(defn head-uri [uri params]
   (println "HEAD connection address: " uri)
   (try (let [opts {:debug (debugging-activated?)}
               response (http/request (merge {:method :head :url uri} opts))]
@@ -58,21 +58,21 @@
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
-(defn put-uri [uri]
+(defn put-uri [uri body params]
   (println "PUT connection address: " uri)
   (try (let [opts {:debug (debugging-activated?)}
               response (http/request (merge {:method :put :url uri} opts))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
-(defn patch-uri [uri]
+(defn patch-uri [uri body params]
   (println "PATCH connection address: " uri)
   (try (let [opts {:debug (debugging-activated?)}
               response (http/request (merge {:method :patch :url uri} opts))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
-(defn delete-uri [uri]
+(defn delete-uri [uri params]
   (println "DELETE connection address: " uri)
   (try (let [opts {:debug (debugging-activated?)}
               response (http/request (merge {:method :delete :url uri} opts))]
