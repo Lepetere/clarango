@@ -35,7 +35,31 @@
 ;; TO DO: later put exception handling into it's own namespace?
 
 (defn get-uri [uri]
-  (println "connection address: " uri)
+  (println "GET connection address: " uri)
+  (try (let [response (http/get uri)]
+        (parse-string (:body response)))
+        (catch Exception e (handle-error e))))
+
+(defn head-uri [uri]
+  (println "HEAD connection address: " uri)
+  (try (let [response (http/get uri)]
+        (parse-string (:body response)))
+        (catch Exception e (handle-error e))))
+
+(defn post-uri [uri body params]
+  (println "POST connection address: " uri)
+  (try (let [response (http/post uri {:form-params params :body (generate-string body)})]
+        (parse-string (:body response)))
+        (catch Exception e (handle-error e))))
+
+(defn put-uri [uri]
+  (println "PUT connection address: " uri)
+  (try (let [response (http/get uri)]
+        (parse-string (:body response)))
+        (catch Exception e (handle-error e))))
+
+(defn delete-uri [uri]
+  (println "DELETE connection address: " uri)
   (try (let [response (http/get uri)]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
