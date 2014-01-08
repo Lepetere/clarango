@@ -21,13 +21,14 @@
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used.
 
-  Also optional as argument is another hash containing further options:
+  Also optional as argument is another hash-map containing further options:
   {createCollection: true/false, waitForSync: true/false}
   - createCollection meaning if the collection should be created if it does not exist yet;
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   This hash might be passed in an arbitrary position after the first argument."
-  [document &args]
-  nil)
+  [document & args]
+  ;; TO DO: filter the hash-map out of the args vector
+  (core-utility/post-uri (apply document-utility/build-document-base-url args) document {}))
 
 (defn replace-by-key
   "Replaces a document with a hash-map representing the new document.
@@ -38,13 +39,13 @@
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used.
 
-  Also optional as argument is another hash containing further options:
+  Also optional as argument is another hash-map containing further options:
   {waitForSync: true/false, rev: 'revision_id', policy: 'desired_behaviour'}
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   - rev is the document revision
   - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
   This hash might be passed in an arbitrary position after the first two arguments."
-  [document &args]
+  [document & args]
   nil)
 
 (defn update-by-key
@@ -56,7 +57,7 @@
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used.
 
-  Also optional as argument is another hash containing further options:
+  Also optional as argument is another hash-map containing further options:
   {waitForSync: true/false, keepNull: true/false, rev: 'revision_id', policy: 'desired_behaviour'}
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   - keepNull meaning if the key/value pair should be deleted in the document 
@@ -64,7 +65,7 @@
   - rev is the document revision
   - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
   This hash might be passed in an arbitrary position after the first two arguments."
-  [document &args]
+  [document & args]
   nil)
 
 (defn delete-by-key
@@ -75,7 +76,7 @@
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used.
 
-  Also optional as argument is another hash containing further options:
+  Also optional as argument is another hash-map containing further options:
   {waitForSync: true/false, rev: 'revision_id', policy: 'desired_behaviour'}
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   - rev is the document revision

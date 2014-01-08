@@ -51,9 +51,10 @@
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
-(defn post-uri [uri body params]
+(defn post-uri [uri body params] ; TO DO: make params optional
   (println "POST connection address: " uri)
-  (try (let [opts {:debug (debugging-activated?) :form-params params :body (generate-string body)}
+  (try (let [_ (println (generate-string body))
+    opts {:debug (debugging-activated?) :form-params params :body (generate-string body)}
               response (http/request (merge {:method :post :url uri} opts))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))

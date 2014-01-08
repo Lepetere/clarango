@@ -35,4 +35,10 @@
     (clarango.core/set-connection! {:connection-url "http://localhost:8529/"})
     (clarango.core/set-default-db! "_system")
     (let [result (document/get-by-key key "persons")]
+            (pprint result)))
+  (let [document {:name "toller Name" :city "wo kommt er her?"}]
+    (println "test 4: post document")
+    (clarango.core/set-connection! {:connection-url "http://localhost:8529/"})
+    (clarango.core/set-default-db! "_system")
+    (let [result (document/create document "persons")]
             (pprint result))))

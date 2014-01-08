@@ -13,3 +13,13 @@
   	(connect-url-parts (get-safe-connection-url) "_db/" (get-default-db) "_api/document/" collection-name document-key))
   ([document-key collection-name db-name]
   	(connect-url-parts (get-safe-connection-url) "_db/" db-name "_api/document/" collection-name document-key)))
+
+(defn build-document-base-url
+  "Builds the base url for the document endpoint including a collection name as parameter. Can be used to post documents.
+  Uses the defaults set in the clarango-connection for the parts of the URL that are not specified by arguments."
+  ([]
+  	(str (connect-url-parts (get-safe-connection-url) "_db/" (get-default-db)) "_api/document?collection=" (get-default-collection-name)))
+  ([collection-name]
+  	(str (connect-url-parts (get-safe-connection-url) "_db/" (get-default-db)) "_api/document?collection=" collection-name))
+  ([collection-name db-name]
+  	(str (connect-url-parts (get-safe-connection-url) "_db/" db-name) "_api/document?collection=" collection-name)))
