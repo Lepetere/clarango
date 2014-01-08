@@ -28,10 +28,9 @@
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   This hash might be passed in an arbitrary position after the first argument."
   [document & args]
-  ;; TO DO: filter the hash-map out of the args vector
   ;; what about the document key if the user desires to specify it by himself? 
   ;; Should he just pass it in the json document? or allow it as optional argument?
-  (http/post-uri (apply document-utility/build-document-base-url args) document {}))
+  (http/post-uri (apply document-utility/build-document-base-url (core-utility/remove-hash-map args)) document (core-utility/filter-out-hash-map args)))
 
 (defn replace-by-key
   "Replaces a document with a hash-map representing the new document.

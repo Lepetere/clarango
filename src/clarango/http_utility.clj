@@ -31,8 +31,7 @@
 (defmethod handle-error :default
   [error]
   (throw error))
-;; TO DO: create custom exceptions for Clarango?
-;; TO DO: later put exception handling into it's own namespace?
+;; TO DO: later create custom exceptions for Clarango?
 
 (defn debugging-activated? []
   false)

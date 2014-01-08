@@ -42,3 +42,13 @@
         (let [url-string (str base-string (clojure.string/trim add-string))] 
           (if (.endsWith add-string "/") url-string (str url-string "/"))))
             "" parts))
+
+(defn remove-hash-map
+  "Takes a vector and returns it without the elements that are of type hash-map."
+  [vect]
+  (remove #(= (type %) clojure.lang.PersistentArrayMap) vect))
+
+(defn filter-out-hash-map
+  "Returns the first element in a vector that is of type hash-map."
+  [vect]
+  (first (filter #(= (type %) clojure.lang.PersistentArrayMap) vect)))
