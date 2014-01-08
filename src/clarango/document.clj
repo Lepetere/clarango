@@ -48,7 +48,7 @@
   - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
   This hash might be passed in an arbitrary position after the first two arguments."
   [document & args]
-  nil)
+  (http/put-uri (apply document-utility/build-document-uri (core-utility/remove-hash-map args)) document (core-utility/filter-out-hash-map args)))
 
 (defn update-by-key
   "Updates a document with a number of key value pairs. Inserts them into the existing document.
@@ -68,7 +68,7 @@
   - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
   This hash might be passed in an arbitrary position after the first two arguments."
   [document & args]
-  nil)
+  (http/patch-uri (apply document-utility/build-document-uri (core-utility/remove-hash-map args)) document (core-utility/filter-out-hash-map args)))
 
 (defn delete-by-key
   "Deletes a document by its id.
@@ -85,4 +85,4 @@
   - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
   This hash might be passed in an arbitrary position after the first argument."
   [& args]
-  nil)
+  (http/delete-uri (apply document-utility/build-document-uri (core-utility/remove-hash-map args)) (core-utility/filter-out-hash-map args)))
