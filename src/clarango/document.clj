@@ -1,7 +1,8 @@
 (ns clarango.document
   (:require [clarango.core :as clarango.core]
             [clarango.core-utility :as core-utility]
-            [clarango.document-utility :as document-utility]))
+            [clarango.document-utility :as document-utility]
+            [clarango.http-utility :as http]))
 
 (defn get-by-key
   "Gets a document by its key.
@@ -11,7 +12,7 @@
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used."
   [& args]
-  (core-utility/get-uri (apply document-utility/build-document-uri args)))
+  (http/get-uri (apply document-utility/build-document-uri args)))
 
 (defn create
   "Creates a document. 
@@ -28,7 +29,9 @@
   This hash might be passed in an arbitrary position after the first argument."
   [document & args]
   ;; TO DO: filter the hash-map out of the args vector
-  (core-utility/post-uri (apply document-utility/build-document-base-url args) document {}))
+  ;; what about the document key if the user desires to specify it by himself? 
+  ;; Should he just pass it in the json document? or allow it as optional argument?
+  (http/post-uri (apply document-utility/build-document-base-url args) document {}))
 
 (defn replace-by-key
   "Replaces a document with a hash-map representing the new document.
