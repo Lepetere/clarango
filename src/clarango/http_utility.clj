@@ -53,28 +53,35 @@
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
 
-(defn post-uri [uri body params] ; TO DO: make params optional
-  (if (console-output-activated?) (println "POST connection address: " uri))
+(defn get-uppercase-string-for-http-method
+  "Returns a string of uppercase letters with the name of the matching http method.
+  Pass it a method name as symbol, e.g. :post"
+  [method]
+  (case method
+  :post "POST"
+  :put "PUT"
+  :patch "PATCH"))
+
+(defn post-put-patch-uri
+  "Since post, put and patch have the same set of arguments and only differ in the used http method, this is a meta
+  method for using all of these.
+  The first argument must be on of these http methods in form of a symbol, e.g. :post"
+  [method uri body params] ; TO DO: make params optional
+  (if (console-output-activated?) (println (get-uppercase-string-for-http-method method) " connection address: " uri))
   (try (let [_ (println (generate-string body))
     opts {:debug (debugging-activated?) :form-params params :body (generate-string body)}
-              response (http/request (merge {:method :post :url uri} opts))]
+              response (http/request (merge {:method method :url uri} opts))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
+
+(defn post-uri [uri body params]
+  (post-put-patch-uri :post uri body params))
 
 (defn put-uri [uri body params]
-  (if (console-output-activated?) (println "PUT connection address: " uri))
-  (try (let [opts {:debug (debugging-activated?) :form-params params :body (generate-string body)}
-              response (http/request (merge {:method :put :url uri} opts))]
-        (parse-string (:body response)))
-        (catch Exception e (handle-error e))))
+  (post-put-patch-uri :put uri body params))
 
 (defn patch-uri [uri body params]
-  (if (console-output-activated?) (println "PATCH connection address: " uri))
-  (try (let [opts {:debug (debugging-activated?) :form-params params :body (generate-string body)}
-              response (http/request (merge {:method :patch :url uri} opts))]
-        (parse-string (:body response)))
-        (catch Exception e (handle-error e))))
-; TO DO: merge post, put and patch method, because they exactly do the same thing; except for the used http method
+  (post-put-patch-uri :patch uri body params))
 
 (defn delete-uri [uri params]
   (if (console-output-activated?) (println "DELETE connection address: " uri))
