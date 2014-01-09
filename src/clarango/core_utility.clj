@@ -43,12 +43,12 @@
           (if (.endsWith add-string "/") url-string (str url-string "/"))))
             "" parts))
 
-(defn remove-hash-map
-  "Takes a vector and returns it without the elements that are of type hash-map."
+(defn remove-map
+  "Takes a vector and returns it without the elements that are of type map."
   [vect]
   (remove #(= (type %) clojure.lang.PersistentArrayMap) vect))
 
-(defn filter-out-hash-map
-  "Returns the first element in a vector that is of type hash-map."
+(defn filter-out-map
+  "Returns the first element in a vector that is of type map."
   [vect]
   (first (filter #(= (type %) clojure.lang.PersistentArrayMap) vect)))
