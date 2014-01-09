@@ -1,6 +1,6 @@
 (ns clarango.database
   (:require [clarango.core :as clarango.core]
-            [clarango.database-utility :as database-utility]))
+            [clarango.utilities.database-utility :as database-utility]))
 
 (defn create-database
   "Creates a database with the given name."

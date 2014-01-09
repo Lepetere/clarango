@@ -1,7 +1,7 @@
 ;; Please note:
 ;; The methods in this namespace are only intended for internal use.
 
-(ns clarango.http-utility
+(ns clarango.utilities.http-utility
 	(:require [clj-http.client :as http]
 		        [cheshire.core :refer :all])
   (:use clojure.pprint))

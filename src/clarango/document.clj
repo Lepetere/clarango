@@ -1,8 +1,8 @@
 (ns clarango.document
   (:require [clarango.core :as clarango.core]
-            [clarango.core-utility :as core-utility]
-            [clarango.document-utility :as document-utility]
-            [clarango.http-utility :as http]))
+            [clarango.utilities.core-utility :as core-utility]
+            [clarango.utilities.document-utility :as document-utility]
+            [clarango.utilities.http-utility :as http]))
 
 (defn get-by-key
   "Gets a document by its key.

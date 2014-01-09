@@ -1,8 +1,8 @@
 ;; Please note:
 ;; The methods in this namespace are only intended for internal use.
 
-(ns clarango.document-utility
-  (:use [clarango.core-utility :only [connect-url-parts get-safe-connection-url get-default-db get-default-collection-name]]))
+(ns clarango.utilities.document-utility
+  (:use [clarango.utilities.core-utility :only [connect-url-parts get-safe-connection-url get-default-db get-default-collection-name]]))
 
 (defn build-document-uri
   "Build a URI to access a collection in ArangoDB. Uses the defaults set in the clarango-connection 
