@@ -58,24 +58,24 @@ create/replace/update/delete document:
 
 ```clojure
 (let [document {:name "awesome name" :city "where is he from?"}
-        ;; create document
-        result-doc (document/create document "my-collection" "my-db")
-        new-key (get result-doc "_key")]
-          (clojure.pprint result-doc)
+      ;; create document
+      result-doc (document/create document "my-collection" "my-db")
+      new-key (get result-doc "_key")]
+  (clojure.pprint result-doc)
 
-          (let [document-new {:name "even more awesome name" :city "from Berlin of course"}]
-            ;; replace document
-            (let [result (document/replace-by-key document-new new-key "my-collection" "my-db")]
-            (clojure.pprint result)))
+  (let [document-new {:name "even more awesome name" :city "from Berlin of course"}]
+    ;; replace document
+    (let [result (document/replace-by-key document-new new-key "my-collection" "my-db")]
+    (clojure.pprint result)))
 
-          (let [document-update {:age "He's already 100 years old."}]
-            ;; update document
-            (let [result (document/update-by-key document-update new-key "my-collection" "my-db")]
-            (clojure.pprint result)))
+  (let [document-update {:age "He's already 100 years old."}]
+    ;; update document
+    (let [result (document/update-by-key document-update new-key "my-collection" "my-db")]
+    (clojure.pprint result)))
 
-          ;; delete document
-          (let [result (document/delete-by-key new-key "my-collection" "my-db")]
-            (clojure.pprint result)))
+   ;; delete document
+   (let [result (document/delete-by-key new-key "my-collection" "my-db")]
+     (clojure.pprint result)))
 ```
 
 ## Feedback
