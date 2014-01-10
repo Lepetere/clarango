@@ -50,7 +50,7 @@
   (if (console-output-activated?) (println "HEAD connection address: " uri))
   (try (let [opts {:debug (debugging-activated?) :form-params params}
               response (http/request (merge {:method :head :url uri} opts))]
-        (parse-string (:body response)))
+        (:headers response))
         (catch Exception e (handle-error e))))
 
 (defn get-uppercase-string-for-http-method

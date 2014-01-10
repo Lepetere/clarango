@@ -36,10 +36,10 @@
     (println "test 3: get and head key " + key)
     (clarango.core/set-connection! {:connection-url "http://localhost:8529/"})
     (clarango.core/set-default-db! "_system")
-    (let [result (document/get-by-key key "persons")
-          result-head (document/get-info key "persons")]
-            (pprint result)
-            (pprint result-head)))
+    (let [result (document/get-by-key key "persons")]
+            (pprint result))
+    (let [result (document/get-info key "persons")]
+            (pprint result)))
 
   ;;; test post/put/patch/delete
   (let [document {:name "toller Name" :city "wo kommt er her?"}]
@@ -55,6 +55,9 @@
               (println "test 6: patch document")
               (let [result (document/update-by-key document-update new-key "persons" "_system")]
               (pprint result)))
-            (println "test 7: delete document")
+            (let [result (document/get-by-key new-key "persons" "_system")]
+              (println "test 7: get current document state")
+              (pprint result))
+            (println "test 8: delete document")
             (let [result (document/delete-by-key new-key "persons" "_system")]
               (pprint result)))))
