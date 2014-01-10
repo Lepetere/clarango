@@ -14,6 +14,21 @@
   [& args]
   (http/get-uri (apply document-utility/build-document-uri args)))
 
+(defn get-by-example
+  "Gets a document or a number of documents out of a collection by giving an example to match.
+
+  Takes the example as a map as first argument. 
+
+  Takes optional a collection name and a db name as further arguments.
+  If omitted by user, the default db and collection will be used.
+
+  Also optional as argument is another map containing further options:
+  {skip: 'skip', limit: 'limit'}
+  - skip meaning the (number of?) documents to skip in the result
+  - limit meaning the maximum amount of documents to return
+  This map might be passed in an arbitrary position after the first two arguments."
+  [example & args]) ;; http://www.arangodb.org/manuals/current/HttpSimple.html#HttpSimpleByExample
+
 (defn get-info
   "Gets information about a document by its key.
 
@@ -25,7 +40,7 @@
   Also optional as argument is another map containing further options:
   {rev: 'revision_id', policy: 'desired_behaviour'}
   - rev is the document revision
-  - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
+  - policy meaning the desired behaviour in case the given revision number does not match the latest document revision
   This map might be passed in an arbitrary position after the first two arguments."
   [& args]
   (http/head-uri (apply document-utility/build-document-uri (core-utility/remove-map args)) (core-utility/filter-out-map args)))
