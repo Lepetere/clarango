@@ -13,6 +13,6 @@
     (set-default-db! "another-db")
     (set-default-collection! "another-collection")
     (is (= {:db-name "another-db", 
-            :connection-url "http://localhost:4444/",
+            :connection-url "http://localhost:9999/",
             :collection-name "another-collection"}
            (get-connection)) "obvious receive what has been set")))
