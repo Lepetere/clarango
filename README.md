@@ -61,12 +61,12 @@ Setting the databse connection and getting a document by existing key:
 create/replace/update/delete document:
 
 ```clojure
-;; create document
 (let [_ (clarango.core/set-connection! {
         :connection-url "http://localhost:8529/"
         :db-name "my-db"
         :collection-name "my-collection" })
       document {:name "awesome name" :city "where is he from?"}
+      ;; create document
       result-doc (document/create document)
       new-key (get result-doc "_key")]
   (clojure.pprint result-doc)
@@ -80,7 +80,7 @@ create/replace/update/delete document:
     (clojure.pprint (document/update-by-key document-update new-key)))
 
   ;; delete document
-  (document/delete-by-key new-key "my-collection" "my-db"))
+  (document/delete-by-key new-key))
 ```
 
 ## Feedback
