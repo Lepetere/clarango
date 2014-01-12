@@ -5,5 +5,5 @@ lein: lein2
 script: lein2 test
 jdk:
   - oraclejdk7
-before_script:
-  - "setup_arangodb_1.4.sh"
+# before_script:
+#   - "setup_arangodb_1.4.sh"
