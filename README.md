@@ -29,7 +29,7 @@ Then require the lib in your clojure file:
 
 ## Usage
 
-Getting a document by existing key:
+Setting the databse connection and getting a document by existing key:
 
 ```clojure
 (clarango.core/set-connection! {:connection-url "http://localhost:8529/"})
@@ -62,18 +62,22 @@ create/replace/update/delete document:
 
 ```clojure
 ;; create document
-(let [document {:name "awesome name" :city "where is he from?"}
-      result-doc (document/create document "my-collection" "my-db")
+(let [_ (clarango.core/set-connection! {
+        :connection-url "http://localhost:8529/"
+        :db-name "my-db"
+        :collection-name "my-collection" })
+      document {:name "awesome name" :city "where is he from?"}
+      result-doc (document/create document)
       new-key (get result-doc "_key")]
   (clojure.pprint result-doc)
 
   ;; replace document
-  (let [doc-new {:name "even more awesome name" :city "from Berlin of course"}]
-    (clojure.pprint (document/replace-by-key doc-new new-key "my-collection" "my-db")))
+  (let [document-new {:name "even more awesome name" :city "from Berlin of course"}]
+    (clojure.pprint (document/replace-by-key document-new new-key)))
 
   ;; update document
-  (let [doc-update {:age "He's already 100 years old."}]
-    (clojure.pprint (document/update-by-key doc-update new-key "my-collection" "my-db")))
+  (let [document-update {:age "He's already 100 years old."}]
+    (clojure.pprint (document/update-by-key document-update new-key)))
 
   ;; delete document
   (document/delete-by-key new-key "my-collection" "my-db"))
