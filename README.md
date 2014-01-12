@@ -68,15 +68,15 @@ create/replace/update/delete document:
   (clojure.pprint result-doc)
 
   ;; replace document
-  (let [document-new {:name "even more awesome name" :city "from Berlin of course"}]
-    (clojure.pprint (document/replace-by-key document-new new-key "my-collection" "my-db")))
+  (let [doc-new {:name "even more awesome name" :city "from Berlin of course"}]
+    (clojure.pprint (document/replace-by-key doc-new new-key "my-collection" "my-db")))
 
   ;; update document
-  (let [document-update {:age "He's already 100 years old."}]
-    (clojure.pprint (document/update-by-key document-update new-key "my-collection" "my-db")))
+  (let [doc-update {:age "He's already 100 years old."}]
+    (clojure.pprint (document/update-by-key doc-update new-key "my-collection" "my-db")))
 
   ;; delete document
-  (clojure.pprint (document/delete-by-key new-key "my-collection" "my-db")))
+  (document/delete-by-key new-key "my-collection" "my-db"))
 ```
 
 ## Feedback
