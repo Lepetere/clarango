@@ -10,9 +10,25 @@
   Takes the document key as first argument. 
 
   Takes optional a collection name and a db name as further arguments.
-  If omitted by user, the default db and collection will be used."
+  If omitted by user, the default db and collection will be used.
+
+-------- does not work: --------
+  Also optional as argument is another map containing further options:
+  {'If-None-Match' revision_id, 'If-Match' revision_id} (replace the single quotes with double quotes)
+  - for 'If-None-Match' or 'If-Match' you can pass a revision_id; the document is then only returned 
+    if it matches the revision_id set in 'If-Match' OR if it does not match the revision_id set in 'If-None-Match'
+    -> because they have contrary meanings, you can only use one of both options
+  The option map might be passed in an arbitrary position after the first two arguments.
+-------------------------------
+
+-------- use the following :
+
+  Also optional as argument is another map containing further options:
+  {'rev' revision_id} (replace the single quotes with double quotes)
+  - rev is the document revision; if the current document revision_id does not match the given one, an error is thrown
+  The option map might be passed in an arbitrary position after the first two arguments."
   [& args]
-  (http/get-uri (apply document-utility/build-document-uri args)))
+  (http/get-uri (apply document-utility/build-document-uri (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn get-by-example
   "Gets a document or a number of documents out of a collection by giving an example to match.
@@ -26,7 +42,7 @@
   {'skip' skip, 'limit' limit} (replace the single quotes with double quotes)
   - skip meaning the (number of?) documents to skip in the result
   - limit meaning the maximum amount of documents to return
-  This map might be passed in an arbitrary position after the first two arguments."
+  The option map might be passed in an arbitrary position after the first two arguments."
   [example & args]) ;; http://www.arangodb.org/manuals/current/HttpSimple.html#HttpSimpleByExample
 
 (defn get-info
@@ -43,7 +59,7 @@
   - policy meaning the desired behaviour in case the given revision number does not match the latest document revision
     -> 'error' meaning that an error is thrown if the given revision_id does not match the revision_id in the document
     -> 'last' meaning the document is still returned even if the given revision_id does not match the revision_id in the document
-  This map might be passed in an arbitrary position after the first two arguments."
+  The option map might be passed in an arbitrary position after the first two arguments."
   [& args]
   (http/head-uri (apply document-utility/build-document-uri (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
@@ -59,7 +75,7 @@
   {'createCollection' true/false, 'waitForSync' true/false} (replace the single quotes with double quotes)
   - createCollection meaning if the collection should be created if it does not exist yet;
   - waitForSync meaning if the server response should wait until the document is saved to disk;
-  This map might be passed in an arbitrary position after the first argument."
+  The option map might be passed in an arbitrary position after the first argument."
   [document & args]
   ;; what about the document key if the user desires to specify it by himself? 
   ;; Should he just pass it in the json document? or allow it as optional argument?
@@ -81,7 +97,7 @@
   - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
     -> 'error' meaning that an error is thrown if the given revision_id does not match the revision_id in the document
     -> 'last' meaning the document is still replaced even if the given revision_id does not match the revision_id in the document
-  This map might be passed in an arbitrary position after the first two arguments."
+  The option map might be passed in an arbitrary position after the first two arguments."
   [document & args]
   (http/put-uri (apply document-utility/build-document-uri (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
 
@@ -103,7 +119,7 @@
   - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
     -> 'error' meaning that an error is thrown if the given revision_id does not match the revision_id in the document
     -> 'last' meaning the document is still updated even if the given revision_id does not match the revision_id in the document
-  This map might be passed in an arbitrary position after the first two arguments."
+  The option map might be passed in an arbitrary position after the first two arguments."
   [document & args]
   (http/patch-uri (apply document-utility/build-document-uri (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
 
@@ -122,6 +138,6 @@
   - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
     -> 'error' meaning that an error is thrown if the given revision_id does not match the revision_id in the document
     -> 'last' meaning the document is still deleted even if the given revision_id does not match the revision_id in the document
-  This map might be passed in an arbitrary position after the first argument."
+  The option map might be passed in an arbitrary position after the first argument."
   [& args]
   (http/delete-uri (apply document-utility/build-document-uri (core-utility/remove-map args)) (core-utility/filter-out-map args)))

@@ -34,14 +34,16 @@
 ;; TO DO: later create custom exceptions for Clarango?
 
 (defn debugging-activated? []
+  "Switch that activates the verbose output of clj-http."
   false)
 
 (defn console-output-activated? []
+  "Switch that activates outputting the http method and url used for each http request."
   true)
 
-(defn get-uri [uri]
+(defn get-uri [uri params]
   (if (console-output-activated?) (println "GET connection address: " uri))
-  (try (let [opts {:debug (debugging-activated?)}
+  (try (let [opts {:debug (debugging-activated?) :query-params params}
               response (http/request (merge {:method :get :url uri} opts))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
