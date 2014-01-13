@@ -10,7 +10,8 @@ The expected roadmap is:
 
 ## Features
 
-* simple Document CRUD
+* Document CRUD including various options
+  -> for documentation on this see [document.clj](https://github.com/edlich/clarango/blob/master/src/clarango/document.clj)
 * simple exception handling
 
 ...

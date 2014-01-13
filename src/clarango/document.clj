@@ -12,17 +12,6 @@
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used.
 
--------- does not work: --------
-  Also optional as argument is another map containing further options:
-  {'If-None-Match' revision_id, 'If-Match' revision_id} (replace the single quotes with double quotes)
-  - for 'If-None-Match' or 'If-Match' you can pass a revision_id; the document is then only returned 
-    if it matches the revision_id set in 'If-Match' OR if it does not match the revision_id set in 'If-None-Match'
-    -> because they have contrary meanings, you can only use one of both options
-  The option map might be passed in an arbitrary position after the first two arguments.
--------------------------------
-
--------- use the following :
-
   Also optional as argument is another map containing further options:
   {'rev' revision_id} (replace the single quotes with double quotes)
   - rev is the document revision; if the current document revision_id does not match the given one, an error is thrown

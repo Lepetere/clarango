@@ -61,5 +61,5 @@
               (println "test 7: get current document state")
               (pprint result))
             (println "test 8: delete document")
-            (let [result (document/delete-by-key new-key {"rev" rev "policy" "last"} "persons" "_system")]
+            (let [result (document/delete-by-key new-key {"rev" "100000" "policy" "error"} "persons" "_system")]
               (pprint result)))))
