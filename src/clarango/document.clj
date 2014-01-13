@@ -38,9 +38,11 @@
   If omitted by user, the default db and collection will be used.
 
   Also optional as argument is another map containing further options:
-  {'rev' revision_id, 'policy' desired_behaviour} (replace the single quotes with double quotes)
+  {'rev' revision_id, 'policy' 'error/last'} (replace the single quotes with double quotes)
   - rev is the document revision
   - policy meaning the desired behaviour in case the given revision number does not match the latest document revision
+    -> 'error' meaning that an error is thrown if the given revision_id does not match the revision_id in the document
+    -> 'last' meaning the document is still returned even if the given revision_id does not match the revision_id in the document
   This map might be passed in an arbitrary position after the first two arguments."
   [& args]
   (http/head-uri (apply document-utility/build-document-uri (core-utility/remove-map args)) (core-utility/filter-out-map args)))
@@ -73,10 +75,12 @@
   If omitted by user, the default db and collection will be used.
 
   Also optional as argument is another map containing further options:
-  {'waitForSync' true/false, 'rev' revision_id, 'policy' desired_behaviour} (replace the single quotes with double quotes)
+  {'waitForSync' true/false, 'rev' revision_id, 'policy' 'error/last'} (replace the single quotes with double quotes)
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   - rev is the document revision
   - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
+    -> 'error' meaning that an error is thrown if the given revision_id does not match the revision_id in the document
+    -> 'last' meaning the document is still replaced even if the given revision_id does not match the revision_id in the document
   This map might be passed in an arbitrary position after the first two arguments."
   [document & args]
   (http/put-uri (apply document-utility/build-document-uri (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
@@ -91,12 +95,14 @@
   If omitted by user, the default db and collection will be used.
 
   Also optional as argument is another map containing further options:
-  {'waitForSync' true/false, 'keepNull' true/false, 'rev' revision_id, 'policy' desired_behaviour} (replace the single quotes with double quotes)
+  {'waitForSync' true/false, 'keepNull' true/false, 'rev' revision_id, 'policy' 'error/last'} (replace the single quotes with double quotes)
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   - keepNull meaning if the key/value pair should be deleted in the document 
     if the argument map contains it with a null as value;
   - rev is the document revision
   - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
+    -> 'error' meaning that an error is thrown if the given revision_id does not match the revision_id in the document
+    -> 'last' meaning the document is still updated even if the given revision_id does not match the revision_id in the document
   This map might be passed in an arbitrary position after the first two arguments."
   [document & args]
   (http/patch-uri (apply document-utility/build-document-uri (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
@@ -110,10 +116,12 @@
   If omitted by user, the default db and collection will be used.
 
   Also optional as argument is another map containing further options:
-  {'waitForSync' true/false, 'rev' revision_id, 'policy' desired_behaviour} (replace the single quotes with double quotes)
+  {'waitForSync' true/false, 'rev' revision_id, 'policy' 'error/last'} (replace the single quotes with double quotes)
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   - rev is the document revision
   - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
+    -> 'error' meaning that an error is thrown if the given revision_id does not match the revision_id in the document
+    -> 'last' meaning the document is still deleted even if the given revision_id does not match the revision_id in the document
   This map might be passed in an arbitrary position after the first argument."
   [& args]
   (http/delete-uri (apply document-utility/build-document-uri (core-utility/remove-map args)) (core-utility/filter-out-map args)))
