@@ -41,28 +41,35 @@
   "Switch that activates outputting the http method and url used for each http request."
   true)
 
-(defn get-uri [uri params]
-  (if (console-output-activated?) (println "GET connection address: " uri))
-  (try (let [opts {:debug (debugging-activated?) :query-params params}
-              response (http/request (merge {:method :get :url uri} opts))]
-        (parse-string (:body response)))
-        (catch Exception e (handle-error e))))
-
-(defn head-uri [uri params]
-  (if (console-output-activated?) (println "HEAD connection address: " uri))
-  (try (let [opts {:debug (debugging-activated?) :query-params params}
-              response (http/request (merge {:method :head :url uri} opts))]
-        (:headers response))
-        (catch Exception e (handle-error e))))
-
 (defn get-uppercase-string-for-http-method
   "Returns a string of uppercase letters with the name of the matching http method.
   Pass it a method name as symbol, e.g. :post"
   [method]
   (case method
-  :post "POST"
-  :put "PUT"
-  :patch "PATCH"))
+    :get "GET"
+    :head "HEAD"
+    :post "POST"
+    :put "PUT"
+    :patch "PATCH"
+    :delete "DELETE"))
+
+(defn get-head-delete-uri [method uri params]
+  (if (console-output-activated?) (println (get-uppercase-string-for-http-method method) " connection address: " uri))
+  (try (let [opts {:debug (debugging-activated?) :query-params params}
+              response (http/request (merge {:method method :url uri} opts))]
+        (if (= method :head) 
+          (:headers response)
+          (parse-string (:body response))))
+        (catch Exception e (handle-error e))))
+
+(defn get-uri [uri params]
+  (get-head-delete-uri :get uri params))
+
+(defn head-uri [uri params]
+  (get-head-delete-uri :head uri params))
+
+(defn delete-uri [uri params]
+  (get-head-delete-uri :delete uri params))
 
 (defn post-put-patch-uri
   "Since post, put and patch have the same set of arguments and only differ in the used http method, this is a meta
@@ -83,10 +90,3 @@
 
 (defn patch-uri [uri body params]
   (post-put-patch-uri :patch uri body params))
-
-(defn delete-uri [uri params]
-  (if (console-output-activated?) (println "DELETE connection address: " uri))
-  (try (let [opts {:debug (debugging-activated?) :query-params params}
-              response (http/request (merge {:method :delete :url uri} opts))]
-        (parse-string (:body response)))
-        (catch Exception e (handle-error e))))
