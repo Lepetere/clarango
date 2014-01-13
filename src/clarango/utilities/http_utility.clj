@@ -53,40 +53,29 @@
     :patch "PATCH"
     :delete "DELETE"))
 
-(defn get-head-delete-uri [method uri params]
+(defn send-request [method uri body params]
   (if (console-output-activated?) (println (get-uppercase-string-for-http-method method) " connection address: " uri))
-  (try (let [opts {:debug (debugging-activated?) :query-params params}
-              response (http/request (merge {:method method :url uri} opts))]
+  (try (let [ map-with-body (if (nil? body) {} {:body (generate-string body)})
+              response (http/request (merge {:method method :url uri :debug (debugging-activated?) :query-params params} map-with-body))]
         (if (= method :head) 
           (:headers response)
           (parse-string (:body response))))
         (catch Exception e (handle-error e))))
 
 (defn get-uri [uri params]
-  (get-head-delete-uri :get uri params))
+  (send-request :get uri nil params))
 
 (defn head-uri [uri params]
-  (get-head-delete-uri :head uri params))
+  (send-request :head uri nil params))
 
 (defn delete-uri [uri params]
-  (get-head-delete-uri :delete uri params))
-
-(defn post-put-patch-uri
-  "Since post, put and patch have the same set of arguments and only differ in the used http method, this is a meta
-  method for using all of these.
-  The first argument must be on of these http methods in form of a symbol, e.g. :post"
-  [method uri body params]
-  (if (console-output-activated?) (println (get-uppercase-string-for-http-method method) " connection address: " uri))
-  (try (let [opts {:debug (debugging-activated?) :query-params params :body (generate-string body)}
-              response (http/request (merge {:method method :url uri} opts))]
-        (parse-string (:body response)))
-        (catch Exception e (handle-error e))))
+  (send-request :delete uri nil params))
 
 (defn post-uri [uri body params]
-  (post-put-patch-uri :post uri body params))
+  (send-request :post uri body params))
 
 (defn put-uri [uri body params]
-  (post-put-patch-uri :put uri body params))
+  (send-request :put uri body params))
 
 (defn patch-uri [uri body params]
-  (post-put-patch-uri :patch uri body params))
+  (send-request :patch uri body params))
