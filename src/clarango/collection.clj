@@ -1,29 +1,140 @@
 (ns clarango.collection
   (:require [clarango.core :as clarango.core]))
 
-(defn create
-  "Creates a collection and returns a reference to it. Returns nil if the collection already exists."
-  [database collection-name]
+(defn get-all-documents ; in the ArangoDB REST API this method is part of the Document API, but is this here not a better place?
+  "Returns all documents of a collection.
+
+  Can be called without arguments. In that case the default collection from the default database will be used.
+  Optionally you can pass a collection name as first and a database name as second argument."
+  [& args]
   nil)
 
-;; Can hide clojure.core/drop
-(defn drop
-  "Drops a collection."
-  [database collection-name]
+(defn get-info
+  "Returns information about a collection.
+
+  Can be called without arguments. In that case the default collection from the default database will be used.
+  Optionally you can pass a collection name as first and a database name as second argument."
+  [& args]
+  nil)
+
+(defn get-extended-info
+  "Returns extended information about a collection. Forces a load of the collection.
+
+  Can be called without arguments. In that case the default collection from the default database will be used.
+  Optionally you can pass a collection name as first and a database name as second argument."
+  [& args]
+  nil)
+
+(defn get-extended-info-count
+  "Returns extended information about a collection including the number of documents in the collection.
+  Forces a load of the collection.
+
+  Can be called without arguments. In that case the default collection from the default database will be used.
+  Optionally you can pass a collection name as first and a database name as second argument."
+  [& args]
+  nil)
+
+(defn get-extended-info-figures
+  "Returns extended information about a collection including detailed information about the documents in the collection.
+  Forces a load of the collection.
+
+  Can be called without arguments. In that case the default collection from the default database will be used.
+  Optionally you can pass a collection name as first and a database name as second argument."
+  [& args]
+  nil)
+
+(defn create
+  "Creates a new collection.
+
+  Takes the name of the new collection as first argument.
+
+  Takes optionally a database name and a map containing options as further arguments. 
+  These arguments may be passed in arbituary order.
+  If the database name is omitted by the user, the default db will be used.
+
+  Possible options in the options map are:
+  {'waitForSync' true/false, 'doCompact' true/false, 'journalSize' journal_size, 'isSystem' true/false, 
+  'isVolatile' true/false, 'type' 2/3, 'keyOptions' [...see below...]} (replace the single quotes with double quotes)
+  - waitForSync meaning if the server response should wait until the document is saved to disk
+  - doCompact
+  - journalSize
+  - isSystem
+  - isVolatile
+  - type
+  - keyOptions: a JSON array containing the following options for key generation:
+      - type
+      - allowUserKeys
+      - increment
+      - offset"
+  [collection-name & args]
+  nil)
+
+(defn truncate
+  "Removes all documents from a collection, but leaves the indexes intact.
+
+  Can be called without arguments. In that case the default collection from the default database will be truncated.
+  Optionally you can pass a collection name as first and a database name as second argument."
+  [& args]
+  nil)
+
+(defn delete
+  "Deletes a collection.
+
+  Can be called without arguments. In that case the default collection from the default database will be deleted.
+  Optionally you can pass a collection name as first and a database name as second argument."
+  ;; although here it might be a good idea to always have to pass the collection name, just to make shure?
+  [& args]
+  nil)
+
+;; Hides .../load -> Find a different name?
+(defn load
+  "Loads a collection into the memory. Returns the collection on success. (?)
+
+  Can be called without arguments. In that case the default collection from the default database will be loaded.
+  Optionally you can pass a collection name, a database name and a map with options as arguments.
+  Possible options in the options map are:
+  {'count' true/false}
+  - count meaning
+
+  The option map might be passed in an arbitrary position between the other arguments."
+  [& args]
+  nil)
+
+(defn unload
+  "Removes a collection from the memory. On success a map containing collection properties is returned.
+
+  Can be called without arguments. In that case the default collection from the default database will be truncated.
+  Optionally you can pass a collection name as first and a database name as second argument."
+  [& args]
+  nil)
+
+(defn modify-properties ;; or update-properties?
+  "Modifies  the properties of a collection.
+
+  As first argument expects a map with options.
+  Takes optional a collection name and a db name as further arguments.
+  If omitted by user, the default db and collection will be used.
+
+  Possible options in the options map are:
+  {'count' true/false}
+  - count meaning"
+  [properties & args]
   nil)
 
 ;; Hides clojure.set/rename -> Find a different name?
 (defn rename
-  "Renames a collection."
-  [database collection-name collection-new-name]
+  "Renames a collection. On success return a map with properties.
+
+  Expects the new collection name as first argument.
+  Takes optional a collection name and a db name as further arguments.
+  If omitted by user, the default collection in the default db will be renamed." ;; better to force user to pass the old name also here?
+  [new-name & args]
   nil)
 
-(defn get
-  "Loads a collection and returns a reference to it."
-  [database collection-name]
-  nil)
+(defn rotate ; or rotate-journal?
+  "Rotates the journal of a collection.
 
-(defn get-all-documents ; in the ArangoDB REST API this method is part of the Document API, but is this here not a better place?
-  "Returns all documents of a collection."
-  [database collection document-id]
+  Can be called without arguments. In that case the default collection from the default database will be rotated.
+  Optionally you can pass a collection name as first and a database name as second argument."
+  [& args]
   nil)
