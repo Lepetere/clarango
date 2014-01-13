@@ -34,6 +34,15 @@
   The option map might be passed in an arbitrary position after the first two arguments."
   [example & args]) ;; http://www.arangodb.org/manuals/current/HttpSimple.html#HttpSimpleByExample
 
+(defn get-first-by-example
+  "Gets the first document out of a collection that matches an example.
+
+  Takes the example as a map as first argument. 
+
+  Takes optional a collection name and a db name as further arguments.
+  If omitted by user, the default db and collection will be used."
+  [example & args])
+
 (defn get-info
   "Gets information about a document by its key.
 
@@ -90,6 +99,15 @@
   [document & args]
   (http/put-uri (apply document-utility/build-document-uri (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
 
+(defn replace-by-example
+  "Replaces a document or a number of documents out of a collection by giving an example to match.
+
+  Takes the example as a map as first argument. 
+
+  Takes optional a collection name and a db name as further arguments.
+  If omitted by user, the default db and collection will be used."
+  [example & args])
+
 (defn update-by-key
   "Updates a document with a number of key value pairs. Inserts them into the existing document.
 
@@ -112,6 +130,15 @@
   [document & args]
   (http/patch-uri (apply document-utility/build-document-uri (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
 
+(defn update-by-example
+  "Updates a document or a number of documents out of a collection by giving an example to match.
+
+  Takes the example as a map as first argument. 
+
+  Takes optional a collection name and a db name as further arguments.
+  If omitted by user, the default db and collection will be used."
+  [example & args])
+
 (defn delete-by-key
   "Deletes a document by its id.
 
@@ -130,3 +157,12 @@
   The option map might be passed in an arbitrary position after the first argument."
   [& args]
   (http/delete-uri (apply document-utility/build-document-uri (core-utility/remove-map args)) (core-utility/filter-out-map args)))
+
+(defn delete-by-example
+  "Deletes a document or a number of documents out of a collection by giving an example to match.
+
+  Takes the example as a map as first argument. 
+
+  Takes optional a collection name and a db name as further arguments.
+  If omitted by user, the default db and collection will be used."
+  [example & args])
