@@ -48,7 +48,7 @@
 
 (defn head-uri [uri params]
   (if (console-output-activated?) (println "HEAD connection address: " uri))
-  (try (let [opts {:debug (debugging-activated?) :form-params params}
+  (try (let [opts {:debug (debugging-activated?) :query-params params}
               response (http/request (merge {:method :head :url uri} opts))]
         (:headers response))
         (catch Exception e (handle-error e))))
@@ -66,10 +66,9 @@
   "Since post, put and patch have the same set of arguments and only differ in the used http method, this is a meta
   method for using all of these.
   The first argument must be on of these http methods in form of a symbol, e.g. :post"
-  [method uri body params] ; TO DO: make params optional
+  [method uri body params]
   (if (console-output-activated?) (println (get-uppercase-string-for-http-method method) " connection address: " uri))
-  (try (let [_ (println (generate-string body))
-    opts {:debug (debugging-activated?) :form-params params :body (generate-string body)}
+  (try (let [opts {:debug (debugging-activated?) :query-params params :body (generate-string body)}
               response (http/request (merge {:method method :url uri} opts))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))
@@ -85,7 +84,7 @@
 
 (defn delete-uri [uri params]
   (if (console-output-activated?) (println "DELETE connection address: " uri))
-  (try (let [opts {:debug (debugging-activated?) :form-params params}
+  (try (let [opts {:debug (debugging-activated?) :query-params params}
               response (http/request (merge {:method :delete :url uri} opts))]
         (parse-string (:body response)))
         (catch Exception e (handle-error e))))

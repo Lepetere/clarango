@@ -1,5 +1,6 @@
 (ns clarango.main
 	(:require [clarango.core :as clarango.core]
+      [clarango.utilities.core-utility :as core-utility]
 				[clarango.collection :as collection]
 				[clarango.document :as document])
 	(:use clojure.pprint))
@@ -45,7 +46,8 @@
   (let [document {:name "toller Name" :city "wo kommt er her?"}]
     (println "test 4: post document")
     (let [result-doc (document/create document "persons" "_system")
-          new-key (get result-doc "_key")]
+          new-key (get result-doc "_key")
+          rev (get result-doc "_rev")]
             (pprint result-doc)
             (let [document-new {:name "noch besserer Name" :city "aus Augsburg natürlich"}]
               (println "test 5: put document")
@@ -59,5 +61,5 @@
               (println "test 7: get current document state")
               (pprint result))
             (println "test 8: delete document")
-            (let [result (document/delete-by-key new-key "persons" "_system")]
+            (let [result (document/delete-by-key new-key {"rev" rev "policy" "last"} "persons" "_system")]
               (pprint result)))))
