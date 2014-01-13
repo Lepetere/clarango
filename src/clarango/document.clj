@@ -23,7 +23,7 @@
   If omitted by user, the default db and collection will be used.
 
   Also optional as argument is another map containing further options:
-  {skip: 'skip', limit: 'limit'}
+  {'skip' skip, 'limit' limit} (replace the single quotes with double quotes)
   - skip meaning the (number of?) documents to skip in the result
   - limit meaning the maximum amount of documents to return
   This map might be passed in an arbitrary position after the first two arguments."
@@ -38,7 +38,7 @@
   If omitted by user, the default db and collection will be used.
 
   Also optional as argument is another map containing further options:
-  {rev: 'revision_id', policy: 'desired_behaviour'}
+  {'rev' revision_id, 'policy' desired_behaviour} (replace the single quotes with double quotes)
   - rev is the document revision
   - policy meaning the desired behaviour in case the given revision number does not match the latest document revision
   This map might be passed in an arbitrary position after the first two arguments."
@@ -54,7 +54,7 @@
   If omitted by user, the default db and collection will be used.
 
   Also optional as argument is another map containing further options:
-  {createCollection: true/false, waitForSync: true/false}
+  {'createCollection' true/false, 'waitForSync' true/false} (replace the single quotes with double quotes)
   - createCollection meaning if the collection should be created if it does not exist yet;
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   This map might be passed in an arbitrary position after the first argument."
@@ -73,7 +73,7 @@
   If omitted by user, the default db and collection will be used.
 
   Also optional as argument is another map containing further options:
-  {waitForSync: true/false, rev: 'revision_id', policy: 'desired_behaviour'}
+  {'waitForSync' true/false, 'rev' revision_id, 'policy' desired_behaviour} (replace the single quotes with double quotes)
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   - rev is the document revision
   - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
@@ -91,7 +91,7 @@
   If omitted by user, the default db and collection will be used.
 
   Also optional as argument is another map containing further options:
-  {waitForSync: true/false, keepNull: true/false, rev: 'revision_id', policy: 'desired_behaviour'}
+  {'waitForSync' true/false, 'keepNull' true/false, 'rev' revision_id, 'policy' desired_behaviour} (replace the single quotes with double quotes)
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   - keepNull meaning if the key/value pair should be deleted in the document 
     if the argument map contains it with a null as value;
@@ -110,7 +110,7 @@
   If omitted by user, the default db and collection will be used.
 
   Also optional as argument is another map containing further options:
-  {waitForSync: true/false, rev: 'revision_id', policy: 'desired_behaviour'}
+  {'waitForSync' true/false, 'rev' revision_id, 'policy' desired_behaviour} (replace the single quotes with double quotes)
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   - rev is the document revision
   - policy meanins the desired behaviour in case the given revision number does not match the latest document revision
