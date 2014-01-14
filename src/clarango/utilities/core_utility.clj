@@ -34,15 +34,6 @@
       (if (nil? collection-name) (throw (Exception. "No default collection set.")) collection-name)) 
         (throw (Exception. "No connection set."))))
 
-(defn connect-url-parts
-  "Builds a string out of different parts. Adds a '/' at the end of each string part if not present."
-  [& parts]
-    (reduce 
-      (fn [base-string add-string]
-        (let [url-string (str base-string (clojure.string/trim add-string))] 
-          (if (.endsWith add-string "/") url-string (str url-string "/"))))
-            "" parts))
-
 (defn remove-map
   "Takes a vector and returns it without the elements that are of type map."
   [vect]
