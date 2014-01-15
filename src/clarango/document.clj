@@ -18,7 +18,7 @@
   - rev is the document revision; if the current document revision_id does not match the given one, an error is thrown
   The option map might be passed in an arbitrary position after the first two arguments."
   [& args]
-  (http/get-uri (apply uri-utility/build-uri "document" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
+  (http/get-uri (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn get-by-example
   "Gets a document or a number of documents out of a collection by giving an example to match.
@@ -34,7 +34,7 @@
   - limit meaning the maximum amount of documents to return
   The option map might be passed in an arbitrary position after the first two arguments."
   [example & args]
-  (http/put-uri (apply uri-utility/build-uri "document" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
+  (http/put-uri (apply uri-utility/build-ressource-uri "simple" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn get-first-by-example
   "Gets the first document out of a collection that matches an example.
@@ -61,7 +61,7 @@
     -> 'last' meaning the document is still returned even if the given revision_id does not match the revision_id in the document
   The option map might be passed in an arbitrary position after the first two arguments."
   [& args]
-  (http/head-uri (apply uri-utility/build-uri "document" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
+  (http/head-uri (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn create
   "Creates a document. 
@@ -79,7 +79,7 @@
   [document & args]
   ;; what about the document key if the user desires to specify it by himself? 
   ;; Should he just pass it in the json document? or allow it as optional argument?
-  (http/post-uri (apply uri-utility/build-document-base-url (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
+  (http/post-uri (apply uri-utility/build-endpoint-uri "document" (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
 
 (defn replace-by-key
   "Replaces a document with a map representing the new document.
@@ -99,7 +99,7 @@
     -> 'last' meaning the document is still replaced even if the given revision_id does not match the revision_id in the document
   The option map might be passed in an arbitrary position after the first two arguments."
   [document & args]
-  (http/put-uri (apply uri-utility/build-uri "document" (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
+  (http/put-uri (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
 
 (defn replace-by-example
   "Replaces a document or a number of documents out of a collection by giving an example to match.
@@ -130,7 +130,7 @@
     -> 'last' meaning the document is still updated even if the given revision_id does not match the revision_id in the document
   The option map might be passed in an arbitrary position after the first two arguments."
   [document & args]
-  (http/patch-uri (apply uri-utility/build-uri "document" (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
+  (http/patch-uri (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
 
 (defn update-by-example
   "Updates a document or a number of documents out of a collection by giving an example to match.
@@ -158,7 +158,7 @@
     -> 'last' meaning the document is still deleted even if the given revision_id does not match the revision_id in the document
   The option map might be passed in an arbitrary position after the first argument."
   [& args]
-  (http/delete-uri (apply uri-utility/build-uri "document" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
+  (http/delete-uri (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn delete-by-example
   "Deletes a document or a number of documents out of a collection by giving an example to match.

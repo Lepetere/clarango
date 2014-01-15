@@ -13,7 +13,7 @@
           (if (.endsWith add-string "/") url-string (str url-string "/"))))
             "" parts))
 
-(defn build-uri
+(defn build-ressource-uri
   "Build a URI to access a ressource in ArangoDB. Uses the defaults set in the clarango-connection 
   for the parts of the URI that are not specified by arguments.
 
@@ -26,12 +26,12 @@
   ([type ressource-key collection-name db-name]
   	(connect-url-parts (get-safe-connection-url) "_db/" db-name "_api/" type collection-name ressource-key)))
 
-(defn build-document-base-url
-  "Builds the base url for the document endpoint including a collection name as parameter. Can be used to post documents.
+(defn build-endpoint-uri
+  "Builds the base url for an endpoint including a collection name as parameter. Can be used to post documents.
   Uses the defaults set in the clarango-connection for the parts of the URL that are not specified by arguments."
-  ([]
-  	(str (connect-url-parts (get-safe-connection-url) "_db/" (get-default-db)) "_api/document?collection=" (get-default-collection-name)))
-  ([collection-name]
-  	(str (connect-url-parts (get-safe-connection-url) "_db/" (get-default-db)) "_api/document?collection=" collection-name))
-  ([collection-name db-name]
-  	(str (connect-url-parts (get-safe-connection-url) "_db/" db-name) "_api/document?collection=" collection-name)))
+  ([type]
+  	(str (connect-url-parts (get-safe-connection-url) "_db/" (get-default-db)) "_api/" type "?collection=" (get-default-collection-name)))
+  ([type collection-name]
+  	(str (connect-url-parts (get-safe-connection-url) "_db/" (get-default-db)) "_api/" type "?collection=" collection-name))
+  ([type collection-name db-name]
+  	(str (connect-url-parts (get-safe-connection-url) "_db/" db-name) "_api/" type "?collection=" collection-name)))
