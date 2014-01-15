@@ -57,8 +57,8 @@
               (println "test 6: patch document")
               (let [result (document/update-by-key document-update new-key "persons" "_system")]
               (pprint result)))
-            (let [result (document/get-by-key new-key "persons" "_system")]
-              (println "test 7: get current document state")
+            (let [result (document/get-first-by-example {:name "noch besserer Name"} "persons" "_system")]
+              (println "test 7: get current document state by example")
               (pprint result))
             (println "test 8: delete document")
             (let [result (document/delete-by-key new-key {"rev" "100000" "policy" "last"} "persons" "_system")]

@@ -9,9 +9,10 @@
   [& parts]
     (reduce 
       (fn [base-string add-string]
-        (let [url-string (str base-string (clojure.string/trim add-string))] 
-          (if (.endsWith add-string "/") url-string (str url-string "/"))))
-            "" parts))
+        (if (nil? add-string) base-string 
+          (let [url-string (str base-string (clojure.string/trim add-string))] 
+            (if (.endsWith add-string "/") url-string (str url-string "/")))))
+    "" parts))
 
 (defn build-ressource-uri
   "Build a URI to access a ressource in ArangoDB. Uses the defaults set in the clarango-connection 
