@@ -1,5 +1,8 @@
 (ns clarango.collection
-  (:require [clarango.core :as clarango.core]))
+  (:require [clarango.core :as clarango.core]
+            [clarango.utilities.core-utility :as core-utility]
+            [clarango.utilities.uri-utility :as uri-utility]
+            [clarango.utilities.http-utility :as http]))
 
 (defn get-all-documents ; in the ArangoDB REST API this method is part of the Document API, but is this here not a better place?
   "Returns all documents of a collection.
@@ -15,7 +18,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  nil)
+  (http/get-uri (apply uri-utility/build-ressource-uri "collection" nil (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn get-extended-info
   "Returns extended information about a collection. Forces a load of the collection.
@@ -23,7 +26,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  nil)
+  (http/get-uri (apply uri-utility/build-ressource-uri "collection" "properties" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn get-extended-info-count
   "Returns extended information about a collection including the number of documents in the collection.
@@ -32,7 +35,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  nil)
+  (http/get-uri (apply uri-utility/build-ressource-uri "collection" "count" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn get-extended-info-figures
   "Returns extended information about a collection including detailed information about the documents in the collection.
@@ -41,7 +44,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  nil)
+  (http/get-uri (apply uri-utility/build-ressource-uri "collection" "figures" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn create
   "Creates a new collection.

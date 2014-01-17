@@ -24,13 +24,15 @@
         result (clarango.document/get-by-key key "persons" "_system")]
           (pprint result))
   (let [key "42025383"]
-    (println "test 2: get key " + key)
+    (println "test 2: get collection info and key " + key)
     (clarango.core/set-connection! 
       {
         :connection-url "http://localhost:8529/"
         :db-name "_system"
         :collection-name "persons"
       })
+    (let [result (clarango.collection/get-extended-info-figures)]
+          (pprint result))
     (let [result (clarango.document/get-by-key key)]
           (pprint result)))
   (let [key "42484135"]
