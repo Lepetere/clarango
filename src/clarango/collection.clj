@@ -97,11 +97,12 @@
   Optionally you can pass a collection name, a database name and a map with options as arguments.
   Possible options in the options map are:
   {'count' true/false}
-  - count meaning
+  - count meaning if the return value should contain the number of documents in the collection
+    -> the default is true, but setting it to false may speed up the request
 
   The option map might be passed in an arbitrary position between the other arguments."
   [& args]
-  nil)
+  (http/put-uri (apply uri-utility/build-ressource-uri "collection" "load" (core-utility/remove-map args)) (core-utility/filter-out-map args) nil))
 
 (defn unload
   "Removes a collection from the memory. On success a map containing collection properties is returned.
@@ -109,7 +110,7 @@
   Can be called without arguments. In that case the default collection from the default database will be truncated.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  nil)
+  (http/get-uri (apply uri-utility/build-ressource-uri "collection" "unload" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn modify-properties ;; or update-properties?
   "Modifies  the properties of a collection.
@@ -119,10 +120,11 @@
   If omitted by user, the default db and collection will be used.
 
   Possible options in the options map are:
-  {'count' true/false}
-  - count meaning"
+  {'waitForSync' true/false 'journalSize' size}
+  - waitForSync meaning if the server response should wait until the document is saved to disk
+  - journalSize is the size (in bytes) for new journal files that are created for the collection"
   [properties & args]
-  nil)
+  (http/put-uri (apply uri-utility/build-ressource-uri "collection" "properties" (core-utility/remove-map args)) (core-utility/filter-out-map args) nil))
 
 ;; Hides clojure.set/rename -> Find a different name?
 (defn rename

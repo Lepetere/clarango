@@ -31,9 +31,13 @@
         :db-name "_system"
         :collection-name "persons"
       })
+    (let [result (clarango.collection/load {"count" false})]
+          (pprint result))
     (let [result (clarango.collection/get-extended-info-figures)]
           (pprint result))
     (let [result (clarango.document/get-by-key key)]
+          (pprint result))
+    (let [result (clarango.collection/unload)]
           (pprint result)))
   (let [key "42484135"]
     (println "test 3: get and head key " + key)
