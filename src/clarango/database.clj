@@ -1,5 +1,8 @@
 (ns clarango.database
   (:require [clarango.core :as clarango.core]
+            [clarango.utilities.core-utility :as core-utility]
+            [clarango.utilities.uri-utility :as uri-utility]
+            [clarango.utilities.http-utility :as http]
             [clarango.utilities.database-utility :as database-utility]))
 
 (defn get-collection-info-list ; in the ArangoDB REST API this method is part of the Collection API, but is this here not a better place?
@@ -13,11 +16,6 @@
   [& args]
   nil)
 
-(defn get-current-info
-  "Returns information about the current database."
-  [] ; no arguments!
-  nil)
-
 (defn create
   "Creates a database."
   [database-name]
@@ -28,12 +26,17 @@
   [database-name]
   nil)
 
-(defn get-database-list
-  "Returns a list of all existing databases."
-  [] ; takes no arguments because the _system database has to be used for this request anyway
-  nil)
+(defn get-info-current
+  "Returns information about the current database."
+  []
+  (http/get-uri (uri-utility/build-ressource-uri "database" "current" nil "_system") nil))
 
-(defn get-user-database-list
+(defn get-info-list
+  "Returns a list of all existing databases."
+  []
+  (http/get-uri (uri-utility/build-ressource-uri "database" nil nil "_system") nil))
+
+(defn get-info-user
   "Returns a list of all databases the current user can access."
   []
-  nil)
+  (http/get-uri (uri-utility/build-ressource-uri "database" "user" nil "_system") nil))
