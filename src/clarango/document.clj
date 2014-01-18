@@ -34,7 +34,7 @@
   - limit meaning the maximum amount of documents to return
   The option map might be passed in an arbitrary position after the first two arguments."
   [example & args]
-  (http/put-uri (uri-utility/build-ressource-uri "simple/by-example" nil nil) (merge {:example example :collection "persons"} (core-utility/filter-out-map args)) nil))
+  (http/put-uri (uri-utility/build-ressource-uri "simple/by-example" nil nil) (merge {:example example :collection "persons"} (core-utility/filter-out-map args))))
 
 (defn get-first-by-example
   "Gets the first document out of a collection that matches an example.
@@ -44,7 +44,7 @@
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used."
   [example & args]
-  (http/put-uri (uri-utility/build-ressource-uri "simple/first-example" nil nil) (merge {:example example :collection "persons"} (core-utility/filter-out-map args)) nil))
+  (http/put-uri (uri-utility/build-ressource-uri "simple/first-example" nil nil) (merge {:example example :collection "persons"} (core-utility/filter-out-map args))))
 
 (defn get-info
   "Gets information about a document by its key.

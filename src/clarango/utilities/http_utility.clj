@@ -53,7 +53,7 @@
     :patch "PATCH"
     :delete "DELETE"))
 
-(defn send-request [method uri body params]
+(defn- send-request [method uri body params]
   (if (console-output-activated?) (println (get-uppercase-string-for-http-method method) " connection address: " uri))
   (try (let [ map-with-body (if (nil? body) {} {:body (generate-string body)})
               response (http/request (merge {:method method :url uri :debug (debugging-activated?) :query-params params} map-with-body))]
@@ -62,20 +62,38 @@
           (parse-string (:body response))))
         (catch Exception e (handle-error e))))
 
-(defn get-uri [uri params]
-  (send-request :get uri nil params))
+(defn get-uri 
+  ([uri]
+  (send-request :get uri nil nil))
+  ([uri params]
+  (send-request :get uri nil params)))
 
-(defn head-uri [uri params]
-  (send-request :head uri nil params))
+(defn head-uri 
+  ([uri]
+  (send-request :head uri nil nil))
+  ([uri params]
+  (send-request :head uri nil params)))
 
-(defn delete-uri [uri params]
-  (send-request :delete uri nil params))
+(defn delete-uri 
+  ([uri]
+  (send-request :delete uri nil nil))
+  ([uri params]
+  (send-request :delete uri nil params)))
 
-(defn post-uri [uri body params]
-  (send-request :post uri body params))
+(defn post-uri 
+  ([uri body]
+  (send-request :post uri body nil))
+  ([uri body params]
+  (send-request :post uri body params)))
 
-(defn put-uri [uri body params]
-  (send-request :put uri body params))
+(defn put-uri 
+  ([uri body]
+  (send-request :put uri body nil))
+  ([uri body params]
+  (send-request :put uri body params)))
 
-(defn patch-uri [uri body params]
-  (send-request :patch uri body params))
+(defn patch-uri 
+  ([uri body]
+  (send-request :patch uri body nil))
+  ([uri body params]
+  (send-request :patch uri body params)))
