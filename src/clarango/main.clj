@@ -64,7 +64,7 @@
               (println "test 7: get current document state by example")
               (pprint result))
             (println "test 8: delete document")
-            (let [result (document/delete-by-key new-key {"rev" "100000" "policy" "last"} "persons" "_system")]
+            (let [result (document/delete-by-key new-key {"policy" "last"} "persons" "_system")]
               (pprint result))))
 
   ;;; test collection methods

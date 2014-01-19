@@ -6,6 +6,15 @@
 		        [cheshire.core :refer :all])
   (:use clojure.pprint))
 
+;;; debug switches:
+(defn debugging-activated? []
+  "Switch that activates the verbose output of clj-http."
+  false)
+
+(defn console-output-activated? []
+  "Switch that activates outputting the http method and url used for each http request."
+  true)
+
 (defn- build-server-exception-string
   [error]
   (str "Clarango: There was an error trying to access a resource: " 
@@ -33,15 +42,7 @@
   (throw error))
 ;; TO DO: later create custom exceptions for Clarango?
 
-(defn debugging-activated? []
-  "Switch that activates the verbose output of clj-http."
-  false)
-
-(defn console-output-activated? []
-  "Switch that activates outputting the http method and url used for each http request."
-  true)
-
-(defn get-uppercase-string-for-http-method
+(defn- get-uppercase-string-for-http-method
   "Returns a string of uppercase letters with the name of the matching http method.
   Pass it a method name as symbol, e.g. :post"
   [method]
@@ -53,47 +54,60 @@
     :patch "PATCH"
     :delete "DELETE"))
 
-(defn- send-request [method uri body params]
+(defn- incremental-keyword-lookup
+  [map keyword-vec]
+  (loop [new-map map keywords keyword-vec]
+    (if (empty? keywords) new-map (recur ((first keywords) new-map) (rest keywords)))))
+
+(defn- filter-response
+  "Filters a HTTP response with given instruction. Also applies cheshires parse-string method where possible.
+
+  Pass the response JSON as first argument.
+  The second argument has to be a map with of the form:
+  {:parse-string true/false :keywords [:keyword1 :keyword2...]}"
+  [response filter-instructions]
+  (let [filtered-response (incremental-keyword-lookup response (:keywords filter-instructions))]
+    (if (:parse-string filter-instructions) (parse-string filtered-response) filtered-response)))
+
+(defn- send-request [method response-filter uri body params]
   (if (console-output-activated?) (println (get-uppercase-string-for-http-method method) " connection address: " uri))
   (try (let [ map-with-body (if (nil? body) {} {:body (generate-string body)})
               response (http/request (merge {:method method :url uri :debug (debugging-activated?) :query-params params} map-with-body))]
-        (if (= method :head) 
-          (:headers response)
-          (parse-string (:body response))))
+            (filter-response response response-filter))
         (catch Exception e (handle-error e))))
 
 (defn get-uri 
-  ([uri]
-  (send-request :get uri nil nil))
-  ([uri params]
-  (send-request :get uri nil params)))
+  ([response-filter uri]
+  (send-request :get response-filter uri nil nil))
+  ([response-filter uri params]
+  (send-request :get response-filter uri nil params)))
 
 (defn head-uri 
-  ([uri]
-  (send-request :head uri nil nil))
-  ([uri params]
-  (send-request :head uri nil params)))
+  ([response-filter uri]
+  (send-request :head response-filter uri nil nil))
+  ([response-filter uri params]
+  (send-request :head response-filter uri nil params)))
 
 (defn delete-uri 
-  ([uri]
-  (send-request :delete uri nil nil))
-  ([uri params]
-  (send-request :delete uri nil params)))
+  ([response-filter uri]
+  (send-request :delete response-filter uri nil nil))
+  ([response-filter uri params]
+  (send-request :delete response-filter uri nil params)))
 
 (defn post-uri 
-  ([uri body]
-  (send-request :post uri body nil))
-  ([uri body params]
-  (send-request :post uri body params)))
+  ([response-filter uri body]
+  (send-request :post response-filter uri body nil))
+  ([response-filter uri body params]
+  (send-request :post response-filter uri body params)))
 
 (defn put-uri 
-  ([uri body]
-  (send-request :put uri body nil))
-  ([uri body params]
-  (send-request :put uri body params)))
+  ([response-filter uri body]
+  (send-request :put response-filter uri body nil))
+  ([response-filter uri body params]
+  (send-request :put response-filter uri body params)))
 
 (defn patch-uri 
-  ([uri body]
-  (send-request :patch uri body nil))
-  ([uri body params]
-  (send-request :patch uri body params)))
+  ([response-filter uri body]
+  (send-request :patch response-filter uri body nil))
+  ([response-filter uri body params]
+  (send-request :patch response-filter uri body params)))

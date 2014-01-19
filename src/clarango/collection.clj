@@ -18,7 +18,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri (apply uri-utility/build-ressource-uri "collection" nil (core-utility/remove-map args)) (core-utility/filter-out-map args)))
+  (http/get-uri {:parse-string true :keywords [:body]} (apply uri-utility/build-ressource-uri "collection" nil (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn get-extended-info
   "Returns extended information about a collection. Forces a load of the collection.
@@ -26,7 +26,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri (apply uri-utility/build-ressource-uri "collection" "properties" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
+  (http/get-uri {:parse-string true :keywords [:body]} (apply uri-utility/build-ressource-uri "collection" "properties" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn get-extended-info-count
   "Returns extended information about a collection including the number of documents in the collection.
@@ -35,7 +35,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri (apply uri-utility/build-ressource-uri "collection" "count" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
+  (http/get-uri {:parse-string true :keywords [:body]} (apply uri-utility/build-ressource-uri "collection" "count" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn get-extended-info-figures
   "Returns extended information about a collection including detailed information about the documents in the collection.
@@ -44,7 +44,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri (apply uri-utility/build-ressource-uri "collection" "figures" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
+  (http/get-uri {:parse-string true :keywords [:body]} (apply uri-utility/build-ressource-uri "collection" "figures" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn create
   "Creates a new collection.
@@ -102,7 +102,7 @@
 
   The option map might be passed in an arbitrary position between the other arguments."
   [& args]
-  (http/put-uri (apply uri-utility/build-ressource-uri "collection" "load" (core-utility/remove-map args)) (core-utility/filter-out-map args) nil))
+  (http/put-uri {:parse-string true :keywords [:body]} (apply uri-utility/build-ressource-uri "collection" "load" (core-utility/remove-map args)) (core-utility/filter-out-map args) nil))
 
 (defn unload
   "Removes a collection from the memory. On success a map containing collection properties is returned.
@@ -110,7 +110,7 @@
   Can be called without arguments. In that case the default collection from the default database will be truncated.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri (apply uri-utility/build-ressource-uri "collection" "unload" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
+  (http/get-uri {:parse-string true :keywords [:body]} (apply uri-utility/build-ressource-uri "collection" "unload" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn modify-properties ;; or update-properties?
   "Modifies  the properties of a collection.
@@ -124,7 +124,7 @@
   - waitForSync meaning if the server response should wait until the document is saved to disk
   - journalSize is the size (in bytes) for new journal files that are created for the collection"
   [properties & args]
-  (http/put-uri (apply uri-utility/build-ressource-uri "collection" "properties" (core-utility/remove-map args)) (core-utility/filter-out-map args) nil))
+  (http/put-uri {:parse-string true :keywords [:body]} (apply uri-utility/build-ressource-uri "collection" "properties" (core-utility/remove-map args)) (core-utility/filter-out-map args) nil))
 
 ;; Hides clojure.set/rename -> Find a different name?
 (defn rename

@@ -18,9 +18,9 @@
   - rev is the document revision; if the current document revision_id does not match the given one, an error is thrown
   The option map might be passed in an arbitrary position after the first two arguments."
   [& args]
-  (http/get-uri (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
+  (http/get-uri {:parse-string true :keywords [:body]} (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
-(defn filter-out-collection-name-from-args
+(defn- filter-out-collection-name-from-args
   [args]
   (let [args-without-map (core-utility/remove-map args)]
     (case (count args-without-map)
@@ -42,7 +42,7 @@
   - limit meaning the maximum amount of documents to return
   The option map might be passed in an arbitrary position after the first two arguments."
   [example & args]
-  (http/put-uri (uri-utility/build-ressource-uri "simple/by-example" nil nil) {:example example :collection (filter-out-collection-name-from-args args)} (core-utility/filter-out-map args)))
+  (http/put-uri {:parse-string true :keywords [:body]} (uri-utility/build-ressource-uri "simple/by-example" nil nil) {:example example :collection (filter-out-collection-name-from-args args)} (core-utility/filter-out-map args)))
 
 (defn get-first-by-example
   "Gets the first document out of a collection that matches an example.
@@ -52,7 +52,7 @@
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used."
   [example & args]
-  (http/put-uri (uri-utility/build-ressource-uri "simple/first-example" nil nil) {:example example :collection (filter-out-collection-name-from-args args)} (core-utility/filter-out-map args)))
+  (http/put-uri {:parse-string true :keywords [:body :document]} (uri-utility/build-ressource-uri "simple/first-example" nil nil) {:example example :collection (filter-out-collection-name-from-args args)} (core-utility/filter-out-map args)))
 
 (defn get-info
   "Gets information about a document by its key.
@@ -70,7 +70,7 @@
     -> 'last' meaning the document is still returned even if the given revision_id does not match the revision_id in the document
   The option map might be passed in an arbitrary position after the first two arguments."
   [& args]
-  (http/head-uri (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
+  (http/head-uri {:parse-string false :keywords [:headers]} (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn create
   "Creates a document. 
@@ -88,7 +88,7 @@
   [document & args]
   ;; what about the document key if the user desires to specify it by himself? 
   ;; Should he just pass it in the json document? or allow it as optional argument?
-  (http/post-uri (apply uri-utility/build-ressource-uri "document/?collection=" nil (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
+  (http/post-uri {:parse-string true :keywords [:body]} (apply uri-utility/build-ressource-uri "document/?collection=" nil (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
 
 (defn replace-by-key
   "Replaces a document with a map representing the new document.
@@ -108,7 +108,7 @@
     -> 'last' meaning the document is still replaced even if the given revision_id does not match the revision_id in the document
   The option map might be passed in an arbitrary position after the first two arguments."
   [document & args]
-  (http/put-uri (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
+  (http/put-uri {:parse-string true :keywords [:body]} (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
 
 (defn replace-by-example
   "Replaces a document or a number of documents out of a collection by giving an example to match.
@@ -139,7 +139,7 @@
     -> 'last' meaning the document is still updated even if the given revision_id does not match the revision_id in the document
   The option map might be passed in an arbitrary position after the first two arguments."
   [document & args]
-  (http/patch-uri (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
+  (http/patch-uri {:parse-string true :keywords [:body]} (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
 
 (defn update-by-example
   "Updates a document or a number of documents out of a collection by giving an example to match.
@@ -167,7 +167,7 @@
     -> 'last' meaning the document is still deleted even if the given revision_id does not match the revision_id in the document
   The option map might be passed in an arbitrary position after the first argument."
   [& args]
-  (http/delete-uri (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
+  (http/delete-uri {:parse-string true :keywords [:body]} (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn delete-by-example
   "Deletes a document or a number of documents out of a collection by giving an example to match.
