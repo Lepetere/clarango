@@ -80,7 +80,7 @@
   [document & args]
   ;; what about the document key if the user desires to specify it by himself? 
   ;; Should he just pass it in the json document? or allow it as optional argument?
-  (http/post-uri (apply uri-utility/build-endpoint-uri "document" (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
+  (http/post-uri (apply uri-utility/build-ressource-uri "document/?collection=" nil (core-utility/remove-map args)) document (core-utility/filter-out-map args)))
 
 (defn replace-by-key
   "Replaces a document with a map representing the new document.
