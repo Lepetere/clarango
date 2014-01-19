@@ -20,6 +20,14 @@
   [& args]
   (http/get-uri (apply uri-utility/build-ressource-uri "document" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
+(defn filter-out-collection-name-from-args
+  [args]
+  (let [args-without-map (core-utility/remove-map args)]
+    (case (count args-without-map)
+      0 (core-utility/get-default-collection-name)
+      1 (nth args-without-map 0)
+      2 (nth args-without-map 0))))
+
 (defn get-by-example
   "Gets a document or a number of documents out of a collection by giving an example to match.
 
@@ -34,7 +42,7 @@
   - limit meaning the maximum amount of documents to return
   The option map might be passed in an arbitrary position after the first two arguments."
   [example & args]
-  (http/put-uri (uri-utility/build-ressource-uri "simple/by-example" nil nil) (merge {:example example :collection "persons"} (core-utility/filter-out-map args))))
+  (http/put-uri (uri-utility/build-ressource-uri "simple/by-example" nil nil) {:example example :collection (filter-out-collection-name-from-args args)} (core-utility/filter-out-map args)))
 
 (defn get-first-by-example
   "Gets the first document out of a collection that matches an example.
@@ -44,7 +52,7 @@
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used."
   [example & args]
-  (http/put-uri (uri-utility/build-ressource-uri "simple/first-example" nil nil) (merge {:example example :collection "persons"} (core-utility/filter-out-map args))))
+  (http/put-uri (uri-utility/build-ressource-uri "simple/first-example" nil nil) {:example example :collection (filter-out-collection-name-from-args args)} (core-utility/filter-out-map args)))
 
 (defn get-info
   "Gets information about a document by its key.
