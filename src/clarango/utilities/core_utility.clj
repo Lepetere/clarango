@@ -43,3 +43,11 @@
   "Returns the first element in a vector that is of type map."
   [vect]
   (first (filter #(= (type %) clojure.lang.PersistentArrayMap) vect)))
+
+(defn filter-out-collection-name-from-args
+  [args]
+  (let [args-without-map (remove-map args)]
+    (case (count args-without-map)
+      0 (get-default-collection-name)
+      1 (nth args-without-map 0)
+      2 (nth args-without-map 0))))
