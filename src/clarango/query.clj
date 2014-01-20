@@ -1,7 +1,6 @@
 (ns clarango.aql
   (:require [clarango.core :as clarango.core]
-  			[clarango.utilities.core-utility :as core-utility]
-  			[clarango.utilities.aql-utility :as aql-utility]))
+  			[clarango.utilities.core-utility :as core-utility]))
 
 (defn explain
   "Validates a query and returns an execution plan for it."

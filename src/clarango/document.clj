@@ -1,6 +1,5 @@
 (ns clarango.document
   (:require [clarango.core :as clarango.core]
-            [clarango.utilities.document-utility :as document-utility]
             [clarango.utilities.http-utility :as http])
   (:use [clarango.utilities.core-utility :only [remove-map filter-out-map filter-out-collection-name-from-args]]
         [clarango.utilities.uri-utility :only [build-ressource-uri]]))

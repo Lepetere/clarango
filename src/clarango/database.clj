@@ -2,8 +2,7 @@
   (:require [clarango.core :as clarango.core]
             [clarango.utilities.core-utility :as core-utility]
             [clarango.utilities.uri-utility :as uri-utility]
-            [clarango.utilities.http-utility :as http]
-            [clarango.utilities.database-utility :as database-utility]))
+            [clarango.utilities.http-utility :as http]))
 
 (defn get-collection-info-list ; in the ArangoDB REST API this method is part of the Collection API, but is this here not a better place?
   "Returns information about all collections in a database in a list.

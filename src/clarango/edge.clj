@@ -1,7 +1,6 @@
 (ns clarango.edge
   (:require [clarango.core :as clarango.core]
             [clarango.utilities.core-utility :as core-utility]
-            [clarango.utilities.graph-utility :as graph-utility]
             [clarango.utilities.http-utility :as http]))
 
 (defn get-by-key
