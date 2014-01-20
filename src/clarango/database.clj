@@ -29,14 +29,14 @@
 (defn get-info-current
   "Returns information about the current database."
   []
-  (http/get-uri {:parse-string true :keywords [:body "result"]} (uri-utility/build-ressource-uri "database" "current" nil "_system")))
+  (http/get-uri [:body "result"] (uri-utility/build-ressource-uri "database" "current" nil "_system")))
 
 (defn get-info-list
   "Returns a list of all existing databases."
   []
-  (http/get-uri {:parse-string true :keywords [:body "result"]} (uri-utility/build-ressource-uri "database" nil nil "_system")))
+  (http/get-uri [:body "result"] (uri-utility/build-ressource-uri "database" nil nil "_system")))
 
 (defn get-info-user
   "Returns a list of all databases the current user can access."
   []
-  (http/get-uri {:parse-string true :keywords [:body "result"]} (uri-utility/build-ressource-uri "database" "user" nil "_system")))
+  (http/get-uri [:body "result"] (uri-utility/build-ressource-uri "database" "user" nil "_system")))

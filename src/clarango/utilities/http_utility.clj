@@ -59,7 +59,7 @@
   If an error occurs, the string is returned as it is."
   [string]
   (try (parse-string string)
-    (catch Exception e (do (println "parse error:   " string) string))))
+    (catch Exception e (do #_(println "parse error:   " string) string))))
 
 (defn- incremental-keyword-lookup
   "Takes a map and an array of keywords and performs a nested lookup, meaning one keyword after another is used."
@@ -73,49 +73,48 @@
   Pass the response JSON as first argument.
   The second argument has to be a map with of the form:
   {:parse-string true/false :keywords [:keyword1 :keyword2...]}"
-  [response filter-instructions]
-  #_(parse-if-possible ((first (:keywords filter-instructions)) response))
-  (incremental-keyword-lookup response (:keywords filter-instructions)))
+  [response filter-keys]
+  (incremental-keyword-lookup response filter-keys))
 
-(defn- send-request [method response-filter uri body params]
+(defn- send-request [method response-keys uri body params]
   (if (console-output-activated?) (println (get-uppercase-string-for-http-method method) " connection address: " uri))
   (try (let [ map-with-body (if (nil? body) {} {:body (generate-string body)})
               response (http/request (merge {:method method :url uri :debug (debugging-activated?) :query-params params} map-with-body))]
-            (filter-response response response-filter))
+            (filter-response response response-keys))
         (catch Exception e (handle-error e))))
 
 (defn get-uri 
-  ([response-filter uri]
-  (send-request :get response-filter uri nil nil))
-  ([response-filter uri params]
-  (send-request :get response-filter uri nil params)))
+  ([response-keys uri]
+  (send-request :get response-keys uri nil nil))
+  ([response-keys uri params]
+  (send-request :get response-keys uri nil params)))
 
 (defn head-uri 
-  ([response-filter uri]
-  (send-request :head response-filter uri nil nil))
-  ([response-filter uri params]
-  (send-request :head response-filter uri nil params)))
+  ([response-keys uri]
+  (send-request :head response-keys uri nil nil))
+  ([response-keys uri params]
+  (send-request :head response-keys uri nil params)))
 
 (defn delete-uri 
-  ([response-filter uri]
-  (send-request :delete response-filter uri nil nil))
-  ([response-filter uri params]
-  (send-request :delete response-filter uri nil params)))
+  ([response-keys uri]
+  (send-request :delete response-keys uri nil nil))
+  ([response-keys uri params]
+  (send-request :delete response-keys uri nil params)))
 
 (defn post-uri 
-  ([response-filter uri body]
-  (send-request :post response-filter uri body nil))
-  ([response-filter uri body params]
-  (send-request :post response-filter uri body params)))
+  ([response-keys uri body]
+  (send-request :post response-keys uri body nil))
+  ([response-keys uri body params]
+  (send-request :post response-keys uri body params)))
 
 (defn put-uri 
-  ([response-filter uri body]
-  (send-request :put response-filter uri body nil))
-  ([response-filter uri body params]
-  (send-request :put response-filter uri body params)))
+  ([response-keys uri body]
+  (send-request :put response-keys uri body nil))
+  ([response-keys uri body params]
+  (send-request :put response-keys uri body params)))
 
 (defn patch-uri 
-  ([response-filter uri body]
-  (send-request :patch response-filter uri body nil))
-  ([response-filter uri body params]
-  (send-request :patch response-filter uri body params)))
+  ([response-keys uri body]
+  (send-request :patch response-keys uri body nil))
+  ([response-keys uri body params]
+  (send-request :patch response-keys uri body params)))
