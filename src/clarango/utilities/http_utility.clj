@@ -7,8 +7,12 @@
   (:use clojure.pprint))
 
 ;;; debug switches:
-(defn debugging-activated? []
+(defn http-debugging-activated? []
   "Switch that activates the verbose output of clj-http."
+  false)
+
+(defn type-output-activated? []
+  "Switch that activates outputting the type of the response."
   false)
 
 (defn console-output-activated? []
@@ -79,8 +83,10 @@
 (defn- send-request [method response-keys uri body params]
   (if (console-output-activated?) (println (get-uppercase-string-for-http-method method) " connection address: " uri))
   (try (let [ map-with-body (if (nil? body) {} {:body (generate-string body)})
-              response (http/request (merge {:method method :url uri :debug (debugging-activated?) :query-params params} map-with-body))]
-            (filter-response response response-keys))
+              response (http/request (merge {:method method :url uri :debug (http-debugging-activated?) :query-params params} map-with-body))
+              filtered-response (filter-response response response-keys)]
+            (if (type-output-activated?) (println (type filtered-response)))
+            filtered-response)
         (catch Exception e (handle-error e))))
 
 (defn get-uri 
