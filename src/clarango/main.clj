@@ -44,8 +44,8 @@
     (let [result (document/get-info key "persons")]
             (pprint result)))
 
-  (println "\n\ntest document CRUD:\n")
-  ;;; test post/put/patch/delete
+  (println "\n\ntest document CRUD by key:\n")
+  ;;; test post/put/patch/delete by key
   (let [document {:name "toller Name" :city "wo kommt er her?"}]
     (println "test 4: post document")
     (let [result-doc (document/create document "persons" "_system")
@@ -65,6 +65,26 @@
               (pprint result))
             (println "test 8: delete document")
             (let [result (document/delete-by-key new-key {"policy" "last"} "persons" "_system")]
+              (pprint result))))
+
+  (println "\n\ntest document CRUD by example:\n")
+  ;;; test post/put/patch/delete by key
+  (let [document {:test1 "test1" :test2 "test2"}]
+    (let [result-doc (document/create document "persons" "_system")]
+            (pprint result-doc)
+            (let [document-new {:test3 "test3" :test4 "test4"}]
+              (println "replace document by example")
+              (let [result (document/replace-by-example document-new {:test1 "test1"} "persons" "_system" {"waitForSync" true})]
+              (pprint result)))
+            (let [document-update {:test5 "test5"}]
+              (println "update document by example")
+              (let [result (document/update-by-example document-update {:test3 "test3"} "persons" {"keepNull" false} "_system")]
+              (pprint result)))
+            (let [result (document/get-by-example {:test5 "test5"} {"limit" 1} "persons" "_system")]
+              (println "get current document state by example")
+              (pprint result))
+            (println "delete document by example")
+            (let [result (document/delete-by-example {:test3 "test3" :test4 "test4"} "persons" "_system" {"waitForSync" true, "limit" 1})]
               (pprint result))))
 
   ;;; test collection methods
