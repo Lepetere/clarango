@@ -44,7 +44,7 @@
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used."
   [example & args]
-  (http/put-uri {:parse-string true :keywords [:body :document]} (build-ressource-uri "simple/first-example" nil nil) {:example example :collection (filter-out-collection-name-from-args args)} (filter-out-map args)))
+  (http/put-uri {:parse-string true :keywords [:body "document"]} (build-ressource-uri "simple/first-example" nil nil) {:example example :collection (filter-out-collection-name-from-args args)} (filter-out-map args)))
 
 (defn get-info
   "Gets information about a document by its key.

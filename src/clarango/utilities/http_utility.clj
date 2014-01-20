@@ -54,10 +54,18 @@
     :patch "PATCH"
     :delete "DELETE"))
 
+(defn- parse-if-possible
+  "Parses a JSON string using the cheshire/parse-string function if possible. 
+  If an error occurs, the string is returned as it is."
+  [string]
+  (try (parse-string string)
+    (catch Exception e (do (println "parse error:   " string) string))))
+
 (defn- incremental-keyword-lookup
+  "Takes a map and an array of keywords and performs a nested lookup, meaning one keyword after another is used."
   [map keyword-vec]
   (loop [new-map map keywords keyword-vec]
-    (if (empty? keywords) new-map (recur ((first keywords) new-map) (rest keywords)))))
+    (if (empty? keywords) new-map (recur (parse-if-possible (get new-map (first keywords))) (rest keywords)))))
 
 (defn- filter-response
   "Filters a HTTP response with given instruction. Also applies cheshires parse-string method where possible.
@@ -66,8 +74,8 @@
   The second argument has to be a map with of the form:
   {:parse-string true/false :keywords [:keyword1 :keyword2...]}"
   [response filter-instructions]
-  (let [filtered-response (incremental-keyword-lookup response (:keywords filter-instructions))]
-    (if (:parse-string filter-instructions) (parse-string filtered-response) filtered-response)))
+  #_(parse-if-possible ((first (:keywords filter-instructions)) response))
+  (incremental-keyword-lookup response (:keywords filter-instructions)))
 
 (defn- send-request [method response-filter uri body params]
   (if (console-output-activated?) (println (get-uppercase-string-for-http-method method) " connection address: " uri))
