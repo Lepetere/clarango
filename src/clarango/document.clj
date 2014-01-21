@@ -32,7 +32,7 @@
   - skip meaning the (number of?) documents to skip in the result
   - limit meaning the maximum amount of documents to return
   The option map might be passed in an arbitrary position after the first two arguments."
-  [example & args]
+  [example & args] ; what happens here if there is a db explicitely passed to this method? Do we nee a filterout-db-name-from-args too?
   (http/put-uri [:body "result"] (build-ressource-uri "simple/by-example" nil nil) (merge {:example example :collection (filter-out-collection-name-from-args args)} (filter-out-map args))))
 
 (defn get-first-by-example
@@ -42,8 +42,8 @@
 
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used."
-  [example & args]
-  (http/put-uri [:body "document"] (build-ressource-uri "simple/first-example" nil nil) {:example example :collection (filter-out-collection-name-from-args args)} (filter-out-map args)))
+  [example & args]  ; what happens here if there is a db explicitely passed to this method? Do we nee a filterout-db-name-from-args too?
+  (http/put-uri [:body "document"] (build-ressource-uri "simple/first-example" nil nil) {:example example :collection (filter-out-collection-name-from-args args)}))
 
 (defn get-info
   "Gets information about a document by its key.
