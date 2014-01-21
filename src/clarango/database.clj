@@ -11,9 +11,9 @@
   Optionally you can pass a database and a map with options as arguments.
   Possible options in the options map are:
   {'excludeSystem' true/false}
-  - excludeSystem meaning"
+  - excludeSystem meaning whether or not the system collections should be excluded from the result."
   [& args]
-  nil)
+  (http/get-uri [:body] (apply build-ressource-uri "collection" nil nil (core-utility/remove-map args)) nil (core-utility/filter-out-map args)))
 
 (defn create
   "Creates a database."
