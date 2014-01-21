@@ -89,20 +89,17 @@
 
   ;;; test collection methods
   (println "\n\ntest collection methods:\n")
-  (clarango.core/set-connection! 
-    {
+  (clarango.core/set-connection! {
       :connection-url "http://localhost:8529/"
       :db-name "_system"
       :collection-name "persons"
     })
-  (let [result (clarango.collection/get-all-documents)]
-        (pprint result))
-  (let [result (clarango.collection/load {"count" false})]
-        (pprint result))
-  (let [result (clarango.collection/get-extended-info-figures)]
-        (pprint result))
-  (let [result (clarango.collection/unload)]
-        (pprint result))
+  (pprint (clarango.collection/get-all-documents "persons"))
+  (pprint (clarango.collection/create "test-collection" "_system"))
+  (pprint (clarango.collection/load {"count" false} "test-collection"))
+  (pprint (clarango.collection/get-extended-info-figures "test-collection"))
+  (pprint (clarango.collection/unload "test-collection"))
+  (pprint (clarango.collection/delete "test-collection" "_system"))
 
   ;;; test database methods
   (println "\n\ntest database methods:\n")
