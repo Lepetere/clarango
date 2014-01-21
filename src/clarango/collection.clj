@@ -80,14 +80,13 @@
   Can be called without arguments. In that case the default collection from the default database will be truncated.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  nil)
+  (http/put-uri [:body] (apply build-ressource-uri "collection" "truncate" args) nil))
 
 (defn delete
   "Deletes a collection.
 
   Takes the name of the collection to be deleted as first argument.
   Optionally you can pass a database name as second argument."
-  ;; although here it might be a good idea to always have to pass the collection name, just to make shure?
   [collection-name & args]
   (http/delete-uri [:body] (apply build-ressource-uri "collection" nil collection-name args) nil))
 
@@ -132,16 +131,20 @@
 (defn rename
   "Renames a collection. On success return a map with properties.
 
-  Expects the new collection name as first argument.
-  Takes optional a collection name and a db name as further arguments.
-  If omitted by user, the default collection in the default db will be renamed." ;; better to force user to pass the old name also here?
-  [new-name & args]
-  nil)
+  First argument: The new collection name
+  Second argument: The old collection name
 
-(defn rotate ; or rotate-journal?
-  "Rotates the journal of a collection.
+  Takes optional a db name as further argument.
+  If omitted by user, the default db will be used."
+  [new-name collection-name & args]
+  (http/put-uri [:body] (apply build-ressource-uri "collection" "rename" args) {:name new-name}))
+
+(defn rotate
+  "Rotates the journal of a collection. 
+  This means the current journal of the collection will be closed and all
+  data made read-only in order to compact it. New documents will be stored in a new journal.
 
   Can be called without arguments. In that case the default collection from the default database will be rotated.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  nil)
+  (http/put-uri [:body] (apply build-ressource-uri "collection" "rotate" args) nil))

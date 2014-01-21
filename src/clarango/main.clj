@@ -96,10 +96,15 @@
     })
   (pprint (clarango.collection/get-all-documents "persons"))
   (pprint (clarango.collection/create "test-collection" "_system"))
+  (pprint (clarango.document/create {:name "test"} "test-collection" "_system"))
   (pprint (clarango.collection/load {"count" false} "test-collection"))
   (pprint (clarango.collection/get-extended-info-figures "test-collection"))
   (pprint (clarango.collection/unload "test-collection"))
-  (pprint (clarango.collection/delete "test-collection" "_system"))
+  (pprint (clarango.collection/rotate "test-collection"))
+  (pprint (clarango.collection/truncate "test-collection"))
+  (pprint (clarango.collection/rename "test-collection-dos" "test-collection"))
+  (pprint (clarango.collection/get-extended-info-count "test-collection-dos"))
+  (pprint (clarango.collection/delete "test-collection-dos" "_system"))
 
   ;;; test database methods
   (println "\n\ntest database methods:\n")
