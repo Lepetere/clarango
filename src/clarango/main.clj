@@ -99,7 +99,7 @@
         (pprint result))
   (let [result (clarango.collection/get-extended-info-figures)]
         (pprint result))
-  #_(let [result (clarango.collection/unload)]
+  (let [result (clarango.collection/unload)]
         (pprint result))
 
   ;;; test database methods

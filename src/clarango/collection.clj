@@ -110,7 +110,7 @@
   Can be called without arguments. In that case the default collection from the default database will be truncated.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri [:body] (apply uri-utility/build-ressource-uri "collection" "unload" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
+  (http/put-uri [:body] (apply uri-utility/build-ressource-uri "collection" "unload" (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn modify-properties ;; or update-properties?
   "Modifies  the properties of a collection.
