@@ -95,6 +95,8 @@
       :db-name "_system"
       :collection-name "persons"
     })
+  (let [result (clarango.collection/get-all-documents)]
+        (pprint result))
   (let [result (clarango.collection/load {"count" false})]
         (pprint result))
   (let [result (clarango.collection/get-extended-info-figures)]

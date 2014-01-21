@@ -5,12 +5,12 @@
             [clarango.utilities.http-utility :as http]))
 
 (defn get-all-documents ; in the ArangoDB REST API this method is part of the Document API, but is this here not a better place?
-  "Returns all documents of a collection.
+  "Returns a list with the URIs of all documents in the collection.
 
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  nil)
+  (http/get-uri [:body "documents"] (apply uri-utility/build-ressource-uri "document/?collection=" nil (core-utility/remove-map args)) nil))
 
 (defn get-info
   "Returns information about a collection.
