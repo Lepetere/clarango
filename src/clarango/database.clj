@@ -13,17 +13,28 @@
   {'excludeSystem' true/false}
   - excludeSystem meaning whether or not the system collections should be excluded from the result."
   [& args]
-  (http/get-uri [:body] (apply build-ressource-uri "collection" nil nil (core-utility/remove-map args)) nil (core-utility/filter-out-map args)))
+  (http/get-uri [:body] (apply uri-utility/build-ressource-uri "collection" nil nil (core-utility/remove-map args)) nil (core-utility/filter-out-map args)))
 
 (defn create
-  "Creates a database."
-  [database-name]
-  nil)
+  "Creates a new database.
+
+  First argument: the name of the new database
+  Seconde argument: an array specifying users to initially create for the new database; 
+    can be empty; in this case a default user 'root' with an empty password will be created;
+    if not empty, it must contain user objects which may contain the following options:
+      - username: the user name as a string
+      - passwd: the user password as a string; if omitted, an empty password will be set
+      - active: boolean flag indicating whether the user accout should be actived or not; default is true;
+      - extra: an optional map of user information that will be saved, but not interpreted by ArangoDB"
+  [database-name users]
+  (http/post-uri [:body] (uri-utility/build-ressource-uri "database" nil nil "_system") {:name database-name :users users}))
 
 (defn delete
-  "Deletes a database."
+  "Deletes a database.
+
+  Expects the database name of the database to be dropped as argument."
   [database-name]
-  nil)
+  (http/delete-uri [:body] (uri-utility/build-ressource-uri "database" database-name nil "_system")))
 
 (defn get-info-current
   "Returns information about the current database."
