@@ -137,7 +137,7 @@
   Takes optional a db name as further argument.
   If omitted by user, the default db will be used."
   [new-name collection-name & args]
-  (http/put-uri [:body] (apply build-ressource-uri "collection" "rename" args) {:name new-name}))
+  (http/put-uri [:body] (apply build-ressource-uri "collection" "rename" collection-name args) {:name new-name}))
 
 (defn rotate
   "Rotates the journal of a collection. 
