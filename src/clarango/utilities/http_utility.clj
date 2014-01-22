@@ -108,18 +108,24 @@
   (send-request :delete response-keys uri nil params)))
 
 (defn post-uri 
+  ([response-keys uri]
+  (send-request :post response-keys uri nil nil))
   ([response-keys uri body]
   (send-request :post response-keys uri body nil))
   ([response-keys uri body params]
   (send-request :post response-keys uri body params)))
 
 (defn put-uri 
+  ([response-keys uri]
+  (send-request :put response-keys uri nil nil))
   ([response-keys uri body]
   (send-request :put response-keys uri body nil))
   ([response-keys uri body params]
   (send-request :put response-keys uri body params)))
 
 (defn patch-uri 
+  ([response-keys uri]
+  (send-request :patch response-keys uri nil nil))
   ([response-keys uri body]
   (send-request :patch response-keys uri body nil))
   ([response-keys uri body params]

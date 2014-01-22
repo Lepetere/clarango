@@ -10,7 +10,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri [:body "documents"] (apply build-ressource-uri "document/?collection=" nil (remove-map args)) nil))
+  (http/get-uri [:body "documents"] (apply build-ressource-uri "document/?collection=" nil (remove-map args))))
 
 (defn get-info
   "Returns information about a collection.
@@ -80,7 +80,7 @@
   Can be called without arguments. In that case the default collection from the default database will be truncated.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/put-uri [:body] (apply build-ressource-uri "collection" "truncate" args) nil))
+  (http/put-uri [:body] (apply build-ressource-uri "collection" "truncate" args)))
 
 (defn delete
   "Deletes a collection.
@@ -88,7 +88,7 @@
   Takes the name of the collection to be deleted as first argument.
   Optionally you can pass a database name as second argument."
   [collection-name & args]
-  (http/delete-uri [:body] (apply build-ressource-uri "collection" nil collection-name args) nil))
+  (http/delete-uri [:body] (apply build-ressource-uri "collection" nil collection-name args)))
 
 ;; Hides .../load -> Find a different name?
 (defn load
@@ -103,7 +103,7 @@
 
   The option map might be passed in an arbitrary position between the other arguments."
   [& args]
-  (http/put-uri [:body] (apply build-ressource-uri "collection" "load" (remove-map args)) (filter-out-map args) nil))
+  (http/put-uri [:body] (apply build-ressource-uri "collection" "load" (remove-map args)) (filter-out-map args)))
 
 (defn unload
   "Removes a collection from the memory. On success a map containing collection properties is returned.
@@ -125,7 +125,7 @@
   - waitForSync meaning if the server response should wait until the document is saved to disk
   - journalSize is the size (in bytes) for new journal files that are created for the collection"
   [properties & args]
-  (http/put-uri [:body] (apply build-ressource-uri "collection" "properties" (remove-map args)) (filter-out-map args) nil))
+  (http/put-uri [:body] (apply build-ressource-uri "collection" "properties" (remove-map args)) (filter-out-map args)))
 
 ;; Hides clojure.set/rename -> Find a different name?
 (defn rename
@@ -147,4 +147,4 @@
   Can be called without arguments. In that case the default collection from the default database will be rotated.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/put-uri [:body] (apply build-ressource-uri "collection" "rotate" args) nil))
+  (http/put-uri [:body] (apply build-ressource-uri "collection" "rotate" args)))
