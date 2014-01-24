@@ -5,7 +5,7 @@
             [clarango.utilities.http-utility :as http]))
 
 (defn get-collection-info-list ; in the ArangoDB REST API this method is part of the Collection API, but is this here not a better place?
-  "Returns information about all collections in a database in a list.
+  "Returns information about all collections in a database as a list.
 
   Can be called without arguments. In that case the default database will be used.
   Optionally you can pass a database and a map with options as arguments.
@@ -13,7 +13,7 @@
   {'excludeSystem' true/false}
   - excludeSystem meaning whether or not the system collections should be excluded from the result."
   [& args]
-  (http/get-uri [:body] (apply uri-utility/build-ressource-uri "collection" nil nil (core-utility/remove-map args)) nil (core-utility/filter-out-map args)))
+  (http/get-uri [:body "collections"] (apply uri-utility/build-ressource-uri "collection" nil nil (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn create
   "Creates a new database.

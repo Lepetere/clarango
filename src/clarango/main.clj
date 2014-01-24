@@ -31,4 +31,5 @@
   (pprint (clarango.database/get-info-current))
   (pprint (clarango.database/get-info-list))
   (pprint (clarango.database/get-info-user))
+  (pprint (clarango.database/get-collection-info-list))
   (pprint (clarango.database/delete "new-test-database")))
