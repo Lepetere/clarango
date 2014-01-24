@@ -1,4 +1,4 @@
-(ns clarango.test.document
+ (ns clarango.test.document
   (:use clojure.test clarango.core)
   (:require [clarango.document :as doc]))
 
