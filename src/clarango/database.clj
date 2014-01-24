@@ -19,7 +19,7 @@
   "Creates a new database.
 
   First argument: the name of the new database
-  Seconde argument: an array specifying users to initially create for the new database; 
+  Second argument: a vector specifying users to initially create for the new database; 
     can be empty; in this case a default user 'root' with an empty password will be created;
     if not empty, it must contain user objects which may contain the following options:
       - username: the user name as a string
