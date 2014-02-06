@@ -1,7 +1,7 @@
 (ns clarango.document
   (:require [clarango.core :as clarango.core]
             [clarango.utilities.http-utility :as http])
-  (:use [clarango.utilities.core-utility :only [remove-map filter-out-map filter-out-collection-name-from-args]]
+  (:use [clarango.utilities.core-utility :only [remove-map filter-out-map filter-out-collection-name-from-args filter-out-database-name-from-args]]
         [clarango.utilities.uri-utility :only [build-ressource-uri]]))
 
 (defn get-by-key
@@ -80,6 +80,18 @@
   ;; what about the document key if the user desires to specify it by himself? 
   ;; Should he just pass it in the json document? or allow it as optional argument?
   (http/post-uri [:body] (apply build-ressource-uri "document/?collection=" nil (remove-map args)) document (filter-out-map args)))
+
+(defn create-multi
+  "Creates multiple documents at a time.
+
+  First argument is a vector of documents.
+
+  Takes optional a collection name and a db name as further arguments.
+  If omitted by user, the default db and collection will be used."
+  [documents & args]
+  ;; what about the document key if the user desires to specify it by himself? 
+  ;; Should he just pass it in the json document? or allow it as optional argument?
+  (http/post-multi-uri [:body] (build-ressource-uri "batch") documents (filter-out-collection-name-from-args args) (filter-out-database-name-from-args args)))
 
 (defn replace-by-key
   "Replaces a document with a map representing the new document.
