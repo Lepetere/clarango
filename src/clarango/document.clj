@@ -66,7 +66,9 @@
 (defn create
   "Creates a document. 
 
-  First argument: A map that represents the document.
+  First argument: A map that represents the document. 
+  If you want to specify a key by yourself, add it as the :_key parameter to the document map. 
+  If you would like the key to be created automatically, just leave this parameter out.
 
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used.
