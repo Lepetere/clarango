@@ -11,7 +11,7 @@
 ;;; debug switches:
 (defn http-debugging-activated? []
   "Switch that activates the verbose output of clj-http."
-  false)
+  true)
 
 (defn type-output-activated? []
   "Switch that activates outputting the type of the response."
@@ -93,10 +93,12 @@
 
 (defn- build-multipart-vector
   "Builds an vector of the format:
-  [{ :mime-type 'application/x-arango-batchpart'
+  [{ :name 'who cares'
+     :mime-type 'application/x-arango-batchpart'
      :encoding 'UTF-8'
      :content (str '\r\n\r\n' url '\r\n\r\n' (generate-string body))}
-   { :mime-type 'application/x-arango-batchpart'
+   { :name 'who cares'
+     :mime-type 'application/x-arango-batchpart'
      :encoding 'UTF-8'
      :content 'String!'}]
 
@@ -105,7 +107,8 @@
   (loop [content-vec content-vector new-content-vec []]
     (let [uri (:uri (first content-vec))
           body (:body (first content-vec))
-          new-entity { :mime-type "application/x-arango-batchpart"
+          new-entity { :name "who cares"
+                       :mime-type "application/x-arango-batchpart"
                        :encoding "UTF-8"
                        :content (str "\r\n\r\n" uri "\r\n\r\n" (generate-string body))}]
       (if (empty? (rest content-vec)) new-content-vec (recur (rest content-vec) (conj new-content-vec new-entity))))))
@@ -115,7 +118,8 @@
   "content is a vector of maps in the form [{:uri 'http://someuri' :body body} ...]"
   [response-keys uri content]
   (http/post uri {:content-type "multipart/form-data; boundary=XXXsubpartXXX"
-                   :multipart (build-multipart-vector content)}))
+                   :multipart (build-multipart-vector content)
+                   :proxy-host "http://127.0.0.1" :proxy-port 3128}))
 
 (defn get-uri 
   ([response-keys uri]
@@ -145,7 +149,7 @@
 
 (defn- build-content-map
   [bodies collection-name db-name]
-  (let [uri (apply build-ressource-uri "document/?collection=" nil collection-name db-name)] ; please note: the uri is so far only applicable for creating new documents
+  (let [uri (build-ressource-uri "document/?collection=" nil collection-name db-name)] ; please note: the uri is so far only applicable for creating new documents
     (loop [bodiesvec bodies content-map []]
       (let [content-map-new (conj content-map {:uri uri :body (first bodiesvec)})]
         (if (not (empty? bodiesvec)) (recur (rest bodiesvec) content-map-new) content-map-new)))))

@@ -9,11 +9,16 @@
 ;; DEMO to call lein run and test it without the lib usage
 (defn -main []
 
+  ;;; http batch request debugging
+  (clarango.core/set-connection!); {:connection-url "http://localhost:8008/", :db-name "_system"})
+  (pprint (clarango.document/create-multi [{:name "test1"} {:name "test2"} {:name "test3"} {:name "test4"} {:name "test5"}] "test-collection" "_system"))
+
   ;;; test collection methods
   (println "\n\ntest collection methods:\n")
   (clarango.core/set-connection!)
   (pprint (clarango.collection/create "test-collection" "_system"))
   (pprint (clarango.document/create {:name "test"} "test-collection" "_system"))
+  (pprint (clarango.document/create-multi [{:name "test1"} {:name "test2"} {:name "test3"} {:name "test4"} {:name "test5"}] "test-collection" "_system"))
   (pprint (clarango.collection/load {"count" false} "test-collection"))
   (pprint (clarango.collection/get-all-documents "test-collection"))
   (pprint (clarango.collection/get-extended-info-figures "test-collection"))
