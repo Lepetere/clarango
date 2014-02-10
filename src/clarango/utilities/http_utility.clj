@@ -86,7 +86,8 @@
               response (http/request (merge {:method method :url uri :debug (http-debugging-activated?) :query-params params} map-with-body))
               filtered-response (filter-response response response-keys)]
             (if (type-output-activated?) (println (type filtered-response)))
-            filtered-response)
+            ;; append the original server response (filtered only one level, usually :body) as metadata
+            (with-meta filtered-response (filter-response response [(first response-keys)])))
         (catch Exception e (handle-error e))))
 
 (defn get-uri 
