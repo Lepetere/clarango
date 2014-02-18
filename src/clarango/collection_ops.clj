@@ -36,7 +36,10 @@
   "Gets a document out of a collection by key.
 
   Modeled on core/get (http://clojuredocs.org/clojure_core/clojure.core/get)
-  Does the same, just on an ArangoDB collection."
+  Does the same, just on an ArangoDB collection.
+
+  Currently this method throws an error when used with a key that does not exist. This should be changed in the future, 
+  also it should be possible to give a value that is returned by the function, in case the key does not exist."
   [collection-name key]
   (document/get-by-key key collection-name))
 
