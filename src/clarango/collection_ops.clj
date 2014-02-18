@@ -45,5 +45,8 @@
 ;; was soll der Rückgabewert sein? Wenn jedes mal die ganze Collection zurückgegeben wird, müsste noch
 ;; eine collection/get-all-documents Anfrage gesendet werden; wäre suboptimal, da extra Request und damit nicht mehr performant;
 
-;; also stellt sich die Frage, ob das ganze Unternehmen überhaupt Sinn macht, da sich die Methoden in zwei 
-;; grundsätzlichen Dingen 
+;; also stellt sich die Frage, ob das ganze Unternehmen überhaupt Sinn macht, da sich die Methoden in drei 
+;; grundsätzlichen Dingen unterscheiden:
+;; 1. Veränderung am Zustand der DB
+;; 2. Rückgabewert
+;; 3. es wird nicht das Collection Objekt selber übergeben sondern der Name
