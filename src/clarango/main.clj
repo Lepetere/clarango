@@ -4,7 +4,8 @@
 				[clarango.collection :as collection]
 				[clarango.document :as document]
         [clarango.database :as database])
-	(:use clojure.pprint))
+	(:use clojure.pprint)
+  (:use clarango.collection-ops))
 
 ;; DEMO to call lein run and test it without the lib usage
 (defn -main []
@@ -27,6 +28,15 @@
   (pprint (clarango.collection/truncate "test-collection"))
   (pprint (clarango.collection/rename "test-collection-dos" "test-collection"))
   (pprint (clarango.collection/get-extended-info-count "test-collection-dos"))
+
+  ;;; test clojure idiomatic collection methods
+  (println "\n\ntest clojure idiomatic collection methods:\n")
+  (pprint (assoc! "test-collection-dos" "bla" {:name "Bla bla dokument"}))
+  (pprint (conj! "test-collection-dos" {:quatsch "Mit Soße"}))
+  (pprint (clarango.collection/get-all-documents "test-collection-dos"))
+  (pprint (dissoc! "test-collection-dos" "bla"))
+  #_(pprint (get! "test-collection-dos" "bla"))
+
   (pprint (clarango.collection/delete "test-collection-dos" "_system"))
 
   ;;; test database methods
