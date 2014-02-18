@@ -17,7 +17,7 @@
 
 (defn console-output-activated? []
   "Switch that activates outputting the http method and url used for each http request."
-  false)
+  true)
 
 (defn- build-server-exception-string
   [error]
