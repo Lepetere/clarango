@@ -93,25 +93,16 @@
         (catch Exception e (handle-error e))))
 
 (defn- build-multipart-vector
-  "Builds an vector of the format:
-  [{ :name 'who cares'
-     :mime-type 'application/x-arango-batchpart'
-     :encoding 'UTF-8'
-     :content (str '\r\n\r\n' url '\r\n\r\n' (generate-string body))}
-   { :name 'who cares'
-     :mime-type 'application/x-arango-batchpart'
-     :encoding 'UTF-8'
-     :content 'String!'}]
-
-  Takes a vector of the format: [{:uri 'http://someuri' :body body} ...]"
+  "Takes a vector of the format: [{:uri 'http://someuri' :body body :method :method} ...]"
   [content-vector]
   (loop [content-vec content-vector new-content-vec []]
     (let [uri (:uri (first content-vec))
+          method (:method (first content-vec))
           body (:body (first content-vec))
           new-entity { :name "who cares"
                        :mime-type "application/x-arango-batchpart"
                        :encoding "UTF-8"
-                       :content (str "\r\n\r\n" uri "\r\n\r\n" (generate-string body))}]
+                       :content (str (get-uppercase-string-for-http-method method) " " uri "\r\n\r\n" (generate-string body))}]
       (if (empty? (rest content-vec)) new-content-vec (recur (rest content-vec) (conj new-content-vec new-entity))))))
 
 ;; in development, not working yet!
@@ -119,6 +110,7 @@
   "content is a vector of maps in the form [{:uri 'http://someuri' :body body} ...]"
   [response-keys uri content]
   (http/post uri {:content-type "multipart/form-data; boundary=XXXsubpartXXX"
+                   :boundary "XXXsubpartXXX"
                    :multipart (build-multipart-vector content)
                    :proxy-host "http://127.0.0.1" :proxy-port 3128}))
 
@@ -152,7 +144,7 @@
   [bodies collection-name db-name]
   (let [uri (build-ressource-uri "document/?collection=" nil collection-name db-name)] ; please note: the uri is so far only applicable for creating new documents
     (loop [bodiesvec bodies content-map []]
-      (let [content-map-new (conj content-map {:uri uri :body (first bodiesvec)})]
+      (let [content-map-new (conj content-map {:uri uri :body (first bodiesvec) :method :post})]
         (if (not (empty? bodiesvec)) (recur (rest bodiesvec) content-map-new) content-map-new)))))
 
 (defn post-multi-uri
