@@ -11,7 +11,7 @@
 ;;; debug switches:
 (defn http-debugging-activated? []
   "Switch that activates the verbose output of clj-http."
-  true)
+  false)
 
 (defn type-output-activated? []
   "Switch that activates outputting the type of the response."
