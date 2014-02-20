@@ -1,7 +1,7 @@
 (ns clarango.document
   (:require [clarango.core :as clarango.core]
             [clarango.utilities.http-utility :as http])
-  (:use [clarango.utilities.core-utility :only [remove-map filter-out-map filter-out-collection-name-from-args filter-out-database-name-from-args]]
+  (:use [clarango.utilities.core-utility :only [remove-map filter-out-map filter-out-collection-name filter-out-database-name]]
         [clarango.utilities.uri-utility :only [build-ressource-uri]]))
 
 (defn get-by-key
@@ -33,7 +33,7 @@
   - limit meaning the maximum amount of documents to return
   The option map might be passed in an arbitrary position after the first two arguments."
   [example & args] ; what happens here if there is a db explicitely passed to this method? Do we nee a filterout-db-name-from-args too?
-  (http/put-uri [:body "result"] (build-ressource-uri "simple/by-example" nil nil) (merge {:example example :collection (filter-out-collection-name-from-args args)} (filter-out-map args))))
+  (http/put-uri [:body "result"] (build-ressource-uri "simple/by-example" nil nil) (merge {:example example :collection (filter-out-collection-name args)} (filter-out-map args))))
 
 (defn get-first-by-example
   "Gets the first document out of a collection that matches an example.
@@ -43,7 +43,7 @@
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used."
   [example & args]  ; what happens here if there is a db explicitely passed to this method? Do we nee a filterout-db-name-from-args too?
-  (http/put-uri [:body "document"] (build-ressource-uri "simple/first-example" nil nil) {:example example :collection (filter-out-collection-name-from-args args)}))
+  (http/put-uri [:body "document"] (build-ressource-uri "simple/first-example" nil nil) {:example example :collection (filter-out-collection-name args)}))
 
 (defn get-info
   "Gets information about a document by its key.
@@ -93,7 +93,7 @@
   [documents & args]
   ;; what about the document key if the user desires to specify it by himself? 
   ;; Should he just pass it in the json document? or allow it as optional argument?
-  (http/post-multi-uri [:body] (build-ressource-uri "batch") documents (filter-out-collection-name-from-args args) (filter-out-database-name-from-args args)))
+  (http/post-multi-uri [:body] (build-ressource-uri "batch") documents (filter-out-collection-name args) (filter-out-database-name args)))
 
 (defn replace-by-key
   "Replaces a document with a map representing the new document.
@@ -130,7 +130,7 @@
   - limit meaning the maximum amount of documents that will be replaced
   The option map might be passed in an arbitrary position after the first two arguments."
   [new-document example & args]
-  (http/put-uri [:body] (build-ressource-uri "simple/replace-by-example" nil nil) (merge {:example example :newValue new-document :collection (filter-out-collection-name-from-args args)} (filter-out-map args))))
+  (http/put-uri [:body] (build-ressource-uri "simple/replace-by-example" nil nil) (merge {:example example :newValue new-document :collection (filter-out-collection-name args)} (filter-out-map args))))
 
 (defn update-by-key
   "Updates a document with a number of key value pairs. Inserts them into the existing document.
@@ -170,7 +170,7 @@
   - keepNull meaning if the key/value pair should be deleted in the document
   The option map might be passed in an arbitrary position after the first two arguments."
   [document example & args]
-  (http/put-uri [:body] (build-ressource-uri "simple/update-by-example" nil nil) (merge {:example example :newValue document :collection (filter-out-collection-name-from-args args)} (filter-out-map args))))
+  (http/put-uri [:body] (build-ressource-uri "simple/update-by-example" nil nil) (merge {:example example :newValue document :collection (filter-out-collection-name args)} (filter-out-map args))))
 
 (defn delete-by-key
   "Deletes a document by its id.
@@ -205,4 +205,4 @@
   - limit meaning the maximum amount of documents that will be deleted
   The option map might be passed in an arbitrary position after the first two arguments."
   [example & args]
-  (http/put-uri [:body] (build-ressource-uri "simple/remove-by-example" nil nil) (merge {:example example :collection (filter-out-collection-name-from-args args)} (filter-out-map args))))
+  (http/put-uri [:body] (build-ressource-uri "simple/remove-by-example" nil nil) (merge {:example example :collection (filter-out-collection-name args)} (filter-out-map args))))
