@@ -47,6 +47,8 @@
   (http/get-uri [:body "result"] (uri-utility/build-ressource-uri "database" nil nil "_system")))
 
 (defn get-info-user
-  "Returns a list of all databases the current user can access."
+  "Returns a list of all databases the current user can access.
+
+  Note: this might not work under Windows."
   []
   (http/get-uri [:body "result"] (uri-utility/build-ressource-uri "database" "user" nil "_system")))
