@@ -1,7 +1,7 @@
 (ns clarango.query
   (:require [clarango.core :as clarango.core]
             [clarango.utilities.http-utility :as http])
-  (:use [clarango.utilities.core-utility :only [remove-map filter-out-map filter-out-collection-name-from-args filter-out-database-name-from-args]]
+  (:use [clarango.utilities.core-utility :only [remove-map filter-out-map]]
         [clarango.utilities.uri-utility :only [build-ressource-uri]]))
 
 (defn explain
@@ -10,11 +10,14 @@
   First argument must be the query string to be evaluated.
   If the query references any bind variables, you must pass these in a map as second argument like this:
   { 'id' 3 } (replace the single quotes with double quotes)
-  If you don't use any variables, you can leave the second argument out."
-  ([query-string]
-  	(http/post-uri [:body "plan"] (build-ressource-uri "explain") {"query" query-string}))
-  ([query-string bind-vars]
-  	(http/post-uri [:body "plan"] (build-ressource-uri "explain") {"query" query-string, "bindVars" bind-vars})))
+  If you don't use any variables, you can leave the second argument out.
+
+  Optionally you can pass a database name as third or second argument. If omitted, the default db will be used."
+  [query-string & args]
+  	(let [body {"query" query-string}
+  		  bind-vars (filter-out-map args)
+  		  body-bind-vars (if (nil? bind-vars) body (merge body {"bindVars" bind-vars}))]
+  	  (http/post-uri [:body "plan"] (apply build-ressource-uri "explain" nil nil (remove-map args)) body-bind-vars)))
 
 (defn validate
   "Validates a query without executing it.

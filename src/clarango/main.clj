@@ -13,7 +13,7 @@
 
   ;;; http batch request debugging
   (clarango.core/set-connection! {:connection-url "http://localhost:8529/", :db-name "_system"})
-  (pprint (query/explain "FOR u IN `query-test` LIMIT 2 RETURN u"))
+  (pprint (query/explain "FOR u IN `query-test` LIMIT 2 RETURN u" "_system"))
   (pprint (query/validate "FOR u IN `query-test` LIMIT 2 RETURN u"))
 
   #_(pprint (document/create-multi [{:name "test1"} {:name "test2"} {:name "test3"} {:name "test4"} {:name "test5"}] "test-collection" "_system"))
