@@ -5,14 +5,20 @@ Clarango: a Clojure driver for ArangoDB
 work in progress... please contact the two repository owners
 
 The expected roadmap is:
-* Spring 2014: more sophisticated CRUD and Queries
 * Late 2014: stable 1.0 with management / admin, graph, ... and all the features exposed by the REST API.
 
 ## Features
 
-* Document CRUD including various options
+* various options for connecting
+* document CRUD including various options
   -> for documentation on this see [document.clj](https://github.com/edlich/clarango/blob/master/src/clarango/document.clj)
+* querying by example
+* AQL queries (see [query namespace](https://github.com/edlich/clarango/blob/master/src/clarango/query.clj))
+* collection management (see [collection namespace](https://github.com/edlich/clarango/blob/master/src/clarango/collection.clj))
+* database management (see [database namespace](https://github.com/edlich/clarango/blob/master/src/clarango/database.clj))
 * simple exception handling
+
+* experimental clojure idiomatic collection methods like `cla-assoc!` and `cla-conj!` (see [collection_ops.clj](https://github.com/edlich/clarango/blob/master/src/clarango/collection_ops.clj) for details)
 
 ...
 
@@ -20,7 +26,7 @@ The expected roadmap is:
 
 The driver is hosted on [Clojars](https://clojars.org/clarango). Add this Leiningen dependency to your project.clj (no stable release available yet):
 ```
-[clarango "0.0.2-SNAPSHOT"]
+[clarango "0.2.1"]
 ```
 Then require the lib in your clojure file:
 ``` Clojure
