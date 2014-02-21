@@ -13,7 +13,7 @@
 (defn -main []
 
   ;;; http batch request debugging
-  (clarango.core/set-connection! {:connection-url "http://localhost:8531/", :db-name "_system"})
+  (clarango.core/set-connection! {:connection-url "http://localhost:8531/"})
   (with-connection {:connection-url "http://localhost:8529/", :db-name "_system"}
     (pprint (query/explain "FOR u IN `query-test` LIMIT 2 RETURN u" "_system"))
     (pprint (query/validate "FOR u IN `query-test` LIMIT 2 RETURN u"))
@@ -21,21 +21,26 @@
     (pprint (query/execute-count "FOR u IN `query-test` RETURN u" 10 true)))
 
   #_(pprint (document/create-multi [{:name "test1"} {:name "test2"} {:name "test3"} {:name "test4"} {:name "test5"}] "test-collection" "_system"))
-#_(
+
+  (clarango.core/set-connection!)
+
   ;;; test collection methods
   (println "\n\ntest collection methods:\n")
-  (clarango.core/set-connection!)
-  (pprint (collection/create "test-collection" "_system"))
-  (pprint (document/create {:name "test"} "test-collection" "_system"))
-  #_(pprint (document/create-multi [{:name "test1"} {:name "test2"} {:name "test3"} {:name "test4"} {:name "test5"}] "test-collection" "_system"))
-  (pprint (collection/load {"count" false} "test-collection"))
-  (pprint (collection/get-all-documents "test-collection"))
-  (pprint (collection/get-extended-info-figures "test-collection"))
-  (pprint (collection/unload "test-collection"))
-  (pprint (collection/rotate "test-collection"))
-  (pprint (collection/truncate "test-collection"))
-  (pprint (collection/rename "test-collection-dos" "test-collection"))
-  (pprint (collection/get-extended-info-count "test-collection-dos"))
+  (with-db "_system"
+    (pprint (collection/create "test-collection" "_system"))
+    (with-collection "test-collection"
+      (pprint (document/create {:name "test"})))
+    #_(pprint (document/create-multi [{:name "test1"} {:name "test2"} {:name "test3"} {:name "test4"} {:name "test5"}] "test-collection" "_system"))
+    (pprint (collection/load {"count" false} "test-collection"))
+    (pprint (collection/get-all-documents "test-collection"))
+    (pprint (collection/get-extended-info-figures "test-collection"))
+    (pprint (collection/unload "test-collection"))
+    (pprint (collection/rotate "test-collection"))
+    (pprint (collection/truncate "test-collection"))
+    (pprint (collection/rename "test-collection-dos" "test-collection"))
+    (pprint (collection/get-extended-info-count "test-collection-dos")))
+
+  (clarango.core/set-connection! {:connection-url "http://localhost:8529/", :db-name "_system"})
 
   ;;; test clojure idiomatic collection methods
   (println "\n\ntest clojure idiomatic collection methods:\n")
@@ -55,4 +60,4 @@
   (pprint (database/get-info-list))
   (pprint (database/get-info-user))
   (pprint (database/get-collection-info-list))
-  (pprint (database/delete "new-test-database"))))
+  (pprint (database/delete "new-test-database")))

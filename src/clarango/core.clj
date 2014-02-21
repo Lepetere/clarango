@@ -41,7 +41,22 @@
   (change-value-in-connection! :collection-name collection-name))
 
 (defmacro with-connection
-  ""
+  "Dynamically rebinds the global connection map.
+  Takes a body of code which will be executed in the context of this connection."
   [connection & body]
   `(binding [clarango-connection ~connection]
+     ~@body))
+
+(defmacro with-db
+  "Dynamically rebinds the default database value.
+  Takes a body of code which will be executed in the context of this database."
+  [database-name & body]
+  `(binding [clarango-connection (assoc (get-connection) :db-name ~database-name)]
+     ~@body))
+
+(defmacro with-collection
+  "Dynamically rebinds the default collection value.
+  Takes a body of code which will be executed in the context of this collection."
+  [collection-name & body]
+  `(binding [clarango-connection (assoc (get-connection) :collection-name ~collection-name)]
      ~@body))
