@@ -15,9 +15,11 @@
   (clarango.core/set-connection! {:connection-url "http://localhost:8529/", :db-name "_system"})
   (pprint (query/explain "FOR u IN `query-test` LIMIT 2 RETURN u" "_system"))
   (pprint (query/validate "FOR u IN `query-test` LIMIT 2 RETURN u"))
+  (pprint (query/execute "FOR u IN `query-test` FILTER u.name == @name RETURN u" {"name" "Peter"}))
+  (pprint (query/execute-count "FOR u IN `query-test` RETURN u" 10 true))
 
   #_(pprint (document/create-multi [{:name "test1"} {:name "test2"} {:name "test3"} {:name "test4"} {:name "test5"}] "test-collection" "_system"))
-
+#_(
   ;;; test collection methods
   (println "\n\ntest collection methods:\n")
   (clarango.core/set-connection!)
@@ -51,4 +53,4 @@
   (pprint (database/get-info-list))
   (pprint (database/get-info-user))
   (pprint (database/get-collection-info-list))
-  (pprint (database/delete "new-test-database")))
+  (pprint (database/delete "new-test-database"))))

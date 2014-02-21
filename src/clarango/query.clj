@@ -32,17 +32,46 @@
   "Executes a query.
 
   First argument must be the query string to be executed.
+
+  If the query references any bind variables, you must additionally pass these in a map as the second argument like this:
+  { 'id' 3 } (replace the single quotes with double quotes)
+  If you don't use any variables, you can leave this out.
+
+  Optionally you can pass a database name as third (or second) argument. If omitted, the default db will be used.
+
+  The actual result of the query will be contained in the attribute 'result' as a vector.
+  For more options see the method execute-count."
+  [query-string & args]
+    (let [body {"query" query-string}
+        bind-vars (filter-out-map args)
+        body-bind-vars (if (nil? bind-vars) body (merge body {"bindVars" bind-vars}))]
+      (http/post-uri [:body] (apply build-ressource-uri "cursor" nil nil (remove-map args)) body-bind-vars)))
+
+(defn execute-count
+  "Executes a query. Takes also the options 'batch-size' and 'count'.
+
+  First argument must be the query string to be executed.
+
   Second argument must be the batch size. This is the amount of documents that will be returned in the first answer of the
   server. In case there are more documents, in the server answer there will be the attribute 'hasMore' set to true. 
   In this case you can then use the returned cursor 'id' with the method get-more-results to get the remaining results.
 
-  If the query references any bind variables, you must additionally pass these in a map as a third argument like this:
+  Third argument is 'count', a boolean flag indicating whether or not the number of documents that were found for the query 
+  should be included in the result of the query as 'count' attribute. This is turned off by default because it might have 
+  an influence on the performance of the query.
+
+  If the query references any bind variables, you must additionally pass these in a map as the fourth argument like this:
   { 'id' 3 } (replace the single quotes with double quotes)
   If you don't use any variables, you can leave this out.
 
-  Optionally you can pass a database name as third or fourth argument. If omitted, the default db will be used."
-  [query-string batch-size & args]
-    nil)
+  Optionally you can pass a database name as fifth or fourth argument. If omitted, the default db will be used.
+
+  The actual result of the query will be contained in the attribute 'result' as a vector."
+  [query-string batch-size count & args]
+    (let [body {"query" query-string, "batchSize" batch-size, "count" count}
+        bind-vars (filter-out-map args)
+        body-bind-vars (if (nil? bind-vars) body (merge body {"bindVars" bind-vars}))]
+      (http/post-uri [:body] (apply build-ressource-uri "cursor" nil nil (remove-map args)) body-bind-vars)))
 
 (defn get-more-results
   "This method gets the remaining results of a query. More results to a query are available if the return value of the
