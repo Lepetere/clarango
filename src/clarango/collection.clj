@@ -1,7 +1,7 @@
 (ns clarango.collection
   (:require [clarango.core :as clarango.core]
             [clarango.utilities.http-utility :as http])
-  (:use [clarango.utilities.core-utility :only [remove-map filter-out-map filter-out-collection-name-from-args]]
+  (:use [clarango.utilities.core-utility :only [remove-map filter-out-map]]
         [clarango.utilities.uri-utility :only [build-ressource-uri]]))
 
 (defn get-all-documents ; in the ArangoDB REST API this method is part of the Document API, but is this here not a better place?

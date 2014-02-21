@@ -44,10 +44,22 @@
   [vect]
   (first (filter #(= (type %) clojure.lang.PersistentArrayMap) vect)))
 
-(defn filter-out-collection-name-from-args
+(defn filter-out-collection-name
+  "Filters out the collection name of the additional argument vector of the clojure API methods.
+  Returns the default collection, if not present in the argument vector."
   [args]
   (let [args-without-map (remove-map args)]
     (case (count args-without-map)
       0 (get-default-collection-name)
       1 (nth args-without-map 0)
       2 (nth args-without-map 0))))
+
+(defn filter-out-database-name
+  "Filters out the database name of the additional argument vector of the clojure API methods.
+  Returns the default database, if not present in the argument vector."
+  [args]
+  (let [args-without-map (remove-map args)]
+    (case (count args-without-map)
+      0 (get-default-db)
+      1 (get-default-db)
+      2 (nth args-without-map 1))))

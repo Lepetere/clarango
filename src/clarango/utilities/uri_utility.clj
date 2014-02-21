@@ -27,6 +27,8 @@
   OR 'simple/first-example' if you want to access the first-example method in the simple namespace without 
   appending a collection name (in this case you should explicitely pass nil as collection-name)
   OR 'document/?collection=' if you need the collection name appended as a parameter."
+  ([type]
+    (connect-url-parts (get-safe-connection-url) "_api/" type))
   ([type ressource-key]
   	(connect-url-parts (get-safe-connection-url) "_db/" (get-default-db) "_api/" type (get-default-collection-name) ressource-key))
   ([type ressource-key collection-name]
