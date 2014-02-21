@@ -3,7 +3,7 @@
 
 (deftest core-test
   (testing "Check the correct connection settings"
-    (is (nil? clarango-connection) "con must be nil initially")
+    (is (nil? (get-connection)) "con must be nil initially")
     (is (false? (connection-set?)) "con must be nil initially")
     (set-connection!) ;; call without arguments
     (is (= {:db-name "_system", 
