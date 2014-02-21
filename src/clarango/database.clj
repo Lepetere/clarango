@@ -4,7 +4,7 @@
             [clarango.utilities.uri-utility :as uri-utility]
             [clarango.utilities.http-utility :as http]))
 
-(defn get-collection-info-list ; in the ArangoDB REST API this method is part of the Collection API, but is this here not a better place?
+(defn get-collection-info-list
   "Returns information about all collections in a database as a list.
 
   Can be called without arguments. In that case the default database will be used.

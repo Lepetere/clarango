@@ -4,7 +4,7 @@
   (:use [clarango.utilities.core-utility :only [remove-map filter-out-map]]
         [clarango.utilities.uri-utility :only [build-ressource-uri]]))
 
-(defn get-all-documents ; in the ArangoDB REST API this method is part of the Document API, but is this here not a better place?
+(defn get-all-documents
   "Returns a list with the URIs of all documents in the collection.
 
   Can be called without arguments. In that case the default collection from the default database will be used.
