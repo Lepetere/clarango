@@ -1,6 +1,6 @@
 (ns clarango.core)
 
-(def clarango-connection nil)
+(def ^{:dynamic true :private true} clarango-connection nil)
 
 (defn set-connection!
   "Connects permanently to an ArangoDB host by setting the connection map as a global variable.
@@ -39,3 +39,9 @@
   "Sets a default collection."
   [collection-name]
   (change-value-in-connection! :collection-name collection-name))
+
+(defmacro with-connection
+  ""
+  [connection & body]
+  `(binding [clarango-connection ~connection]
+     ~@body))

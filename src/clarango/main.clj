@@ -6,17 +6,19 @@
         [clarango.database :as database]
         [clarango.query :as query])
 	(:use clojure.pprint)
+  (:use clarango.core)
   (:use clarango.collection-ops))
 
 ;; DEMO to call lein run and test it without the lib usage
 (defn -main []
 
   ;;; http batch request debugging
-  (clarango.core/set-connection! {:connection-url "http://localhost:8529/", :db-name "_system"})
-  (pprint (query/explain "FOR u IN `query-test` LIMIT 2 RETURN u" "_system"))
-  (pprint (query/validate "FOR u IN `query-test` LIMIT 2 RETURN u"))
-  (pprint (query/execute "FOR u IN `query-test` FILTER u.name == @name RETURN u" {"name" "Peter"}))
-  (pprint (query/execute-count "FOR u IN `query-test` RETURN u" 10 true))
+  (clarango.core/set-connection! {:connection-url "http://localhost:8531/", :db-name "_system"})
+  (with-connection {:connection-url "http://localhost:8529/", :db-name "_system"}
+    (pprint (query/explain "FOR u IN `query-test` LIMIT 2 RETURN u" "_system"))
+    (pprint (query/validate "FOR u IN `query-test` LIMIT 2 RETURN u"))
+    (pprint (query/execute "FOR u IN `query-test` FILTER u.name == @name RETURN u" {"name" "Peter"}))
+    (pprint (query/execute-count "FOR u IN `query-test` RETURN u" 10 true)))
 
   #_(pprint (document/create-multi [{:name "test1"} {:name "test2"} {:name "test3"} {:name "test4"} {:name "test5"}] "test-collection" "_system"))
 #_(
