@@ -46,9 +46,14 @@
   nil)
 
 (defn delete
-  "Deletes a graph."
-  [graph-name]
-  nil)
+  "Deletes a graph.
+  Also deletes it's vertex and the edges collection.
+
+  Takes the name of the graph as first argument.
+
+  Optionally you can pass a database name as second argument. If omitted, the default db will be used."
+  [graph-name & args]
+  (http/delete-uri [:body] (apply build-ressource-uri "graph" graph-name nil (remove-map args))))
 
 (defn create-vertex
   "Creates a new vertex."
