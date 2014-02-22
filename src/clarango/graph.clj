@@ -34,7 +34,7 @@
   {'waitForSync' true/false} (replace the single quotes with double quotes)
   - waitForSync meaning if the server response should wait until the graph has been to disk;"
   [graph-name vertices-collection edges-collection & args]
-  (http/post-uri [:body] (apply build-ressource-uri "graph" nil nil (remove-map args)) 
+  (http/post-uri [:body "graph"] (apply build-ressource-uri "graph" nil nil (remove-map args)) 
     {"_key" graph-name, "vertices" vertices-collection, "edges" edges-collection} 
     (filter-out-map args)))
 
@@ -46,7 +46,7 @@
 
   Optionally you can pass a database name as second argument. If omitted, the default db will be used."
   [graph-name & args]
-  (http/get-uri [:body] (apply build-ressource-uri "graph" graph-name nil (remove-map args))))
+  (http/get-uri [:body "graph"] (apply build-ressource-uri "graph" graph-name nil (remove-map args))))
 
 (defn delete
   "Deletes a graph.
