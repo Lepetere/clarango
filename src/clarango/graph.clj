@@ -21,9 +21,22 @@
   nil)
 
 (defn create
-  "Creates a new graph."
-  []
-  nil)
+  "Creates a new graph.
+
+  First argument: The name of the graph to be created.
+  Second argument: The name of the collection containing the vertices.
+  Third argument: The name of the collection containing the edges.
+  The ladder two collections must already exist.
+
+  Optionally you can pass a database name as fourth argument. If omitted, the default db will be used.
+
+  Also optional as argument is another map containing further options:
+  {'waitForSync' true/false} (replace the single quotes with double quotes)
+  - waitForSync meaning if the server response should wait until the graph has been to disk;"
+  [graph-name vertices-collection edges-collection & args]
+  (http/post-uri [:body] (apply build-ressource-uri "graph" nil nil (remove-map args)) 
+    {"_key" graph-name, "vertices" vertices-collection, "edges" edges-collection} 
+    (filter-out-map args)))
 
 (defn get-info
   "Gets info about a graph.

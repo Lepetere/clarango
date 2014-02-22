@@ -4,7 +4,8 @@
 				[clarango.collection :as collection]
 				[clarango.document :as document]
         [clarango.database :as database]
-        [clarango.query :as query])
+        [clarango.query :as query]
+        [clarango.graph :as graph])
 	(:use clojure.pprint)
   (:use clarango.collection-ops))
 
@@ -13,11 +14,15 @@
 
   ;;; http batch request debugging
   (clarango.core/set-connection! {:connection-url "http://localhost:8529/", :db-name "_system"})
+  (println "\n\ntest query methods:\n")
   (pprint (query/explain "FOR u IN `query-test` LIMIT 2 RETURN u" "_system"))
   (pprint (query/validate "FOR u IN `query-test` LIMIT 2 RETURN u"))
 
-  #_(pprint (document/create-multi [{:name "test1"} {:name "test2"} {:name "test3"} {:name "test4"} {:name "test5"}] "test-collection" "_system"))
+  (println "\n\ntest graph methods:\n")
+  (pprint (graph/create "test-graph-1" "vertices1" "edges1" "GraphTestDB" {"waitForSync" true}))
 
+  #_(pprint (document/create-multi [{:name "test1"} {:name "test2"} {:name "test3"} {:name "test4"} {:name "test5"}] "test-collection" "_system"))
+  #_(
   ;;; test collection methods
   (println "\n\ntest collection methods:\n")
   (clarango.core/set-connection!)
@@ -51,4 +56,4 @@
   (pprint (database/get-info-list))
   (pprint (database/get-info-user))
   (pprint (database/get-collection-info-list))
-  (pprint (database/delete "new-test-database")))
+  (pprint (database/delete "new-test-database"))))
