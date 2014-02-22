@@ -16,9 +16,12 @@
   (http/get-uri [:body "collections"] (apply uri-utility/build-ressource-uri "collection" nil nil (core-utility/remove-map args)) (core-utility/filter-out-map args)))
 
 (defn get-all-graphs
-  "Gets a list of all existing graphs within the database."
-  []
-  nil)
+  "Gets a list of all existing graphs within the database.
+
+  Can be called without arguments. In that case the default database will be used.
+  Optionally you can pass a database name as argument."
+  [& args]
+  (http/get-uri [:body "graphs"] (apply uri-utility/build-ressource-uri "graph" nil nil (core-utility/remove-map args))))
 
 (defn create
   "Creates a new database.
