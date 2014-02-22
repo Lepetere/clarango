@@ -40,10 +40,13 @@
 
 (defn get-info
   "Gets info about a graph.
+  Returns a map containing information about the graph.
 
-  Returns a map containing information about the graph."
-  [graph-name]
-  nil)
+  Takes the name of the graph as first argument.
+
+  Optionally you can pass a database name as second argument. If omitted, the default db will be used."
+  [graph-name & args]
+  (http/get-uri [:body] (apply build-ressource-uri "graph" graph-name nil (remove-map args))))
 
 (defn delete
   "Deletes a graph.

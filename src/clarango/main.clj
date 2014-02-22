@@ -22,6 +22,7 @@
   (collection/create "vertices1" "GraphTestDB" {"type" 2})
   (collection/create "edges1" "GraphTestDB" {"type" 3})
   (pprint (graph/create "test-graph-1" "vertices1" "edges1" "GraphTestDB" {"waitForSync" true}))
+  (pprint (graph/get-info "test-graph-1" "GraphTestDB"))
   (pprint (graph/delete "test-graph-1" "GraphTestDB"))
 
   #_(pprint (document/create-multi [{:name "test1"} {:name "test2"} {:name "test3"} {:name "test4"} {:name "test5"}] "test-collection" "_system"))
