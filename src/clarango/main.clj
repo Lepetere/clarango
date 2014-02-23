@@ -7,7 +7,8 @@
         [clarango.query :as query]
         [clarango.graph :as graph])
 	(:use clojure.pprint)
-  (:use clarango.collection-ops))
+  (:use clarango.collection-ops)
+  (:use clarango.core))
 
 ;; DEMO to call lein run and test it without the lib usage
 (defn -main []
@@ -22,6 +23,9 @@
   (collection/create "vertices1" "GraphTestDB" {"type" 2})
   (collection/create "edges1" "GraphTestDB" {"type" 3})
   (pprint (graph/create "test-graph-1" "vertices1" "edges1" "GraphTestDB" {"waitForSync" true}))
+  (with-db "GraphTestDB"
+    (with-graph "test-graph-1"
+      (pprint (graph/create-vertex {:_key "vertex1", :data "blabla"}))))
   (pprint (graph/get-info "test-graph-1" "GraphTestDB"))
   (pprint (database/get-all-graphs "GraphTestDB"))
   (pprint (graph/delete "test-graph-1" "GraphTestDB"))

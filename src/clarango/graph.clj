@@ -75,7 +75,7 @@
   [vertex & args]
   ;; what about the document key if the user desires to specify it by himself? 
   ;; Should he just pass it in the json document? or allow it as optional argument?
-  (http/post-uri [:body] (apply build-ressource-uri "graph" nil (remove-map args)) vertex (filter-out-map args)))
+  (http/post-uri [:body] (apply build-ressource-uri "graph" "vertex" (remove-map args)) vertex (filter-out-map args)))
 
 (defn get-vertex
   "Gets a vertex."
