@@ -59,9 +59,23 @@
   (http/delete-uri [:body] (apply build-ressource-uri "graph" graph-name nil (remove-map args))))
 
 (defn create-vertex
-  "Creates a new vertex."
-  []
-  nil)
+  "Creates a vertex. 
+
+  First argument: A map that represents the vertex. 
+  If you want to specify a key by yourself, add it as the :_key parameter to the vertex map. 
+  If you would like the key to be created automatically, just leave this parameter out.
+
+  Takes optional a graph name and a db name as further arguments.
+  If omitted by user, the default graph and collection will be used.
+
+  Also optional as argument is another map containing further options:
+  {'waitForSync' true/false} (replace the single quotes with double quotes)
+  - waitForSync meaning if the server response should wait until the vertex is saved to disk;
+  The option map might be passed in an arbitrary position after the first argument."
+  [vertex & args]
+  ;; what about the document key if the user desires to specify it by himself? 
+  ;; Should he just pass it in the json document? or allow it as optional argument?
+  (http/post-uri [:body] (apply build-ressource-uri "graph" nil (remove-map args)) vertex (filter-out-map args)))
 
 (defn get-vertex
   "Gets a vertex."
