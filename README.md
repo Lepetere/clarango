@@ -49,6 +49,7 @@ Setting the databse connection and getting a document by existing key:
     :connection-url "http://localhost:8529/"
     :db-name "my-db"
     :collection-name "my-collection"
+    ; if you intend to work with graphs you can optionally add :graph-name "my-graph"
   })
 (clojure.pprint (document/get-by-key "document-key"))
 
