@@ -78,7 +78,7 @@
 (defn get-vertex
   "Gets a vertex.
 
-  Takes the document/vertex key as first argument. 
+  Takes the vertex key as first argument. 
 
   Takes optional a graph name and a db name as further arguments.
   If omitted by user, the default graph and collection will be used.
@@ -136,9 +136,19 @@
     (filter-out-map args)))
 
 (defn get-edge
-  "Gets an edge."
-  []
-  nil)
+  "Gets an edge.
+
+  Takes the edge key as first argument. 
+
+  Takes optional a graph name and a db name as further arguments.
+  If omitted by user, the default graph and collection will be used.
+
+  Also optional as argument is another map containing further options:
+  {'rev' revision_id} (replace the single quotes with double quotes)
+  - rev is the document revision; if the current document revision_id does not match the given one, an error is thrown;
+  The option map might be passed in an arbitrary position after the first argument."
+  [key & args]
+  (http/get-uri [:body "edge"] (apply build-ressource-uri "graph" (connect-url-parts "edge" key) (remove-map args)) (filter-out-map args)))
 
 (defn replace-edge
   "Replaces an edge."
