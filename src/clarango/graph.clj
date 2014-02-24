@@ -73,7 +73,7 @@
   - waitForSync meaning if the server response should wait until the vertex is saved to disk;
   The option map might be passed in an arbitrary position after the first argument."
   [vertex & args]
-  (http/post-uri [:body] (apply build-ressource-uri "graph" "vertex" (remove-map args)) vertex (filter-out-map args)))
+  (http/post-uri [:body "vertex"] (apply build-ressource-uri "graph" "vertex" (remove-map args)) vertex (filter-out-map args)))
 
 (defn get-vertex
   "Gets a vertex.
@@ -88,7 +88,7 @@
   - rev is the document revision; if the current document revision_id does not match the given one, an error is thrown;
   The option map might be passed in an arbitrary position after the first argument."
   [key & args]
-  (http/get-uri [:body] (apply build-ressource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) (filter-out-map args)))
+  (http/get-uri [:body "vertex"] (apply build-ressource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) (filter-out-map args)))
 
 (defn replace-vertex
   "Replaces a vertex."
@@ -131,7 +131,7 @@
   [edge edge-name vertex-from-name vertex-to-name & args]
   ;; what about the document key if the user desires to specify it by himself? 
   ;; Should he just pass it in the json document? or allow it as optional argument?
-  (http/post-uri [:body] (apply build-ressource-uri "graph" "edge" (remove-map args)) 
+  (http/post-uri [:body "edge"] (apply build-ressource-uri "graph" "edge" (remove-map args)) 
     (assoc edge "_key" edge-name "_from" vertex-from-name "_to" vertex-to-name) 
     (filter-out-map args)))
 
