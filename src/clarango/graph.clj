@@ -2,7 +2,7 @@
   (:require [clarango.core :as clarango.core]
             [clarango.utilities.http-utility :as http])
   (:use [clarango.utilities.core-utility :only [remove-map filter-out-map]]
-        [clarango.utilities.uri-utility :only [build-ressource-uri]]))
+        [clarango.utilities.uri-utility :only [build-ressource-uri connect-url-parts]]))
 
 (defn execute-traversal
   "Sends a traversal to the server to execute it.
@@ -78,9 +78,19 @@
   (http/post-uri [:body] (apply build-ressource-uri "graph" "vertex" (remove-map args)) vertex (filter-out-map args)))
 
 (defn get-vertex
-  "Gets a vertex."
-  []
-  nil)
+  "Gets a vertex.
+
+  Takes the document/vertex key as first argument. 
+
+  Takes optional a graph name and a db name as further arguments.
+  If omitted by user, the default graph and collection will be used.
+
+  Also optional as argument is another map containing further options:
+  {'rev' revision_id} (replace the single quotes with double quotes)
+  - rev is the document revision; if the current document revision_id does not match the given one, an error is thrown;
+  The option map might be passed in an arbitrary position after the first argument."
+  [key & args]
+  (http/get-uri [:body] (apply build-ressource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) (filter-out-map args)))
 
 (defn replace-vertex
   "Replaces a vertex."
