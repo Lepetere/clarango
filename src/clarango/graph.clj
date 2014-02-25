@@ -101,9 +101,20 @@
   nil)
 
 (defn delete-vertex
-  "Deletes a vertex."
-  []
-  nil)
+  "Deletes a vertex.
+
+  Takes the vertex key as first argument. 
+
+  Takes optional a graph name and a db name as further arguments.
+  If omitted by user, the default graph and collection will be used.
+
+  Also optional as argument is another map containing further options:
+  {'rev' revision_id, 'waitForSync' true/false} (replace the single quotes with double quotes)
+  - rev is the document revision; if the current document revision_id does not match the given one, an error is thrown;
+  - waitForSync meaning if the server response should wait until the action was saved to disk;
+  The option map might be passed in an arbitrary position after the first argument."
+  [key & args]
+  (http/delete-uri [:body] (apply build-ressource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) (filter-out-map args)))
 
 (defn get-vertices
   "Gets several vertices.
@@ -161,9 +172,20 @@
   nil)
 
 (defn delete-edge
-  "Deletes an edge."
-  []
-  nil)
+  "Deletes an edge.
+
+  Takes the edge key as first argument. 
+
+  Takes optional a graph name and a db name as further arguments.
+  If omitted by user, the default graph and collection will be used.
+
+  Also optional as argument is another map containing further options:
+  {'rev' revision_id, 'waitForSync' true/false} (replace the single quotes with double quotes)
+  - rev is the document revision; if the current document revision_id does not match the given one, an error is thrown;
+  - waitForSync meaning if the server response should wait until the action was saved to disk;
+  The option map might be passed in an arbitrary position after the first argument."
+  [key & args]
+  (http/delete-uri [:body] (apply build-ressource-uri "graph" (connect-url-parts "edge" key) (remove-map args)) (filter-out-map args)))
 
 (defn get-edges
   "Gets several edges.
