@@ -34,6 +34,8 @@
       (pprint (graph/update-edge {:additional "bla bli blubber blaaaaaaahhhh..." :data nil} "blubber-connection" {"keepNull" false}))
       (pprint (graph/replace-edge { :name "edgeNew" :aussage "Ich bin der neue hier"} "blubber-connection"))
       (pprint (graph/get-edge "blubber-connection"))
+      (pprint (graph/get-edges "vertex1" 10 10 true nil))
+      (pprint (graph/get-vertices "vertex1" 10 10 true nil))
       (pprint (graph/delete-edge "blubber-connection"))
       (pprint (graph/delete-vertex "vertex1"))))
   (pprint (graph/get-info "test-graph-1" "GraphTestDB"))
