@@ -40,6 +40,11 @@
   [collection-name]
   (change-value-in-connection! :collection-name collection-name))
 
+(defn set-default-graph!
+  "Sets a default graph."
+  [graph-name]
+  (change-value-in-connection! :graph-name graph-name))
+
 (defmacro with-connection
   "Dynamically rebinds the global connection map.
   Takes a body of code which will be executed in the context of this connection."
@@ -59,4 +64,11 @@
   Takes a body of code which will be executed in the context of this collection."
   [collection-name & body]
   `(binding [clarango-connection (assoc (get-connection) :collection-name ~collection-name)]
+     ~@body))
+
+(defmacro with-graph
+  "Dynamically rebinds the default graph value.
+  Takes a body of code which will be executed in the context of this graph."
+  [graph-name & body]
+  `(binding [clarango-connection (assoc (get-connection) :graph-name ~graph-name)]
      ~@body))

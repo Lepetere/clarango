@@ -2,7 +2,14 @@
 ;; The methods in this namespace are only intended for internal use.
 
 (ns clarango.utilities.uri-utility
-	(:use [clarango.utilities.core-utility :only [get-safe-connection-url get-default-db get-default-collection-name]]))
+	(:use [clarango.utilities.core-utility :only 
+    [get-safe-connection-url get-default-db get-default-collection-name get-default-graph-name]]))
+
+(defn get-default-collection-or-graph
+  "In case the type parameter is 'graph', returns the default graph that was set in core.
+  In all other cases returns the default collection."
+  [type]
+  (if (= type "graph") (get-default-graph-name) (get-default-collection-name)))
 
 (defn connect-url-parts
   "Builds a string out of different parts. Adds a '/' between the string parts if not present."
@@ -30,7 +37,7 @@
   ([type]
     (connect-url-parts (get-safe-connection-url) "_api/" type))
   ([type ressource-key]
-  	(connect-url-parts (get-safe-connection-url) "_db/" (get-default-db) "_api/" type (get-default-collection-name) ressource-key))
+  	(connect-url-parts (get-safe-connection-url) "_db/" (get-default-db) "_api/" type (get-default-collection-or-graph type) ressource-key))
   ([type ressource-key collection-name]
   	(connect-url-parts (get-safe-connection-url) "_db/" (get-default-db) "_api/" type collection-name ressource-key))
   ([type ressource-key collection-name db-name]

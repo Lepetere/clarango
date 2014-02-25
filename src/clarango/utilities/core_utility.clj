@@ -27,11 +27,19 @@
         (throw (Exception. "No connection set."))))
 
 (defn get-default-collection-name
-  "Gets the globally in clarango.core set collection id. If none is set, an exception is thrown."
+  "Gets the globally in clarango.core set collection name. If none is set, an exception is thrown."
   []
   (if (clarango.core/connection-set?) 
     (let [collection-name (:collection-name (clarango.core/get-connection))]
       (if (nil? collection-name) (throw (Exception. "No default collection set.")) collection-name)) 
+        (throw (Exception. "No connection set."))))
+
+(defn get-default-graph-name
+  "Gets the globally in clarango.core set graph name. If none is set, an exception is thrown."
+  []
+  (if (clarango.core/connection-set?) 
+    (let [graph-name (:graph-name (clarango.core/get-connection))]
+      (if (nil? graph-name) (throw (Exception. "No default graph set.")) graph-name)) 
         (throw (Exception. "No connection set."))))
 
 (defn remove-map
