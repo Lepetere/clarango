@@ -16,6 +16,7 @@ The expected roadmap is:
 * AQL queries (see [query namespace](https://github.com/edlich/clarango/blob/master/src/clarango/query.clj))
 * collection management (see [collection namespace](https://github.com/edlich/clarango/blob/master/src/clarango/collection.clj))
 * database management (see [database namespace](https://github.com/edlich/clarango/blob/master/src/clarango/database.clj))
+* graph functions (see [graph namespace](https://github.com/edlich/clarango/blob/master/src/clarango/graph.clj))
 * simple exception handling
 
 * experimental clojure idiomatic collection methods like `cla-assoc!` and `cla-conj!` (see [collection_ops.clj](https://github.com/edlich/clarango/blob/master/src/clarango/collection_ops.clj) for details)
