@@ -151,8 +151,8 @@
     -> 'error' meaning that an error is thrown if the given revision_id does not match the revision_id in the document
     -> 'last' meaning the document is still updated even if the given revision_id does not match the revision_id in the document
   The option map might be passed in an arbitrary position after the first two arguments."
-  [document & args]
-  (http/patch-uri [:body] (apply build-ressource-uri "document" (remove-map args)) document (filter-out-map args)))
+  [document-properties & args]
+  (http/patch-uri [:body] (apply build-ressource-uri "document" (remove-map args)) document-properties (filter-out-map args)))
 
 (defn update-by-example
   "Updates a document or a number of documents out of a collection by giving an example to match.
@@ -169,8 +169,8 @@
   - limit meaning the maximum amount of documents that will be updated
   - keepNull meaning if the key/value pair should be deleted in the document
   The option map might be passed in an arbitrary position after the first two arguments."
-  [document example & args]
-  (http/put-uri [:body] (build-ressource-uri "simple/update-by-example" nil nil) (merge {:example example :newValue document :collection (filter-out-collection-name args)} (filter-out-map args))))
+  [document-properties example & args]
+  (http/put-uri [:body] (build-ressource-uri "simple/update-by-example" nil nil) (merge {:example example :newValue document-properties :collection (filter-out-collection-name args)} (filter-out-map args))))
 
 (defn delete-by-key
   "Deletes a document by its id.
