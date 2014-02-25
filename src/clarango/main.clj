@@ -26,6 +26,8 @@
   (with-db "GraphTestDB"
     (with-graph "test-graph-1"
       (pprint (graph/create-vertex {:_key "vertex1", :data "blabla"}))
+      (pprint (graph/update-vertex {:newProperty "tolle Sache dat neue hier"} "vertex1"))
+      (pprint (graph/replace-vertex {:name "alles neu hier"} "vertex1"))
       (pprint (graph/get-vertex "vertex1"))
       (graph/create-vertex {:_key "vertex2", :data "blubber"})
       (pprint (graph/create-edge {:data "blubber-connection-data"} "blubber-connection" "vertex1" "vertex2"))

@@ -91,14 +91,38 @@
   (http/get-uri [:body "vertex"] (apply build-ressource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) (filter-out-map args)))
 
 (defn replace-vertex
-  "Replaces a vertex."
-  []
-  nil)
+  "Replaces a vertex.
+
+  First argument: A map containing the new vertex.
+  Second argument: The vertex key.
+
+  Takes optional a graph name and a db name as further arguments.
+  If omitted by user, the default graph and collection will be used.
+
+  Also optional as argument is another map containing further options:
+  {'rev' revision_id, 'waitForSync' true/false} (replace the single quotes with double quotes)
+  - rev is the document revision; if the current document revision_id does not match the given one, an error is thrown;
+  - waitForSync meaning if the server response should wait until the action was saved to disk;
+  The option map might be passed in an arbitrary position after the first argument."
+  [vertex-properties key & args]
+  (http/put-uri [:body "vertex"] (apply build-ressource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) vertex-properties (filter-out-map args)))
 
 (defn update-vertex
-  "Updates a vertex."
-  []
-  nil)
+  "Updates a vertex.
+
+  First argument: A map containing the new vertex properties.
+  Second argument: The vertex key.
+
+  Takes optional a graph name and a db name as further arguments.
+  If omitted by user, the default graph and collection will be used.
+
+  Also optional as argument is another map containing further options:
+  {'rev' revision_id, 'waitForSync' true/false} (replace the single quotes with double quotes)
+  - rev is the document revision; if the current document revision_id does not match the given one, an error is thrown;
+  - waitForSync meaning if the server response should wait until the action was saved to disk;
+  The option map might be passed in an arbitrary position after the first argument."
+  [vertex-properties key & args]
+  (http/patch-uri [:body "vertex"] (apply build-ressource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) vertex-properties (filter-out-map args)))
 
 (defn delete-vertex
   "Deletes a vertex.
