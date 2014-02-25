@@ -29,6 +29,8 @@
       (pprint (graph/get-vertex "vertex1"))
       (graph/create-vertex {:_key "vertex2", :data "blubber"})
       (pprint (graph/create-edge {:data "blubber-connection-data"} "blubber-connection" "vertex1" "vertex2"))
+      (pprint (graph/update-edge {:additional "bla bli blubber blaaaaaaahhhh..."} "blubber-connection"))
+      (pprint (graph/replace-edge { :name "edgeNew" :aussage "Ich bin der neue hier"} "blubber-connection"))
       (pprint (graph/get-edge "blubber-connection"))
       (pprint (graph/delete-edge "blubber-connection"))
       (pprint (graph/delete-vertex "vertex1"))))
