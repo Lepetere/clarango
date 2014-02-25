@@ -7,18 +7,26 @@
 (defn execute-traversal
   "Sends a traversal to the server to execute it.
 
-  Takes as first argument the document handle of the vertex to start the traversal.
+  First argument: The key of the start vertex.
+  Second argument: The name of the collection that contains the vertices.
+  Third argument: The name of the collection that contains the edges.
+  Fourth argument: The direction of the traversal. Must be either 'outbound', 'inbound' or 'any'. 
+  Can be nil if the 'expander' attribute is set in the additional options.
 
-  Takes optionally a collection name and a db name as further arguments.
-  The collection must be an edge collection to perform the traversal on.
-  If omitted by user, the default db and collection will be used.
+  Takes optionally a database name as further argument.
+  If omitted by user, the default database will be used.
 
   Also optional as argument is another map containing further options for the traversal:
-  {}
-  - ... see http://www.arangodb.org/manuals/current/HttpTraversals.html#HttpTraversalsPost
-  The option map might be passed in an arbitrary position after the first two arguments."
-  [start-vertex & args]
-  nil)
+  {'filter' {...}, 'expander' code}
+  - see http://www.arangodb.org/manuals/current/HttpTraversals.html#HttpTraversalsPost
+
+  The option map might be passed in an arbitrary position after the first four arguments."
+  [start-vertex vertex-collection edges-collection direction & args]
+  (let [body {"startVertex" (str vertex-collection "/" start-vertex) "edgeCollection" edges-collection}
+        body-with-direction (if (nil? direction) body (assoc body "direction" direction))]
+    (http/post-uri [:body] (apply build-ressource-uri "traversal" nil nil (remove-map args)) 
+        body-with-direction
+        (filter-out-map args))))
 
 (defn create
   "Creates a new graph.

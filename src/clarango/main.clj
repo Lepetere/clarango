@@ -36,6 +36,7 @@
       (pprint (graph/get-edge "blubber-connection"))
       (pprint (graph/get-edges "vertex1" 10 10 true nil))
       (pprint (graph/get-vertices "vertex1" 10 10 true nil))
+      (pprint (graph/execute-traversal "vertex1" "vertices1" "edges1" "outbound"))
       (pprint (graph/delete-edge "blubber-connection"))
       (pprint (graph/delete-vertex "vertex1"))))
   (pprint (graph/get-info "test-graph-1" "GraphTestDB"))
