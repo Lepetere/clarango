@@ -83,8 +83,9 @@
   ;; Should he just pass it in the json document? or allow it as optional argument?
   (http/post-uri [:body] (apply build-ressource-uri "document/?collection=" nil (remove-map args)) document (filter-out-map args)))
 
-(defn create-multi
-  "Creates multiple documents at a time.
+(defn- create-multi
+  "THIS METHOD DOES NOT WORK YET!
+  Creates multiple documents at a time.
 
   First argument is a vector of documents.
 
