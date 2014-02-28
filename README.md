@@ -23,7 +23,7 @@ Clarango is work in progress. The current Version is 0.3.0. We expect V 1.0 in l
 
 The driver is hosted on [Clojars](https://clojars.org/clarango). Add this Leiningen dependency to your project.clj:
 ```
-[clarango "0.2.2"]
+[clarango "0.3.0"]
 ```
 Then require the lib in your clojure file. For example:
 ``` Clojure
