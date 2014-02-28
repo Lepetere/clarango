@@ -13,6 +13,35 @@
 ;; DEMO to call lein run and test it without the lib usage
 (defn -main []
 
+  ;;;; comprehensive usage example
+  ;; connect to localhost
+  ;; create Database "test-DB"
+  ;; create Collection "test-collection"
+  ;; document CRUD -> create :name "some test document" :additional "some additional info" :name "new version of test document"
+  ;; set-db "test-DB"
+  ;; collection ops : assoc, dissoc, conj
+  ;; list all documents
+
+  ;; create another Database "GraphTestDB"
+  ;; list all databases
+  ;; with-db "test-DB"
+  ;; create vertex and edge collections "people", "connections"
+  ;; list all collections
+  ;; create graph
+  ;; get all graphs
+  ;; with-graph
+  ;; create vertices "Peter", "Bob", "Clara", "Jessica", "Alice" with :ages
+  ;; perform query: find all persons who are older than 25
+  ;; create edges with labels "friend", "boyfriend", "girlfriend"
+  ;; get vertices
+  ;; update edge :description "Peter and Alice have been friends for over 6 years."
+  ;; get edges
+  ;; execute traversal
+  ;; delete one vertex
+  ;; delete one edge
+  ;; delete collections
+  ;; delete "GraphTestDB"
+
   ;;; http batch request debugging
   (clarango.core/set-connection! {:connection-url "http://localhost:8529/", :db-name "_system"})
   (println "\n\ntest query methods:\n")
@@ -43,14 +72,12 @@
   (pprint (database/get-all-graphs "GraphTestDB")))
   (pprint (graph/delete "test-graph-1" "GraphTestDB"))
 
-  #_(pprint (document/create-multi [{:name "test1"} {:name "test2"} {:name "test3"} {:name "test4"} {:name "test5"}] "test-collection" "_system"))
   #_(
   ;;; test collection methods
   (println "\n\ntest collection methods:\n")
   (clarango.core/set-connection!)
   (pprint (collection/create "test-collection" "_system"))
   (pprint (document/create {:name "test"} "test-collection" "_system"))
-  #_(pprint (document/create-multi [{:name "test1"} {:name "test2"} {:name "test3"} {:name "test4"} {:name "test5"}] "test-collection" "_system"))
   (pprint (collection/load {"count" false} "test-collection"))
   (pprint (collection/get-all-documents "test-collection"))
   (pprint (collection/get-extended-info-figures "test-collection"))
