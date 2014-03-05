@@ -173,6 +173,8 @@
   "Creates a new edge.
 
   First argument: A map that represents the edge.
+  If you want to specify a key by yourself, add it as the :_key parameter to the edge map. 
+  If you would like the key to be created automatically, just leave this parameter out.
   If you optionally want to specify a label for the edge, you can add it as the :$label parameter to the edge map.
 
   Second argument: The name of the edge to be created.
@@ -186,11 +188,11 @@
   {'waitForSync' true/false} (replace the single quotes with double quotes)
   - waitForSync meaning if the server response should wait until the edge is saved to disk;
   The option map might be passed in an arbitrary position after the first four arguments."
-  [edge edge-name vertex-from-name vertex-to-name & args]
+  [edge vertex-from-name vertex-to-name & args]
   ;; what about the document key if the user desires to specify it by himself? 
   ;; Should he just pass it in the json document? or allow it as optional argument?
   (http/post-uri [:body "edge"] (apply build-ressource-uri "graph" "edge" (remove-map args)) 
-    (assoc edge "_key" edge-name "_from" vertex-from-name "_to" vertex-to-name) 
+    (assoc edge "_from" vertex-from-name "_to" vertex-to-name) 
     (filter-out-map args)))
 
 (defn get-edge
