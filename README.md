@@ -2,10 +2,9 @@
 Clarango: a Clojure driver for ArangoDB
 ========
 
-work in progress... please contact the two repository owners
-
-The expected roadmap is:
-* Late 2014: stable 1.0 with management / admin, graph, ... and all the features exposed by the REST API.
+Clarango is work in progress. The current Version is 0.3.0. We expect V 1.0 in late 2014 with a full stable API and all the missing functionality. Also have a look at:
+* the [Clarango Website](http://edlich.github.io/clarango/)
+* the [API overview](http://edlich.github.io/clarango/codox/index.html) of V 0.3.0
 
 ## Features
 
@@ -16,22 +15,20 @@ The expected roadmap is:
 * AQL queries (see [query namespace](https://github.com/edlich/clarango/blob/master/src/clarango/query.clj))
 * collection management (see [collection namespace](https://github.com/edlich/clarango/blob/master/src/clarango/collection.clj))
 * database management (see [database namespace](https://github.com/edlich/clarango/blob/master/src/clarango/database.clj))
+* graph functions (see [graph namespace](https://github.com/edlich/clarango/blob/master/src/clarango/graph.clj))
 * simple exception handling
-
 * experimental clojure idiomatic collection methods like `cla-assoc!` and `cla-conj!` (see [collection_ops.clj](https://github.com/edlich/clarango/blob/master/src/clarango/collection_ops.clj) for details)
-
-...
 
 ## Installation
 
-The driver is hosted on [Clojars](https://clojars.org/clarango). Add this Leiningen dependency to your project.clj (no stable release available yet):
+The driver is hosted on [Clojars](https://clojars.org/clarango). Add this Leiningen dependency to your project.clj:
 ```
-[clarango "0.2.1"]
+[clarango "0.3.0"]
 ```
-Then require the lib in your clojure file:
+Then require the lib in your clojure file. For example:
 ``` Clojure
-(:require [clarango.core :as clarango.core]
-			[clarango.document :as document])
+(:require [clarango.core :as clacore]
+			[clarango.database :as database])
 ```
 
 ## Usage
@@ -90,10 +87,6 @@ create/replace/update/delete document:
   ;; delete document
   (document/delete-by-key new-key))
 ```
-
-## Feedback
-
-...
 
 ## License
 
