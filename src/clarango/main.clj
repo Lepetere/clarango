@@ -58,7 +58,7 @@
   (pprint (collection/delete "new-name-test-collection"))
 
 
-  ;;; now create a graph, perform some graph operations and query it's vertices
+  ;;; now create a graph, query it's vertices and perform some graph operations including a traversal
 
   ;; first create another Database "GraphTestDB"
   (database/create "GraphTestDB" [])
@@ -104,10 +104,10 @@
         (pprint (graph/get-edges "peter" 10 10 true nil))
         ;; execute a graph traversal
         (pprint (graph/execute-traversal "peter" "people" "connections" "inbound"))
-        ;; delete one vertex
-        (pprint (graph/delete-vertex "peter"))
         ;; delete one edge
-        #_(pprint (graph/delete-edge edge-key))))
+        (pprint (graph/delete-edge edge-key))
+        ;; delete one vertex
+        (pprint (graph/delete-vertex "peter"))))
     ;; delete the graph
     (pprint (graph/delete "test-graph")))
   
