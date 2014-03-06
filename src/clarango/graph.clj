@@ -24,7 +24,7 @@
   [start-vertex vertex-collection edges-collection direction & args]
   (let [body {"startVertex" (str vertex-collection "/" start-vertex) "edgeCollection" edges-collection}
         body-with-direction (if (nil? direction) body (assoc body "direction" direction))]
-    (http/post-uri [:body] (apply build-ressource-uri "traversal" nil nil (remove-map args)) 
+    (http/post-uri [:body "result" "visited"] (apply build-ressource-uri "traversal" nil nil (remove-map args)) 
         body-with-direction
         (filter-out-map args))))
 
