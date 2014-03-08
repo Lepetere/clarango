@@ -1,7 +1,5 @@
 (ns clarango.database
-  (:require [clarango.core :as clarango.core]
-            [clarango.utilities.core-utility :as core-utility]
-            [clarango.utilities.http-utility :as http])
+  (:require [clarango.utilities.http-utility :as http])
   (:use [clarango.utilities.core-utility :only [remove-map filter-out-map]]
         [clarango.utilities.uri-utility :only [build-ressource-uri]]))
 
