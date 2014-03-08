@@ -2,7 +2,7 @@
 Clarango: a Clojure driver for ArangoDB
 ========
 
-Clarango is work in progress. The current Version is 0.3.0. We expect V 1.0 in late 2014 with a full stable API and all the missing functionality. Also have a look at:
+Clarango is work in progress. The current Version is 0.3.1. We expect V 1.0 in late 2014 with a full stable API and all the missing functionality. Also have a look at:
 * the [Clarango Website](http://edlich.github.io/clarango/)
 * the [API overview](http://edlich.github.io/clarango/codox/index.html) of V 0.3.0
 
@@ -23,7 +23,7 @@ Clarango is work in progress. The current Version is 0.3.0. We expect V 1.0 in l
 
 The driver is hosted on [Clojars](https://clojars.org/clarango). Add this Leiningen dependency to your project.clj:
 ```
-[clarango "0.3.0"]
+[clarango "0.3.1"]
 ```
 Then require the lib in your clojure file. For example:
 ``` Clojure
