@@ -1,6 +1,5 @@
 (ns clarango.main
 	(:require [clarango.core :as cla-core]
-      [clarango.utilities.core-utility :as core-utility]
 				[clarango.collection :as collection]
 				[clarango.document :as document]
         [clarango.database :as database]
@@ -17,7 +16,7 @@
   ;;;; it tries to make use of all methods available in Clarango, but sometimes methods are left out if they are 
   ;;;; very similar to methods already used
 
-  ;;; first create a database and a collection and make some document CRUD
+  (println "\nfirst create a database and a collection and make some document CRUD\n")
 
   ;; connect to defaults: localhost and port 8529
   (cla-core/set-connection!)
@@ -32,8 +31,7 @@
   (pprint (document/replace-by-example {:name "new version of our test document"} {:additional "some additional info"} "test-collection" "test-DB"))
   
 
-  ;;; now make use of the clojure idiomatic methods available in the namespace collection-ops 
-  ;;; to add and delete more content in the collection
+  (println "\nnow make use of the clojure idiomatic methods available in the namespace collection-ops to add and delete more content in the collection\n")
 
   ;; set default DB; this database will be used in the following methods without explicitely having to pass it
   (cla-core/set-default-db! "test-DB")
@@ -44,7 +42,7 @@
   (pprint (cla-dissoc! "test-collection" "new-document-1"))
 
 
-  ;;; modify the collection
+  (println "\nmodify the collection\n")
 
   ;; get information about the collection and a list of all documents inside it
   (pprint (collection/get-info "test-collection"))
@@ -58,7 +56,7 @@
   (pprint (collection/delete "new-name-test-collection"))
 
 
-  ;;; now create a graph, query it's vertices and perform some graph operations including a traversal
+  (println "\nnow create a graph, query it's vertices and perform some graph operations including a traversal\n")
 
   ;; first create another Database "GraphTestDB"
   (database/create "GraphTestDB" [])
@@ -84,8 +82,7 @@
       (graph/create-vertex {:_key "jessica" :name "Jessica" :age 23})
       (graph/create-vertex {:_key "alice" :name "Alice" :age 20})
 
-      ;;; perform query: find all people who are older than 24
-      ;; first validate the query, then explain (how the query would be executed on the server), then actually execute it
+      (println "\nperform query: find all people who are older than 24\nfirst validate the query, then explain (how the query would be executed on the server), then actually execute it\n")
       (pprint (query/validate "FOR p IN people FILTER p.age > 24 RETURN p"))
       (pprint (query/explain "FOR p IN people FILTER p.age > 24 RETURN p"))
       (pprint (query/execute "FOR p IN people FILTER p.age > 24 RETURN p"))
