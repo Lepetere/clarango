@@ -3,8 +3,9 @@ Clarango: a Clojure driver for ArangoDB
 ========
 
 Clarango is work in progress. The current Version is 0.3.1. We expect V 1.0 in late 2014 with a full stable API and all the missing functionality. Also have a look at:
-* the [Clarango Website](http://edlich.github.io/clarango/)
 * the [API overview](http://edlich.github.io/clarango/codox/index.html) of V 0.3.0
+* some examples [here](https://github.com/edlich/clarango/blob/development/src/clarango/main.clj)
+* downloadable pdf documentation [book](https://leanpub.com/clarango) (available soon)
 
 ## Features
 
