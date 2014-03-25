@@ -24,5 +24,5 @@
   (coll/delete "testcoll")
   (db/delete "testdb")
   (println ">>> Finished CRUD!")
-  (println "CONNECTION=" (cla-core/get-connection)) (Thread/sleep 4000)
+  (println "CONNECTION=" (cla-core/get-connection))
 )
