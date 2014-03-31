@@ -7,6 +7,8 @@ Clarango is work in progress. The current Version is 0.3.1. We expect V 1.0 in l
 * some examples [here](https://github.com/edlich/clarango/blob/development/src/clarango/main.clj)
 * downloadable pdf documentation [book](https://leanpub.com/clarango) (available soon)
 
+The library has not yet been tested against Arango >= 2.0.0
+
 ## Features
 
 * various options for connecting
