@@ -1,4 +1,4 @@
-<img src="https://travis-ci.org/edlich/clarango.png?branch=master" alt="travis-ci.org Build Status" title="Build Status" align="right" />
+<!-- img src="https://travis-ci.org/edlich/clarango.png?branch=master" alt="travis-ci.org Build Status" title="Build Status" align="right" /-->
 Clarango: a Clojure driver for ArangoDB
 ========
 
