@@ -91,6 +91,10 @@ create/replace/update/delete document:
   (document/delete-by-key new-key))
 ```
 
+## Bugs
+
+If you find bugs or are missing a feature open an issue or feel free to pull request!
+
 ## License
 
 Licensed under the [Apache Public License 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
