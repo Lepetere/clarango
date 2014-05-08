@@ -4,7 +4,7 @@
         [clarango.utilities.uri-utility :only [build-resource-uri connect-url-parts]]))
 
 (defn execute-traversal
-  "Sends a traversal to the server to execute it.
+  "Sends a traversal to the server to execute it. Output are vertices and edges.
 
   First argument: The key of the start vertex.
   Second argument: The name of the collection that contains the vertices.
@@ -26,6 +26,44 @@
     (http/post-uri [:body "result" "visited"] (apply build-resource-uri "traversal" nil nil (remove-map args)) 
         body-with-direction
         (filter-out-map args))))
+
+(defn execute-vertex-traversal
+  "Executes a traversal on vertices only.
+  Depending on the batch size returns a cursor with the vertex data.
+
+  First argument: The key of the start vertex.
+  Second argument: The batch size of the returned cursor.
+  Third argument: The result size.
+  Fourth argument: An optional filter for the results. If you don't want to use it, just pass nil here.
+  For details on the filter see http://www.arangodb.org/manuals/current/HttpGraph.html#A_JSF_POST_graph_vertices
+
+  Takes optional a graph name and a db name as further arguments.
+  If omitted by user, the default graph and collection will be used."
+  [key batch-size limit count filter & args]
+  (let [body {"batchSize" batch-size "limit" limit "count" count}
+        body-with-filter (if (nil? filter) body (assoc body "filter" filter))]
+    (http/post-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "vertices" key) (remove-map args)) 
+      body-with-filter
+      (filter-out-map args))))
+
+(defn execute-edge-traversal
+  "Executes a traversal on edges only.
+  Depending on batch size returns a cursor with the edge data.
+
+  First argument: The key of the start edge.
+  Second argument: The batch size of the returned cursor.
+  Third argument: The result size.
+  Fourth argument: An optional filter for the results. If you don't want to use it, just pass nil here.
+  For details on the filter see http://www.arangodb.org/manuals/current/HttpGraph.html#A_JSF_POST_graph_edges
+
+  Takes optional a graph name and a db name as further arguments.
+  If omitted by user, the default graph and collection will be used."
+  [key batch-size limit count filter & args]
+  (let [body {"batchSize" batch-size "limit" limit "count" count}
+        body-with-filter (if (nil? filter) body (assoc body "filter" filter))]
+    (http/post-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "edges" key) (remove-map args)) 
+      body-with-filter
+      (filter-out-map args))))
 
 (defn create
   "Creates a new graph.
@@ -149,25 +187,6 @@
   [key & args]
   (http/delete-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) (filter-out-map args)))
 
-(defn get-vertices
-  "Gets several vertices.
-  Depending on batch size returns a cursor.
-
-  First argument: The key of the start vertex.
-  Second argument: The batch size of the returned cursor.
-  Third argument: The result size.
-  Fourth argument: An optional filter for the results. If you don't want to use it, just pass nil here.
-  For details on the filter see http://www.arangodb.org/manuals/current/HttpGraph.html#A_JSF_POST_graph_vertices
-
-  Takes optional a graph name and a db name as further arguments.
-  If omitted by user, the default graph and collection will be used."
-  [key batch-size limit count filter & args]
-  (let [body {"batchSize" batch-size "limit" limit "count" count}
-        body-with-filter (if (nil? filter) body (assoc body "filter" filter))]
-    (http/post-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "vertices" key) (remove-map args)) 
-      body-with-filter
-      (filter-out-map args))))
-
 (defn create-edge
   "Creates a new edge.
 
@@ -260,22 +279,3 @@
   The option map might be passed in an arbitrary position after the first argument."
   [key & args]
   (http/delete-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "edge" key) (remove-map args)) (filter-out-map args)))
-
-(defn get-edges
-  "Gets several edges.
-  Depending on batch size returns a cursor.
-
-  First argument: The key of the start edge.
-  Second argument: The batch size of the returned cursor.
-  Third argument: The result size.
-  Fourth argument: An optional filter for the results. If you don't want to use it, just pass nil here.
-  For details on the filter see http://www.arangodb.org/manuals/current/HttpGraph.html#A_JSF_POST_graph_edges
-
-  Takes optional a graph name and a db name as further arguments.
-  If omitted by user, the default graph and collection will be used."
-  [key batch-size limit count filter & args]
-  (let [body {"batchSize" batch-size "limit" limit "count" count}
-        body-with-filter (if (nil? filter) body (assoc body "filter" filter))]
-    (http/post-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "edges" key) (remove-map args)) 
-      body-with-filter
-      (filter-out-map args))))
