@@ -73,23 +73,14 @@
   (loop [new-map map keywords keyword-vec]
     (if (empty? keywords) new-map (recur (parse-if-possible (get new-map (first keywords))) (rest keywords)))))
 
-(defn- filter-response
-  "Filters a HTTP response with given instruction. Also applies cheshires parse-string method where possible.
-
-  Pass the response JSON as first argument.
-  The second argument has to be a map with of the form:
-  {:parse-string true/false :keywords [:keyword1 :keyword2...]}"
-  [response filter-keys]
-  (incremental-keyword-lookup response filter-keys))
-
 (defn- send-request [method response-keys uri body params]
   (if (console-output-activated?) (println (get-uppercase-string-for-http-method method) " connection address: " uri))
   (try (let [ map-with-body (if (nil? body) {} {:body (generate-string body)})
               response (http/request (merge {:method method :url uri :debug (http-debugging-activated?) :query-params params} map-with-body))
-              filtered-response (filter-response response response-keys)]
+              filtered-response (incremental-keyword-lookup response response-keys)]
             (if (type-output-activated?) (println (type filtered-response)))
             ;; append the original server response (filtered only one level, usually :body) as metadata
-            (with-meta filtered-response (filter-response response [(first response-keys)])))
+            (with-meta filtered-response (incremental-keyword-lookup response [(first response-keys)])))
         (catch Exception e (handle-error e))))
 
 (defn- build-multipart-vector
