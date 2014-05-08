@@ -1,7 +1,7 @@
 (ns clarango.query
   (:require [clarango.utilities.http-utility :as http])
   (:use [clarango.utilities.core-utility :only [remove-map filter-out-map]]
-        [clarango.utilities.uri-utility :only [build-ressource-uri]]))
+        [clarango.utilities.uri-utility :only [build-resource-uri]]))
 
 (defn explain
   "Explains how a query would be executed on the server. Returns an execution plan for the query.
@@ -16,7 +16,7 @@
   	(let [body {"query" query-string}
   		  bind-vars (filter-out-map args)
   		  body-bind-vars (if (nil? bind-vars) body (merge body {"bindVars" bind-vars}))]
-  	  (http/post-uri [:body "plan"] (apply build-ressource-uri "explain" nil nil (remove-map args)) body-bind-vars)))
+  	  (http/post-uri [:body "plan"] (apply build-resource-uri "explain" nil nil (remove-map args)) body-bind-vars)))
 
 (defn validate
   "Validates a query without executing it.
@@ -25,7 +25,7 @@
 
   Takes as only argument the query string to be evaluated."
   [query-string]
-  (http/post-uri [:body] (build-ressource-uri "query") {"query" query-string}))
+  (http/post-uri [:body] (build-resource-uri "query") {"query" query-string}))
 
 (defn execute
   "Executes a query.
@@ -44,7 +44,7 @@
     (let [body {"query" query-string}
         bind-vars (filter-out-map args)
         body-bind-vars (if (nil? bind-vars) body (merge body {"bindVars" bind-vars}))]
-      (http/post-uri [:body] (apply build-ressource-uri "cursor" nil nil (remove-map args)) body-bind-vars)))
+      (http/post-uri [:body] (apply build-resource-uri "cursor" nil nil (remove-map args)) body-bind-vars)))
 
 (defn execute-count
   "Executes a query. Takes also the options 'batch-size' and 'count'.
@@ -70,7 +70,7 @@
     (let [body {"query" query-string, "batchSize" batch-size, "count" count}
         bind-vars (filter-out-map args)
         body-bind-vars (if (nil? bind-vars) body (merge body {"bindVars" bind-vars}))]
-      (http/post-uri [:body] (apply build-ressource-uri "cursor" nil nil (remove-map args)) body-bind-vars)))
+      (http/post-uri [:body] (apply build-resource-uri "cursor" nil nil (remove-map args)) body-bind-vars)))
 
 (defn get-more-results
   "This method gets the remaining results of a query. More results to a query are available if the return value of the
@@ -82,7 +82,7 @@
 
   Optionally you can pass a database name. If omitted, the default db will be used."
   [cursor-id & args]
-  (http/put-uri [:body] (apply build-ressource-uri "cursor" cursor-id nil args)))
+  (http/put-uri [:body] (apply build-resource-uri "cursor" cursor-id nil args)))
 
 (defn delete-cursor
   "This method deletes a cursor on the server.
@@ -94,4 +94,4 @@
 
   Optionally you can pass a database name. If omitted, the default db will be used."
   [cursor-id & args]
-  (http/delete-uri [:body] (apply build-ressource-uri "cursor" cursor-id nil args)))
+  (http/delete-uri [:body] (apply build-resource-uri "cursor" cursor-id nil args)))

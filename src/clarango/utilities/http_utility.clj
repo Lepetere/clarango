@@ -6,7 +6,7 @@
 		        [cheshire.core :refer :all])
   (:use [clojure.pprint]
         [clarango.utilities.core-utility :only [get-default-db get-default-collection-name]]
-        [clarango.utilities.uri-utility :only [build-ressource-uri]]))
+        [clarango.utilities.uri-utility :only [build-resource-uri]]))
 
 ;;; debug switches:
 (defn http-debugging-activated? []
@@ -19,7 +19,7 @@
 
 (defn console-output-activated? []
   "Switch that activates outputting the http method and url used for each http request."
-  true)
+  false)
 
 (defn- build-server-exception-string
   [error]
@@ -142,7 +142,7 @@
 
 (defn- build-content-map
   [bodies collection-name db-name]
-  (let [uri (build-ressource-uri "document/?collection=" nil collection-name db-name)] ; please note: the uri is so far only applicable for creating new documents
+  (let [uri (build-resource-uri "document/?collection=" nil collection-name db-name)] ; please note: the uri is so far only applicable for creating new documents
     (loop [bodiesvec bodies content-map []]
       (let [content-map-new (conj content-map {:uri uri :body (first bodiesvec) :method :post})]
         (if (not (empty? bodiesvec)) (recur (rest bodiesvec) content-map-new) content-map-new)))))

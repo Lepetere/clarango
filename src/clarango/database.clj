@@ -1,7 +1,7 @@
 (ns clarango.database
   (:require [clarango.utilities.http-utility :as http])
   (:use [clarango.utilities.core-utility :only [remove-map filter-out-map]]
-        [clarango.utilities.uri-utility :only [build-ressource-uri]]))
+        [clarango.utilities.uri-utility :only [build-resource-uri]]))
 
 (defn get-collection-info-list
   "Returns information about all collections in a database as a list.
@@ -12,7 +12,7 @@
   {'excludeSystem' true/false}
   - excludeSystem meaning whether or not the system collections should be excluded from the result."
   [& args]
-  (http/get-uri [:body "collections"] (apply build-ressource-uri "collection" nil nil (remove-map args)) (filter-out-map args)))
+  (http/get-uri [:body "collections"] (apply build-resource-uri "collection" nil nil (remove-map args)) (filter-out-map args)))
 
 (defn get-all-graphs
   "Gets a list of all existing graphs within the database.
@@ -20,7 +20,7 @@
   Can be called without arguments. In that case the default database will be used.
   Optionally you can pass a database name as argument."
   [& args]
-  (http/get-uri [:body "graphs"] (apply build-ressource-uri "graph" nil nil (remove-map args))))
+  (http/get-uri [:body "graphs"] (apply build-resource-uri "graph" nil nil (remove-map args))))
 
 (defn create
   "Creates a new database.
@@ -34,28 +34,28 @@
       - active: boolean flag indicating whether the user accout should be actived or not; default is true;
       - extra: an optional map of user information that will be saved, but not interpreted by ArangoDB"
   [database-name users]
-  (http/post-uri [:body] (build-ressource-uri "database" nil nil "_system") {:name database-name :users users}))
+  (http/post-uri [:body] (build-resource-uri "database" nil nil "_system") {:name database-name :users users}))
 
 (defn delete
   "Deletes a database.
 
   Expects the database name of the database to be dropped as argument."
   [database-name]
-  (http/delete-uri [:body] (build-ressource-uri "database" database-name nil "_system")))
+  (http/delete-uri [:body] (build-resource-uri "database" database-name nil "_system")))
 
 (defn get-info-current
   "Returns information about the current database."
   []
-  (http/get-uri [:body "result"] (build-ressource-uri "database" "current" nil "_system")))
+  (http/get-uri [:body "result"] (build-resource-uri "database" "current" nil "_system")))
 
 (defn get-info-list
   "Returns a list of all existing databases."
   []
-  (http/get-uri [:body "result"] (build-ressource-uri "database" nil nil "_system")))
+  (http/get-uri [:body "result"] (build-resource-uri "database" nil nil "_system")))
 
 (defn get-info-user
   "Returns a list of all databases the current user can access.
 
   Note: this might not work under Windows."
   []
-  (http/get-uri [:body "result"] (build-ressource-uri "database" "user" nil "_system")))
+  (http/get-uri [:body "result"] (build-resource-uri "database" "user" nil "_system")))

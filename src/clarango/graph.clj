@@ -1,7 +1,7 @@
 (ns clarango.graph
   (:require [clarango.utilities.http-utility :as http])
   (:use [clarango.utilities.core-utility :only [remove-map filter-out-map]]
-        [clarango.utilities.uri-utility :only [build-ressource-uri connect-url-parts]]))
+        [clarango.utilities.uri-utility :only [build-resource-uri connect-url-parts]]))
 
 (defn execute-traversal
   "Sends a traversal to the server to execute it.
@@ -23,7 +23,7 @@
   [start-vertex vertex-collection edges-collection direction & args]
   (let [body {"startVertex" (str vertex-collection "/" start-vertex) "edgeCollection" edges-collection}
         body-with-direction (if (nil? direction) body (assoc body "direction" direction))]
-    (http/post-uri [:body "result" "visited"] (apply build-ressource-uri "traversal" nil nil (remove-map args)) 
+    (http/post-uri [:body "result" "visited"] (apply build-resource-uri "traversal" nil nil (remove-map args)) 
         body-with-direction
         (filter-out-map args))))
 
@@ -41,7 +41,7 @@
   {'waitForSync' true/false} (replace the single quotes with double quotes)
   - waitForSync meaning if the server response should wait until the graph has been to disk;"
   [graph-name vertices-collection edges-collection & args]
-  (http/post-uri [:body "graph"] (apply build-ressource-uri "graph" nil nil (remove-map args)) 
+  (http/post-uri [:body "graph"] (apply build-resource-uri "graph" nil nil (remove-map args)) 
     {"_key" graph-name, "vertices" vertices-collection, "edges" edges-collection} 
     (filter-out-map args)))
 
@@ -53,7 +53,7 @@
 
   Optionally you can pass a database name as second argument. If omitted, the default db will be used."
   [graph-name & args]
-  (http/get-uri [:body "graph"] (apply build-ressource-uri "graph" graph-name nil (remove-map args))))
+  (http/get-uri [:body "graph"] (apply build-resource-uri "graph" graph-name nil (remove-map args))))
 
 (defn delete
   "Deletes a graph.
@@ -63,7 +63,7 @@
 
   Optionally you can pass a database name as second argument. If omitted, the default db will be used."
   [graph-name & args]
-  (http/delete-uri [:body] (apply build-ressource-uri "graph" graph-name nil (remove-map args))))
+  (http/delete-uri [:body] (apply build-resource-uri "graph" graph-name nil (remove-map args))))
 
 (defn create-vertex
   "Creates a vertex. 
@@ -80,7 +80,7 @@
   - waitForSync meaning if the server response should wait until the vertex is saved to disk;
   The option map might be passed in an arbitrary position after the first argument."
   [vertex & args]
-  (http/post-uri [:body "vertex"] (apply build-ressource-uri "graph" "vertex" (remove-map args)) vertex (filter-out-map args)))
+  (http/post-uri [:body "vertex"] (apply build-resource-uri "graph" "vertex" (remove-map args)) vertex (filter-out-map args)))
 
 (defn get-vertex
   "Gets a vertex.
@@ -95,7 +95,7 @@
   - rev is the document revision; if the current document revision_id does not match the given one, an error is thrown;
   The option map might be passed in an arbitrary position after the first argument."
   [key & args]
-  (http/get-uri [:body "vertex"] (apply build-ressource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) (filter-out-map args)))
+  (http/get-uri [:body "vertex"] (apply build-resource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) (filter-out-map args)))
 
 (defn replace-vertex
   "Replaces a vertex.
@@ -112,7 +112,7 @@
   - waitForSync meaning if the server response should wait until the action was saved to disk;
   The option map might be passed in an arbitrary position after the first argument."
   [vertex-properties key & args]
-  (http/put-uri [:body "vertex"] (apply build-ressource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) vertex-properties (filter-out-map args)))
+  (http/put-uri [:body "vertex"] (apply build-resource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) vertex-properties (filter-out-map args)))
 
 (defn update-vertex
   "Updates a vertex.
@@ -131,7 +131,7 @@
     if the argument map contains it with a null (nil) as value;
   The option map might be passed in an arbitrary position after the first argument."
   [vertex-properties key & args]
-  (http/patch-uri [:body "vertex"] (apply build-ressource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) vertex-properties (filter-out-map args)))
+  (http/patch-uri [:body "vertex"] (apply build-resource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) vertex-properties (filter-out-map args)))
 
 (defn delete-vertex
   "Deletes a vertex.
@@ -147,7 +147,7 @@
   - waitForSync meaning if the server response should wait until the action was saved to disk;
   The option map might be passed in an arbitrary position after the first argument."
   [key & args]
-  (http/delete-uri [:body] (apply build-ressource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) (filter-out-map args)))
+  (http/delete-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) (filter-out-map args)))
 
 (defn get-vertices
   "Gets several vertices.
@@ -164,7 +164,7 @@
   [key batch-size limit count filter & args]
   (let [body {"batchSize" batch-size "limit" limit "count" count}
         body-with-filter (if (nil? filter) body (assoc body "filter" filter))]
-    (http/post-uri [:body] (apply build-ressource-uri "graph" (connect-url-parts "vertices" key) (remove-map args)) 
+    (http/post-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "vertices" key) (remove-map args)) 
       body-with-filter
       (filter-out-map args))))
 
@@ -190,7 +190,7 @@
   [edge vertex-from-name vertex-to-name & args]
   ;; what about the document key if the user desires to specify it by himself? 
   ;; Should he just pass it in the json document? or allow it as optional argument?
-  (http/post-uri [:body "edge"] (apply build-ressource-uri "graph" "edge" (remove-map args)) 
+  (http/post-uri [:body "edge"] (apply build-resource-uri "graph" "edge" (remove-map args)) 
     (assoc edge "_from" vertex-from-name "_to" vertex-to-name) 
     (filter-out-map args)))
 
@@ -207,7 +207,7 @@
   - rev is the document revision; if the current document revision_id does not match the given one, an error is thrown;
   The option map might be passed in an arbitrary position after the first argument."
   [key & args]
-  (http/get-uri [:body "edge"] (apply build-ressource-uri "graph" (connect-url-parts "edge" key) (remove-map args)) (filter-out-map args)))
+  (http/get-uri [:body "edge"] (apply build-resource-uri "graph" (connect-url-parts "edge" key) (remove-map args)) (filter-out-map args)))
 
 (defn replace-edge
   "Replaces an edge.
@@ -224,7 +224,7 @@
   - waitForSync meaning if the server response should wait until the action was saved to disk;
   The option map might be passed in an arbitrary position after the first argument."
   [edge-properties key & args]
-  (http/put-uri [:body "edge"] (apply build-ressource-uri "graph" (connect-url-parts "edge" key) (remove-map args)) edge-properties (filter-out-map args)))
+  (http/put-uri [:body "edge"] (apply build-resource-uri "graph" (connect-url-parts "edge" key) (remove-map args)) edge-properties (filter-out-map args)))
 
 (defn update-edge
   "Updates an edge.
@@ -243,7 +243,7 @@
     if the argument map contains it with a null (nil) as value;
   The option map might be passed in an arbitrary position after the first argument."
   [edge-properties key & args]
-  (http/patch-uri [:body "edge"] (apply build-ressource-uri "graph" (connect-url-parts "edge" key) (remove-map args)) edge-properties (filter-out-map args)))
+  (http/patch-uri [:body "edge"] (apply build-resource-uri "graph" (connect-url-parts "edge" key) (remove-map args)) edge-properties (filter-out-map args)))
 
 (defn delete-edge
   "Deletes an edge.
@@ -259,7 +259,7 @@
   - waitForSync meaning if the server response should wait until the action was saved to disk;
   The option map might be passed in an arbitrary position after the first argument."
   [key & args]
-  (http/delete-uri [:body] (apply build-ressource-uri "graph" (connect-url-parts "edge" key) (remove-map args)) (filter-out-map args)))
+  (http/delete-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "edge" key) (remove-map args)) (filter-out-map args)))
 
 (defn get-edges
   "Gets several edges.
@@ -276,6 +276,6 @@
   [key batch-size limit count filter & args]
   (let [body {"batchSize" batch-size "limit" limit "count" count}
         body-with-filter (if (nil? filter) body (assoc body "filter" filter))]
-    (http/post-uri [:body] (apply build-ressource-uri "graph" (connect-url-parts "edges" key) (remove-map args)) 
+    (http/post-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "edges" key) (remove-map args)) 
       body-with-filter
       (filter-out-map args))))

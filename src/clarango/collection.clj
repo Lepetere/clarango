@@ -1,7 +1,7 @@
 (ns clarango.collection
   (:require [clarango.utilities.http-utility :as http])
   (:use [clarango.utilities.core-utility :only [remove-map filter-out-map]]
-        [clarango.utilities.uri-utility :only [build-ressource-uri]]))
+        [clarango.utilities.uri-utility :only [build-resource-uri]]))
 
 (defn get-all-documents
   "Returns a list with the URIs of all documents in the collection.
@@ -9,7 +9,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri [:body "documents"] (apply build-ressource-uri "document/?collection=" nil (remove-map args))))
+  (http/get-uri [:body "documents"] (apply build-resource-uri "document/?collection=" nil (remove-map args))))
 
 (defn get-info
   "Returns information about a collection.
@@ -17,7 +17,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri [:body] (apply build-ressource-uri "collection" nil (remove-map args)) (filter-out-map args)))
+  (http/get-uri [:body] (apply build-resource-uri "collection" nil (remove-map args)) (filter-out-map args)))
 
 (defn get-extended-info
   "Returns extended information about a collection. Forces a load of the collection.
@@ -25,7 +25,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri [:body] (apply build-ressource-uri "collection" "properties" (remove-map args)) (filter-out-map args)))
+  (http/get-uri [:body] (apply build-resource-uri "collection" "properties" (remove-map args)) (filter-out-map args)))
 
 (defn get-extended-info-count
   "Returns extended information about a collection including the number of documents in the collection.
@@ -34,7 +34,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri [:body] (apply build-ressource-uri "collection" "count" (remove-map args)) (filter-out-map args)))
+  (http/get-uri [:body] (apply build-resource-uri "collection" "count" (remove-map args)) (filter-out-map args)))
 
 (defn get-extended-info-figures
   "Returns extended information about a collection including detailed information about the documents in the collection.
@@ -43,7 +43,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri [:body] (apply build-ressource-uri "collection" "figures" (remove-map args)) (filter-out-map args)))
+  (http/get-uri [:body] (apply build-resource-uri "collection" "figures" (remove-map args)) (filter-out-map args)))
 
 (defn create
   "Creates a new collection.
@@ -71,7 +71,7 @@
       - increment is the increment value for the autoincrement key generator (optional)
       - offset is the initial offset value for the autoincrement key generator (optional)"
   [collection-name & args]
-  (http/post-uri [:body] (apply build-ressource-uri "collection" nil nil (remove-map args)) (merge {:name collection-name} (filter-out-map args))))
+  (http/post-uri [:body] (apply build-resource-uri "collection" nil nil (remove-map args)) (merge {:name collection-name} (filter-out-map args))))
 
 (defn truncate
   "Removes all documents from a collection, but leaves the indexes intact.
@@ -79,7 +79,7 @@
   Can be called without arguments. In that case the default collection from the default database will be truncated.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/put-uri [:body] (apply build-ressource-uri "collection" "truncate" args)))
+  (http/put-uri [:body] (apply build-resource-uri "collection" "truncate" args)))
 
 (defn delete
   "Deletes a collection.
@@ -87,7 +87,7 @@
   Takes the name of the collection to be deleted as first argument.
   Optionally you can pass a database name as second argument."
   [collection-name & args]
-  (http/delete-uri [:body] (apply build-ressource-uri "collection" nil collection-name args)))
+  (http/delete-uri [:body] (apply build-resource-uri "collection" nil collection-name args)))
 
 ;; Hides .../load -> Find a different name?
 (defn load
@@ -102,7 +102,7 @@
 
   The option map might be passed in an arbitrary position between the other arguments."
   [& args]
-  (http/put-uri [:body] (apply build-ressource-uri "collection" "load" (remove-map args)) (filter-out-map args)))
+  (http/put-uri [:body] (apply build-resource-uri "collection" "load" (remove-map args)) (filter-out-map args)))
 
 (defn unload
   "Removes a collection from the memory. On success a map containing collection properties is returned.
@@ -110,7 +110,7 @@
   Can be called without arguments. In that case the default collection from the default database will be truncated.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/put-uri [:body] (apply build-ressource-uri "collection" "unload" (remove-map args)) (filter-out-map args)))
+  (http/put-uri [:body] (apply build-resource-uri "collection" "unload" (remove-map args)) (filter-out-map args)))
 
 (defn modify-properties ;; or update-properties?
   "Modifies  the properties of a collection.
@@ -124,7 +124,7 @@
   - waitForSync meaning if the server response should wait until the document is saved to disk
   - journalSize is the size (in bytes) for new journal files that are created for the collection"
   [properties & args]
-  (http/put-uri [:body] (apply build-ressource-uri "collection" "properties" (remove-map args)) (filter-out-map args)))
+  (http/put-uri [:body] (apply build-resource-uri "collection" "properties" (remove-map args)) (filter-out-map args)))
 
 ;; Hides clojure.set/rename -> Find a different name?
 (defn rename
@@ -136,7 +136,7 @@
   Takes optional a db name as further argument.
   If omitted by user, the default db will be used."
   [new-name collection-name & args]
-  (http/put-uri [:body] (apply build-ressource-uri "collection" "rename" collection-name args) {:name new-name}))
+  (http/put-uri [:body] (apply build-resource-uri "collection" "rename" collection-name args) {:name new-name}))
 
 (defn rotate
   "Rotates the journal of a collection. 
@@ -146,4 +146,4 @@
   Can be called without arguments. In that case the default collection from the default database will be rotated.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/put-uri [:body] (apply build-ressource-uri "collection" "rotate" args)))
+  (http/put-uri [:body] (apply build-resource-uri "collection" "rotate" args)))
