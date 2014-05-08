@@ -66,7 +66,7 @@
   "Creates a document. 
 
   First argument: A map that represents the document. 
-  If you want to specify a key by yourself, add it as the :_key parameter to the document map. 
+  If you want to specify a key by yourself, add it as the :_key parameter to the document map or use method create-with-key. 
   If you would like the key to be created automatically, just leave this parameter out.
 
   Takes optional a collection name and a db name as further arguments.
@@ -78,9 +78,24 @@
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   The option map might be passed in an arbitrary position after the first argument."
   [document & args]
-  ;; what about the document key if the user desires to specify it by himself? 
-  ;; Should he just pass it in the json document? or allow it as optional argument?
   (http/post-uri [:body] (apply build-resource-uri "document/?collection=" nil (remove-map args)) document (filter-out-map args)))
+
+(defn create-with-key
+  "Creates a document with a given key.
+
+  First argument: A map that represents the document. 
+  Second argument: The key for the new document.
+
+  Takes optional a collection name and a db name as further arguments.
+  If omitted by user, the default db and collection will be used.
+
+  Also optional as argument is another map containing further options:
+  {'createCollection' true/false, 'waitForSync' true/false} (replace the single quotes with double quotes)
+  - createCollection meaning if the collection should be created if it does not exist yet;
+  - waitForSync meaning if the server response should wait until the document is saved to disk;
+  The option map might be passed in an arbitrary position after the first argument."
+  [document key & args]
+  (http/post-uri [:body] (apply build-resource-uri "document/?collection=" nil (remove-map args)) (assoc document :_key key) (filter-out-map args)))
 
 (defn- create-multi
   "THIS METHOD DOES NOT WORK YET!

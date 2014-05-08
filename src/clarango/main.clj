@@ -25,7 +25,7 @@
   (println "\ncreate Collection 'test-collection' in DB 'test-DB'")
   (pprint (collection/create "test-collection" "test-DB"))
   (println "\ndocument CRUD")
-  (pprint (document/create {:_key "test-doc" :name "some test document"} "test-collection" "test-DB"))
+  (pprint (document/create-with-key {:name "some test document"} "test-doc" "test-collection" "test-DB"))
   (pprint (document/update-by-key {:additional "some additional info"} "test-doc" "test-collection" "test-DB"))
   (pprint (document/get-by-key "test-doc" "test-collection" "test-DB"))
   (pprint (document/replace-by-example {:name "new version of our test document"} {:additional "some additional info"} "test-collection" "test-DB"))
