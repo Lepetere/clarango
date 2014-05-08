@@ -7,5 +7,4 @@
                  [clj-http "0.7.7"]
                  [cheshire "5.3.1"]]
   :plugins [[lein-marginalia "0.7.1"]]
-  :main clarango.main
  )
