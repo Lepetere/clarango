@@ -7,22 +7,21 @@ Clarango is a library to connect Clojure with the database [ArangoDB](http://www
 The current lib version on clojars is 0.3.2. The library should work with ArangoDB versions at least from 1.4.0 upwards (latest test was with version 2.0.6).
 
 For an overview of the features and how to use see below. For more detailed documentation also have a look at:
-* The [API overview](http://edlich.github.io/clarango/docs/uberdoc.html) of V 0.3.2
+* The [API overview](http://edlich.github.io/clarango/docs/uberdoc.html)
 * Some examples can be found [here](https://github.com/edlich/clarango/blob/development/src/clarango/main.clj)
 * A book as [pdf](https://leanpub.com/clarango) for printing / download or as [html readable online](https://leanpub.com/clarango/read)
 
 ## Features
 
-* various options for connecting
-* document CRUD including various options
-  -> for documentation on this see [document.clj](https://github.com/edlich/clarango/blob/master/src/clarango/document.clj)
-* querying by example
+* various options for connecting (see [core namespace](https://github.com/edlich/clarango/blob/master/src/clarango/core.clj))
+* document CRUD including various options (see [document namespace](https://github.com/edlich/clarango/blob/master/src/clarango/document.clj))
+* querying by example (see [document namespace](https://github.com/edlich/clarango/blob/master/src/clarango/document.clj))
 * AQL queries (see [query namespace](https://github.com/edlich/clarango/blob/master/src/clarango/query.clj))
 * collection management (see [collection namespace](https://github.com/edlich/clarango/blob/master/src/clarango/collection.clj))
 * database management (see [database namespace](https://github.com/edlich/clarango/blob/master/src/clarango/database.clj))
 * graph functions (see [graph namespace](https://github.com/edlich/clarango/blob/master/src/clarango/graph.clj))
 * simple exception handling
-* experimental clojure idiomatic collection methods like `cla-assoc!` and `cla-conj!` (see [collection_ops.clj](https://github.com/edlich/clarango/blob/master/src/clarango/collection_ops.clj) for details)
+* experimental clojure idiomatic collection methods like `cla-assoc!` and `cla-conj!` (see [collection-ops namespace](https://github.com/edlich/clarango/blob/master/src/clarango/collection_ops.clj) for details)
 
 ## Installation
 
@@ -43,7 +42,6 @@ Then require the lib in your clojure file. For example:
 (clacore/set-connection!)
 
 ;; pass a connection map
-
 (clacore/set-connection! 
   {
     :connection-url "http://localhost:8529/"
