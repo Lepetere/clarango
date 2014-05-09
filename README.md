@@ -32,7 +32,8 @@ The driver is hosted on [Clojars](https://clojars.org/clarango). Add this Leinin
 Then require the lib in your clojure file. For example:
 ``` Clojure
 (:require [clarango.core :as clacore]
-			[clarango.document :as document])
+			[clarango.document :as document]
+      [clarango.collection :as collection])
 ```
 
 ## Setting the Connection
@@ -59,15 +60,17 @@ The server url is mandatory. Default database and collection are optional.
 ## Document CRUD
 
 ```clojure
-;; create
-(document/create-with-key {:description "some test document"} "test-doc")
-;; read
-(document/get-by-key "test-doc")
-(document/get-by-example {:description "some test document"})
-;; update
-(document/update-by-key {:additional "some additional info"} "test-doc")
-;; delete
-(document/delete-by-key "test-doc")
+(collection/create "test-collection")
+(with-collection "test-collection"
+  ;; create
+  (document/create-with-key {:description "some test document"} "test-doc")
+  ;; read
+  (document/get-by-key "test-doc")
+  (document/get-by-example {:description "some test document"})
+  ;; update
+  (document/update-by-key {:additional "some additional info"} "test-doc")
+  ;; delete
+  (document/delete-by-key "test-doc"))
 
 ```
 
