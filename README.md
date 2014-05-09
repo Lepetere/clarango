@@ -2,7 +2,7 @@
 Clarango: a Clojure driver for ArangoDB
 ========
 
-Clarango is a library to connect Clojure with the database ArangoDB. Although it is work in progress, the parts which are already there are stable. 
+Clarango is a library to connect Clojure with the database [ArangoDB](http://www.arangodb.org/). Although it is work in progress, the parts which are already there are stable. 
 
 The current lib version on clojars is 0.3.2. The library should work with ArangoDB versions at least from 1.4.0 upwards (latest test was with version 2.0.6).
 
@@ -33,65 +33,47 @@ The driver is hosted on [Clojars](https://clojars.org/clarango). Add this Leinin
 Then require the lib in your clojure file. For example:
 ``` Clojure
 (:require [clarango.core :as clacore]
-			[clarango.database :as database])
+			[clarango.document :as document])
 ```
 
-## Usage
-
-Setting the databse connection and getting a document by existing key:
+## Setting the Connection
 
 ```clojure
-(clarango.core/set-connection! {:connection-url "http://localhost:8529/"})
-(clojure.pprint (document/get-by-key "document-key" "my-collection" "my-db"))
+;; connect to localhost and default port 8529
+(clacore/set-connection!)
 
-;; or
+;; pass a connection map
 
-(clarango.core/set-connection! 
+(clacore/set-connection! 
   {
     :connection-url "http://localhost:8529/"
     :db-name "my-db"
     :collection-name "my-collection"
     ; if you intend to work with graphs you can optionally add :graph-name "my-graph"
   })
-(clojure.pprint (document/get-by-key "document-key"))
 
-;; or
-
-(clarango.core/set-connection! {:connection-url "http://localhost:8529/"})
-(clarango.core/set-default-db! "my-db")
-(clojure.pprint (document/get-by-key "document-key" "my-collection"))
-
-;; or
-
-;; set default parameters: standart db and port 8529 on localhost
-(clarango.core/set-connection!)
-(clojure.pprint (document/get-by-key "document-key" "my-collection"))
+;; change default db
+(clacore/set-default-db! "my-db")
 ```
 
-create/replace/update/delete document:
+The server url is mandatory. Default database and collection are optional.
+
+## Document CRUD
 
 ```clojure
-(let [_ (clarango.core/set-connection! {
-        :connection-url "http://localhost:8529/"
-        :db-name "my-db"
-        :collection-name "my-collection" })
-      document {:name "awesome name" :city "where is he from?"}
-      ;; create document
-      result-doc (document/create document)
-      new-key (get result-doc "_key")]
-  (clojure.pprint result-doc)
+;; create
+(document/create-with-key {:description "some test document"} "test-doc")
+;; read
+(document/get-by-key "test-doc")
+(document/get-by-example {:description "some test document"})
+;; update
+(document/update-by-key {:additional "some additional info"} "test-doc")
+;; delete
+(document/delete-by-key "test-doc")
 
-  ;; replace document
-  (let [document-new {:name "even more awesome name" :city "from Berlin of course"}]
-    (clojure.pprint (document/replace-by-key document-new new-key)))
-
-  ;; update document
-  (let [document-update {:age "He's already 100 years old."}]
-    (clojure.pprint (document/update-by-key document-update new-key)))
-
-  ;; delete document
-  (document/delete-by-key new-key))
 ```
+
+All methods will use the default database and collection unless the names of different ones are passed as optional arguments. For a complete list of methods see the [API overview](http://edlich.github.io/clarango/docs/uberdoc.html)
 
 ## Bugs
 
