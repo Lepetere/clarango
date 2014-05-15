@@ -1,7 +1,8 @@
 ;; Please note:
 ;; The methods in this namespace are only intended for internal use.
 
-(ns clarango.utilities.core-utility)
+(ns clarango.utilities.core-utility
+  (:require [clarango.core :as clarango.core]))
 
 (defn get-connection-url
   "Gets the globally in clarango.core set connection url. If no url is set, an exception is thrown."
