@@ -22,6 +22,7 @@ For an overview of the features and how to use see below. For more detailed docu
 * graph functions (see [graph namespace](https://github.com/edlich/clarango/blob/master/src/clarango/graph.clj))
 * simple exception handling
 * experimental clojure idiomatic collection methods like `cla-assoc!` and `cla-conj!` (see [collection-ops namespace](https://github.com/edlich/clarango/blob/master/src/clarango/collection_ops.clj) for details)
+* admin and monitoring functions (see [admin namespace](https://github.com/edlich/clarango/blob/master/src/clarango/admin.clj))
 
 ## Installation
 
