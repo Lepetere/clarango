@@ -4,7 +4,8 @@
 				[clarango.document :as document]
         [clarango.database :as database]
         [clarango.query :as query]
-        [clarango.graph :as graph])
+        [clarango.graph :as graph]
+        [clarango.admin :as admin])
 	(:use clojure.pprint)
   (:use clarango.collection-ops)
   (:use clarango.core))
@@ -107,6 +108,19 @@
         (pprint (graph/delete-vertex "peter"))))
     (println "\ndelete the graph")
     (pprint (graph/delete "test-graph")))
+
+  (println "\nFlush:") ;; all admin functions now
+  (println (admin/flush))
+  (println "\nReload:")
+  (println (admin/reload))
+  (println "\nStatistics:")
+  (println (admin/statistics))
+  (println "\nStatistic descriptions:")
+  (println (admin/stat-desc))
+  (println "\nLog")
+  (println (admin/log {"upto" 4}))
+  (println "\nRole:") ; This is >= V2
+  (println (admin/role))
   
   (println "\ndelete databases")
   (pprint (database/delete "GraphTestDB"))
