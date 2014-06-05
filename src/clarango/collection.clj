@@ -147,3 +147,11 @@
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
   (http/put-uri [:body] (apply build-resource-uri "collection" "rotate" args)))
+
+(defn get-all-indexes
+  "Returns a list with the URIs of all indexes for the collection.
+
+  Can be called without arguments. In that case the default collection from the default database will be used.
+  Optionally you can pass a collection name as the first argument and a database name as the second argument."
+  [& args]
+  (http/get-uri [:body "indexes"](apply build-resource-uri "index/?collection=" nil (remove-map args))))
