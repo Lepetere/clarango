@@ -4,12 +4,12 @@
         [clarango.utilities.uri-utility :only [build-resource-uri]]))
 
 (defn get-by-key
-  "Returns information about an index
+  "Returns information about an index.
 
-   Takes the index key as its first argument.
+   First argument: The index key
 
    Optionally takes a db name as a further argument.
-   If omitted, the default db will be used"
+   If omitted, the default db will be used."
   [& args]
   (http/get-uri [:body] (apply build-resource-uri "index" nil (remove-map args)) (filter-out-map args)))
 
@@ -17,17 +17,19 @@
   "Create an index.
 
   First argument: A map that represents the index
+
   Optionally takes a collection name and a db name as further arguments.
-  If omitted, the default db and collection will be used"
+  If omitted, the default db and collection will be used."
   [index & args]
   (http/post-uri [:body] (apply build-resource-uri "index/?collection=" nil (remove-map args)) index (filter-out-map args)))
 
 (defn delete-by-key
-  "Deletes an index by its id.
+  "Deletes an index by its key.
 
-  First argument: the index id
+  First argument: The index key
+
   Optionally takes a db name as a further argument.
-  If omitted the default db will be used"
+  If omitted the default db will be used."
   [& args]
   (http/delete-uri [:body] (apply build-resource-uri "index" nil (remove-map args)) (filter-out-map args)))
 

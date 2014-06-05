@@ -149,7 +149,7 @@
   (http/put-uri [:body] (apply build-resource-uri "collection" "rotate" args)))
 
 (defn get-all-indexes
-  "Returns a list with the URIs of all indexes for the collection
+  "Returns a list with the URIs of all indexes for the collection.
 
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as the first argument and a database name as the second argument."
