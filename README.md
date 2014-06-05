@@ -13,16 +13,17 @@ For an overview of the features and how to use see below. For more detailed docu
 
 ## Features
 
-* various options for connecting (see [core namespace](https://github.com/edlich/clarango/blob/master/src/clarango/core.clj))
-* document CRUD including various options (see [document namespace](https://github.com/edlich/clarango/blob/master/src/clarango/document.clj))
-* querying by example (see [document namespace](https://github.com/edlich/clarango/blob/master/src/clarango/document.clj))
-* AQL queries (see [query namespace](https://github.com/edlich/clarango/blob/master/src/clarango/query.clj))
-* collection management (see [collection namespace](https://github.com/edlich/clarango/blob/master/src/clarango/collection.clj))
-* database management (see [database namespace](https://github.com/edlich/clarango/blob/master/src/clarango/database.clj))
-* graph functions (see [graph namespace](https://github.com/edlich/clarango/blob/master/src/clarango/graph.clj))
+* various options for connecting
+* document CRUD including various options
+* querying by example
+* AQL queries
+* collection management
+* database management
+* graph functions
+* admin and monitoring
+* index managing
+* experimental clojure idiomatic collection methods like `cla-assoc!` and `cla-conj!`
 * simple exception handling
-* experimental clojure idiomatic collection methods like `cla-assoc!` and `cla-conj!` (see [collection-ops namespace](https://github.com/edlich/clarango/blob/master/src/clarango/collection_ops.clj) for details)
-* admin and monitoring functions (see [admin namespace](https://github.com/edlich/clarango/blob/master/src/clarango/admin.clj))
 
 ## Installation
 
