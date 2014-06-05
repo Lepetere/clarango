@@ -110,17 +110,17 @@
     (pprint (graph/delete "test-graph")))
 
   (println "\nFlush:") ;; all admin functions now
-  (println (admin/flush))
+  (pprint (admin/flush))
   (println "\nReload:")
-  (println (admin/reload))
+  (pprint (admin/reload))
   (println "\nStatistics:")
-  (println (admin/statistics))
+  (pprint (admin/statistics))
   (println "\nStatistic descriptions:")
-  (println (admin/stat-desc))
+  (pprint (admin/stat-desc))
   (println "\nLog")
-  (println (admin/log {"upto" 4}))
+  (pprint (admin/log {"upto" 4}))
   (println "\nRole:") ; This is >= V2
-  (println (admin/role))
+  (pprint (admin/role))
   
   (println "\ndelete databases")
   (pprint (database/delete "GraphTestDB"))
