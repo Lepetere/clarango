@@ -11,6 +11,8 @@ For an overview of the features and how to use see below. For more detailed docu
 * Some examples can be found [here](https://github.com/edlich/clarango/blob/development/src/clarango/main.clj)
 * A book as [pdf](https://leanpub.com/clarango) for printing / download or as [html readable online](https://leanpub.com/clarango/read)
 
+![Alt Clarango Book](https://raw.githubusercontent.com/edlich/clarango/gh-pages/images/clarangoBook.png)
+
 ## Features
 
 * various options for connecting
