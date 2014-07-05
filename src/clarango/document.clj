@@ -95,6 +95,7 @@
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   The option map might be passed in an arbitrary position after the first argument."
   [document key & args]
+  {:pre [(= (type document) clojure.lang.PersistentArrayMap) (= (type key) java.lang.String)]}
   (http/post-uri [:body] (apply build-resource-uri "document/?collection=" nil (remove-map args)) (assoc document :_key key) (filter-out-map args)))
 
 (defn- create-multi
