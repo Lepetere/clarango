@@ -35,10 +35,14 @@
   appending a collection name (in this case you should explicitely pass nil as collection-name)
   OR 'document/?collection=' if you need the collection name appended as a parameter."
   ([type]
+    {:pre [(or (string? type) (nil? type))]}
     (connect-url-parts (get-safe-connection-url) "_api/" type))
   ([type resource-key]
+    {:pre [(or (string? type) (nil? type)) (or (string? resource-key) (nil? resource-key))]}
   	(connect-url-parts (get-safe-connection-url) "_db/" (get-default-db) "_api/" type (get-default-collection-or-graph type) resource-key))
   ([type resource-key collection-name]
+    {:pre [(or (string? type) (nil? type)) (or (string? resource-key) (nil? resource-key)) (or (string? collection-name) (nil? collection-name))]}
   	(connect-url-parts (get-safe-connection-url) "_db/" (get-default-db) "_api/" type collection-name resource-key))
   ([type resource-key collection-name db-name]
+    {:pre [(or (string? type) (nil? type)) (or (string? resource-key) (nil? resource-key)) (or (string? collection-name) (nil? collection-name)) (or (string? db-name) (nil? db-name))]}
   	(connect-url-parts (get-safe-connection-url) "_db/" db-name "_api/" type collection-name resource-key)))
