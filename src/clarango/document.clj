@@ -84,7 +84,7 @@
   "Creates a document with a given key.
 
   First argument: A map that represents the document. 
-  Second argument: The key for the new document.
+  Second argument: The key for the new document (string or clojure keyword).
 
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used.
@@ -95,7 +95,7 @@
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   The option map might be passed in an arbitrary position after the first argument."
   [document key & args]
-  {:pre [(map? document) (string? key)]}
+  {:pre [(map? document) (or (keyword? key) (string? key))]}
   (http/post-uri [:body] (apply build-resource-uri "document/?collection=" nil (remove-map args)) (assoc document :_key key) (filter-out-map args)))
 
 (defn- create-multi
