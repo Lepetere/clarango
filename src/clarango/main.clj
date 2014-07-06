@@ -26,7 +26,7 @@
   (println "\ncreate Collection 'test-collection' in DB 'test-DB'")
   (pprint (collection/create "test-collection" "test-DB"))
   (println "\ndocument CRUD")
-  (pprint (document/create-with-key {:name "some test document"} "test-doc" "test-collection" "test-DB"))
+  (pprint (document/create-with-key {:name "some test document"} :test-doc "test-collection" "test-DB"))
   (pprint (document/update-by-key {:additional "some additional info"} "test-doc" "test-collection" "test-DB"))
   (pprint (document/get-by-key "test-doc" "test-collection" "test-DB"))
   (pprint (document/replace-by-example {:name "new version of our test document"} {:additional "some additional info"} "test-collection" "test-DB"))
@@ -118,7 +118,7 @@
   (println "\nStatistic descriptions:")
   (pprint (admin/stat-desc))
   (println "\nLog")
-  (pprint (admin/log {"upto" 4}))
+  (println (admin/log {"upto" 3}))
   (println "\nRole:") ; This is >= V2
   (pprint (admin/role))
   
