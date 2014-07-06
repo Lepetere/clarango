@@ -38,7 +38,7 @@
   For details on the filter see http://www.arangodb.org/manuals/current/HttpGraph.html#A_JSF_POST_graph_vertices
 
   Takes optional a graph name and a db name as further arguments.
-  If omitted by user, the default graph and collection will be used."
+  If omitted by user, the default graph and db will be used."
   [key batch-size limit count filter & args]
   (let [body {"batchSize" batch-size "limit" limit "count" count}
         body-with-filter (if (nil? filter) body (assoc body "filter" filter))]
@@ -57,7 +57,7 @@
   For details on the filter see http://www.arangodb.org/manuals/current/HttpGraph.html#A_JSF_POST_graph_edges
 
   Takes optional a graph name and a db name as further arguments.
-  If omitted by user, the default graph and collection will be used."
+  If omitted by user, the default graph and db will be used."
   [key batch-size limit count filter & args]
   (let [body {"batchSize" batch-size "limit" limit "count" count}
         body-with-filter (if (nil? filter) body (assoc body "filter" filter))]
@@ -111,7 +111,7 @@
   If you would like the key to be created automatically, just leave this parameter out.
 
   Takes optional a graph name and a db name as further arguments.
-  If omitted by user, the default graph and collection will be used.
+  If omitted by user, the default graph and db will be used.
 
   Also optional as argument is another map containing further options:
   {'waitForSync' true/false} (replace the single quotes with double quotes)
@@ -126,7 +126,7 @@
   Takes the vertex key as first argument. 
 
   Takes optional a graph name and a db name as further arguments.
-  If omitted by user, the default graph and collection will be used.
+  If omitted by user, the default graph and db will be used.
 
   Also optional as argument is another map containing further options:
   {'rev' revision_id} (replace the single quotes with double quotes)
@@ -142,7 +142,7 @@
   Second argument: The vertex key.
 
   Takes optional a graph name and a db name as further arguments.
-  If omitted by user, the default graph and collection will be used.
+  If omitted by user, the default graph and db will be used.
 
   Also optional as argument is another map containing further options:
   {'rev' revision_id, 'waitForSync' true/false} (replace the single quotes with double quotes)
@@ -159,7 +159,7 @@
   Second argument: The vertex key.
 
   Takes optional a graph name and a db name as further arguments.
-  If omitted by user, the default graph and collection will be used.
+  If omitted by user, the default graph and db will be used.
 
   Also optional as argument is another map containing further options:
   {'rev' revision_id, 'waitForSync' true/false, 'keepNull' true/false} (replace the single quotes with double quotes)
@@ -177,7 +177,7 @@
   Takes the vertex key as first argument. 
 
   Takes optional a graph name and a db name as further arguments.
-  If omitted by user, the default graph and collection will be used.
+  If omitted by user, the default graph and db will be used.
 
   Also optional as argument is another map containing further options:
   {'rev' revision_id, 'waitForSync' true/false} (replace the single quotes with double quotes)
@@ -200,7 +200,7 @@
   Fourth argument: The name of the to vertex.
 
   Takes optional a graph name and a db name as further arguments.
-  If omitted by user, the default graph and collection will be used.
+  If omitted by user, the default graph and db will be used.
 
   Also optional as argument is another map containing further options:
   {'waitForSync' true/false} (replace the single quotes with double quotes)
@@ -219,7 +219,7 @@
   Takes the edge key as first argument. 
 
   Takes optional a graph name and a db name as further arguments.
-  If omitted by user, the default graph and collection will be used.
+  If omitted by user, the default graph and db will be used.
 
   Also optional as argument is another map containing further options:
   {'rev' revision_id} (replace the single quotes with double quotes)
@@ -235,7 +235,7 @@
   Second argument: The edge key.
 
   Takes optional a graph name and a db name as further arguments.
-  If omitted by user, the default graph and collection will be used.
+  If omitted by user, the default graph and db will be used.
 
   Also optional as argument is another map containing further options:
   {'rev' revision_id, 'waitForSync' true/false} (replace the single quotes with double quotes)
@@ -252,7 +252,7 @@
   Second argument: The edge key.
 
   Takes optional a graph name and a db name as further arguments.
-  If omitted by user, the default graph and collection will be used.
+  If omitted by user, the default graph and db will be used.
 
   Also optional as argument is another map containing further options:
   {'rev' revision_id, 'waitForSync' true/false, 'keepNull' true/false} (replace the single quotes with double quotes)
@@ -270,7 +270,7 @@
   Takes the edge key as first argument. 
 
   Takes optional a graph name and a db name as further arguments.
-  If omitted by user, the default graph and collection will be used.
+  If omitted by user, the default graph and db will be used.
 
   Also optional as argument is another map containing further options:
   {'rev' revision_id, 'waitForSync' true/false} (replace the single quotes with double quotes)
