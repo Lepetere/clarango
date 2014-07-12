@@ -32,6 +32,7 @@
   - limit meaning the maximum amount of documents to return
   The option map might be passed in an arbitrary position after the first two arguments."
   [example & args] ; what happens here if there is a db explicitely passed to this method? Do we nee a filterout-db-name-from-args too?
+  {:pre [(map? example)]}
   (http/put-uri [:body "result"] (build-resource-uri "simple/by-example" nil nil (filter-out-database-name args)) (merge {:example example :collection (filter-out-collection-name args)} (filter-out-map args))))
 
 (defn get-first-by-example
@@ -42,6 +43,7 @@
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used."
   [example & args]  ; what happens here if there is a db explicitely passed to this method? Do we nee a filterout-db-name-from-args too?
+  {:pre [(map? example)]}
   (http/put-uri [:body "document"] (build-resource-uri "simple/first-example" nil nil (filter-out-database-name args)) {:example example :collection (filter-out-collection-name args)}))
 
 (defn get-info
@@ -78,6 +80,7 @@
   - waitForSync meaning if the server response should wait until the document is saved to disk;
   The option map might be passed in an arbitrary position after the first argument."
   [document & args]
+  {:pre [(map? document)]}
   (http/post-uri [:body] (apply build-resource-uri "document/?collection=" nil (remove-map args)) document (filter-out-map args)))
 
 (defn create-with-key
@@ -107,6 +110,7 @@
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used."
   [documents & args]
+  {:pre [(vector? documents)]}
   ;; what about the document key if the user desires to specify it by himself? 
   ;; Should he just pass it in the json document? or allow it as optional argument?
   (http/post-multi-uri [:body] (build-resource-uri "batch") documents (filter-out-collection-name args) (filter-out-database-name args)))
@@ -129,6 +133,7 @@
     -> 'last' meaning the document is still replaced even if the given revision_id does not match the revision_id in the document
   The option map might be passed in an arbitrary position after the first two arguments."
   [new-document & args]
+  {:pre [(map? new-document)]}
   (http/put-uri [:body] (apply build-resource-uri "document" (remove-map args)) new-document (filter-out-map args)))
 
 (defn replace-by-example
@@ -146,6 +151,7 @@
   - limit meaning the maximum amount of documents that will be replaced
   The option map might be passed in an arbitrary position after the first two arguments."
   [new-document example & args]
+  {:pre [(map? new-document) (map? example)]}
   (http/put-uri [:body] (build-resource-uri "simple/replace-by-example" nil nil (filter-out-database-name args)) (merge {:example example :newValue new-document :collection (filter-out-collection-name args)} (filter-out-map args))))
 
 (defn update-by-key
@@ -168,6 +174,7 @@
     -> 'last' meaning the document is still updated even if the given revision_id does not match the revision_id in the document
   The option map might be passed in an arbitrary position after the first two arguments."
   [document-properties & args]
+  {:pre [(map? document-properties)]}
   (http/patch-uri [:body] (apply build-resource-uri "document" (remove-map args)) document-properties (filter-out-map args)))
 
 (defn update-by-example
@@ -186,6 +193,7 @@
   - keepNull meaning if the key/value pair should be deleted in the document
   The option map might be passed in an arbitrary position after the first two arguments."
   [document-properties example & args]
+  {:pre [(map? document-properties) (map? example)]}
   (http/put-uri [:body] (build-resource-uri "simple/update-by-example" nil nil (filter-out-database-name args)) (merge {:example example :newValue document-properties :collection (filter-out-collection-name args)} (filter-out-map args))))
 
 (defn delete-by-key
@@ -221,4 +229,5 @@
   - limit meaning the maximum amount of documents that will be deleted
   The option map might be passed in an arbitrary position after the first two arguments."
   [example & args]
+  {:pre [(map? example)]}
   (http/put-uri [:body] (build-resource-uri "simple/remove-by-example" nil nil (filter-out-database-name args)) (merge {:example example :collection (filter-out-collection-name args)} (filter-out-map args))))
