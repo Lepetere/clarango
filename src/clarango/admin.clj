@@ -63,6 +63,7 @@ http://www.arangodb.org/manuals/current/HttpSystem.html#HttpSystemAdminStatistic
   - sort=[asc|desc] ;; Sort the log entries either ascending (if sort is asc) or descending (if sort is desc) according to their lid values. Note that the lid imposes a chronological order. The default value is asc.
   Example: (admin/log {\"upto\" 4})"
   ; curl -X GET http://localhost:8529/_admin/log?upto=info  => "unknown path" "_admin/server/role"
+  {:pre [(map? params)]}
   (http/get-uri [:body] (connect-url-parts
                           (get-safe-connection-url)
                           "/_admin/log"
