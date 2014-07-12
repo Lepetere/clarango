@@ -11,6 +11,7 @@
   Does the same, just on an ArangoDB collection. The difference is that you can currently only pass one key and one document
   to add to the collection, not several like in clojure.core/dissoc"
   [collection-name key val]
+  {:pre [(or (keyword? collection-name) (string? collection-name)) (or (keyword? key) (string? key)) (map? val)]}
   (document/create (merge val {:_key key}) collection-name {"createCollection" false, "waitForSync" true}))
 
 (defn cla-dissoc!
@@ -20,6 +21,7 @@
   Does the same, just on an ArangoDB collection. The difference is that you can currently only pass one key to remove
   from the collection, not several like in clojure.core/dissoc"
   [collection-name key]
+  {:pre [(or (keyword? collection-name) (string? collection-name)) (or (keyword? key) (string? key))]}
   (document/delete-by-key key collection-name {"waitForSync" true}))
 
 (defn cla-conj!
@@ -30,6 +32,7 @@
   Does the same, just on an ArangoDB collection. The difference is that you can currently only pass one element to add
   to the collection, not several like in clojure.core/conj"
   [collection-name x]
+  {:pre [(or (keyword? collection-name) (string? collection-name)) (map? x)]}
   (document/create x collection-name {"createCollection" false, "waitForSync" true}))
 
 (defn cla-get!
@@ -41,4 +44,5 @@
   Currently this method throws an error when used with a key that does not exist. This should be changed in the future, 
   also it should be possible to give a value that is returned by the function, in case the key does not exist."
   [collection-name key]
+  {:pre [(or (keyword? collection-name) (string? collection-name)) (or (keyword? key) (string? key))]}
   (document/get-by-key key collection-name))
