@@ -3,50 +3,23 @@
   (:use [clarango.utilities.core-utility :only [get-safe-connection-url filter-out-map]]
         [clarango.utilities.uri-utility :only [connect-url-parts]]))
 
-<<<<<<< HEAD
-(defn flush []
-=======
 (defn flush
->>>>>>> master
   "The call flushes the modules cache on the server.
   See JSModulesCache for details about this cache.
   No Arguments can be passed.
   This REST call should return '{error false, code 200}'
   with the 200 indicating that the module cache was flushed successfully."
   ; curl http://localhost:8529/_admin/modules/flush
-<<<<<<< HEAD
-  (http/post-uri [:body] (connect-url-parts (get-safe-connection-url)
-                                            "_admin/modules/flush")))
-
-(defn reload []
-=======
   []
   (http/post-uri [:body] (connect-url-parts (get-safe-connection-url)
                                             "_admin/modules/flush")))
 
 (defn reload
->>>>>>> master
   "Realods the routing information from the collection routing.
   No Arguments can be passed.
   This REST call should return '{error false, code 200}'
   with the 200 indicating that the routing information was reloaded successfully."
   ; curl http://localhost:8529/_admin/routing/reload
-<<<<<<< HEAD
-  (http/post-uri [:body] (connect-url-parts (get-safe-connection-url)
-                                            "_admin/routing/reload")))
-
-(defn statistics []
-  "Returns a huge Json doc with statistics information.
-  Please look up http://www.arangodb.org/manuals/current/HttpSystem#HttpSystemAdminStatistics"
-  ; curl http://localhost:8529/_admin/statistics
- (http/post-uri [:body] (connect-url-parts (get-safe-connection-url)
-                                           "_admin/statistics")))
-
-(defn stat-desc []
- "Returns a description of the statistics returned by /_admin/statistics. The returned objects contains a list of statistics groups in the attribute groups and a list of statistics figures in the attribute figures. For a detailed description please refer to 
-http://www.arangodb.org/manuals/current/HttpSystem.html#HttpSystemAdminStatisticsDescription"
-  ; curl http://localhost:8529/_admin/statistics-description
-=======
   []
   (http/post-uri [:body] (connect-url-parts (get-safe-connection-url)
                                             "_admin/routing/reload")))
@@ -64,16 +37,11 @@ http://www.arangodb.org/manuals/current/HttpSystem.html#HttpSystemAdminStatistic
 http://www.arangodb.org/manuals/current/HttpSystem.html#HttpSystemAdminStatisticsDescription"
   ; curl http://localhost:8529/_admin/statistics-description
   []
->>>>>>> master
   (http/post-uri [:body] (connect-url-parts
                            (get-safe-connection-url)
                            "_admin/statistics-description")))
 
-<<<<<<< HEAD
-(defn role []
-=======
 (defn role
->>>>>>> master
   "New function since Version 2!
   Returns the role of a server in a cluster. The role is returned in the
   role attribute of the result. Possible return values for role are:
@@ -83,19 +51,12 @@ http://www.arangodb.org/manuals/current/HttpSystem.html#HttpSystemAdminStatistic
   SECONDARY: the server is a secondary database server in a cluster
   UNKNOWN: in a cluster, UNKNOWN is returned if the server role cannot be determined. On a single server, UNKNOWN is the only possible return value."
   ; curl -X GET http://localhost:8529/_admin/server/role => "unknown path" "_admin/server/role"
-<<<<<<< HEAD
-=======
   []
->>>>>>> master
   (http/get-uri [:body] (connect-url-parts
                           (get-safe-connection-url)
                           "/_admin/server/role")))
 
-<<<<<<< HEAD
-(defn log [params]
-=======
 (defn log
->>>>>>> master
   "Reads the global log from the server.
   See https://www.arangodb.org/manuals/current/HttpSystem.html#HttpSystemLog
   - upto=[0-4] ;; fatal=0, error =1, warning=2, info=3, debug=4
@@ -107,11 +68,8 @@ http://www.arangodb.org/manuals/current/HttpSystem.html#HttpSystemAdminStatistic
   - sort=[asc|desc] ;; Sort the log entries either ascending (if sort is asc) or descending (if sort is desc) according to their lid values. Note that the lid imposes a chronological order. The default value is asc.
   Example: (admin/log {\"upto\" 4})"
   ; curl -X GET http://localhost:8529/_admin/log?upto=info  => "unknown path" "_admin/server/role"
-<<<<<<< HEAD
-  {:pre [(map? params)]}
-=======
   [params]
->>>>>>> master
+  {:pre [(map? params)]}
   (http/get-uri [:body] (connect-url-parts
                           (get-safe-connection-url)
                           "/_admin/log"
