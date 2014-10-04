@@ -2,98 +2,89 @@
 Clarango: a Clojure driver for ArangoDB
 ========
 
-Clarango is work in progress. The current lib version on clojars is 0.3.2. We expect V 1.0 in late 2014 with a full stable API and all the missing functionality. Also have a look at:
-* The [API overview](http://edlich.github.io/clarango/docs/uberdoc.html) of V 0.3.2
+Clarango is a library to connect Clojure with the incredible database [ArangoDB](http://www.arangodb.org/). Although it is work in progress, the parts which are already there are stable. 
+
+The current lib version on clojars is 0.4.2. The library should work with ArangoDB versions at least from 1.4.0 upwards (latest test was with version 2.2.3).
+
+For an overview of the features and how to use see below. For more detailed documentation also have a look at:
+* The [API overview](http://edlich.github.io/clarango/doc/index.html) can also be found on [crossclj](http://crossclj.info) [here](http://crossclj.info/ns/clarango/0.3.2/clarango.core.html) (possibly older version)
 * Some examples can be found [here](https://github.com/edlich/clarango/blob/development/src/clarango/main.clj)
 * A book as [pdf](https://leanpub.com/clarango) for printing / download or as [html readable online](https://leanpub.com/clarango/read)
 
-The library has not yet been tested against Arango >= 2.0.0
+![Alt Clarango Book](https://raw.githubusercontent.com/edlich/clarango/gh-pages/images/clarangoBook.png)
 
 ## Features
 
 * various options for connecting
 * document CRUD including various options
-  -> for documentation on this see [document.clj](https://github.com/edlich/clarango/blob/master/src/clarango/document.clj)
 * querying by example
-* AQL queries (see [query namespace](https://github.com/edlich/clarango/blob/master/src/clarango/query.clj))
-* collection management (see [collection namespace](https://github.com/edlich/clarango/blob/master/src/clarango/collection.clj))
-* database management (see [database namespace](https://github.com/edlich/clarango/blob/master/src/clarango/database.clj))
-* graph functions (see [graph namespace](https://github.com/edlich/clarango/blob/master/src/clarango/graph.clj))
+* AQL queries
+* collection management
+* database management
+* graph functions
+* admin and monitoring
+* index managing
+* experimental clojure idiomatic collection methods like `cla-assoc!` and `cla-conj!`
 * simple exception handling
-* experimental clojure idiomatic collection methods like `cla-assoc!` and `cla-conj!` (see [collection_ops.clj](https://github.com/edlich/clarango/blob/master/src/clarango/collection_ops.clj) for details)
 
 ## Installation
 
 The driver is hosted on [Clojars](https://clojars.org/clarango). Add this Leiningen dependency to your project.clj:
 ```
-[clarango "0.3.2"]
+[clarango "0.4.2"]
 ```
 Then require the lib in your clojure file. For example:
 ``` Clojure
 (:require [clarango.core :as clacore]
-			[clarango.database :as database])
+          [clarango.document :as document]
+          [clarango.collection :as collection])
 ```
 
-## Usage
-
-Setting the databse connection and getting a document by existing key:
+## Setting the Connection
 
 ```clojure
-(clarango.core/set-connection! {:connection-url "http://localhost:8529/"})
-(clojure.pprint (document/get-by-key "document-key" "my-collection" "my-db"))
+;; connect to localhost and default port 8529
+(clacore/set-connection!)
 
-;; or
-
-(clarango.core/set-connection! 
+;; pass a connection map
+(clacore/set-connection! 
   {
     :connection-url "http://localhost:8529/"
     :db-name "my-db"
     :collection-name "my-collection"
     ; if you intend to work with graphs you can optionally add :graph-name "my-graph"
   })
-(clojure.pprint (document/get-by-key "document-key"))
 
-;; or
-
-(clarango.core/set-connection! {:connection-url "http://localhost:8529/"})
-(clarango.core/set-default-db! "my-db")
-(clojure.pprint (document/get-by-key "document-key" "my-collection"))
-
-;; or
-
-;; set default parameters: standart db and port 8529 on localhost
-(clarango.core/set-connection!)
-(clojure.pprint (document/get-by-key "document-key" "my-collection"))
+;; change default db
+(clacore/set-default-db! "my-db")
 ```
 
-create/replace/update/delete document:
+The server url is mandatory. Default database and collection are optional.
+
+## Document CRUD
 
 ```clojure
-(let [_ (clarango.core/set-connection! {
-        :connection-url "http://localhost:8529/"
-        :db-name "my-db"
-        :collection-name "my-collection" })
-      document {:name "awesome name" :city "where is he from?"}
-      ;; create document
-      result-doc (document/create document)
-      new-key (get result-doc "_key")]
-  (clojure.pprint result-doc)
+(collection/create "test-collection")
+(with-collection "test-collection"
+  ;; create
+  (document/create-with-key {:description "some test document"} "test-doc")
+  ;; read
+  (document/get-by-key "test-doc")
+  (document/get-by-example {:description "some test document"})
+  ;; update
+  (document/update-by-key {:additional "some additional info"} "test-doc")
+  ;; delete
+  (document/delete-by-key "test-doc"))
 
-  ;; replace document
-  (let [document-new {:name "even more awesome name" :city "from Berlin of course"}]
-    (clojure.pprint (document/replace-by-key document-new new-key)))
-
-  ;; update document
-  (let [document-update {:age "He's already 100 years old."}]
-    (clojure.pprint (document/update-by-key document-update new-key)))
-
-  ;; delete document
-  (document/delete-by-key new-key))
 ```
+
+All methods will use the default database and collection unless the names of different ones are passed as optional arguments. For a complete list of methods see the [API overview](http://edlich.github.io/clarango/doc/index.html)
 
 ## Bugs
 
 If you find bugs or are missing a feature open an issue or feel free to pull request!
+
+If you like it give us a :star:
 
 ## License
 
