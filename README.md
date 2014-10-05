@@ -82,7 +82,9 @@ All methods will use the default database and collection unless the names of dif
 
 ## Bugs
 
-If you find bugs or are missing a feature open an issue or feel free to pull request!
+If you find bugs or are missing a feature: open an issue or feel free to pull request.
+
+Furthermore we have open issues. So if you like to help us with easy or difficult tasks, contact us or / and pick an issue.
 
 If you like it give us a :star:
 
