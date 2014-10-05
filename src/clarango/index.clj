@@ -26,6 +26,7 @@
   Optionally takes a collection name and a db name as further arguments.
   If omitted, the default db and collection will be used."
   [index & args]
+  {:pre [(map? index)]}
   (http/post-uri [:body] (apply build-resource-uri "index/?collection=" nil (remove-map args)) index (filter-out-map args)))
 
 (defn delete-by-key
