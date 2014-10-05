@@ -16,7 +16,12 @@
 (defn create
   "Create an index.
 
-  First argument: A map that represents the index
+  First argument is a map that describes the index properties:
+  {'type' type, 'fields' ['field1', 'field2'], ...} (replace the single quotes with double quotes)
+  - type is the desired type of the index, e.g. 'hash'
+  - fields is a list of fields you want to create the index on
+  Please see http://docs.arangodb.org/HttpIndexes/README.html for details, since there are different properties 
+  expected for the different kinds of indexes.
 
   Optionally takes a collection name and a db name as further arguments.
   If omitted, the default db and collection will be used."
