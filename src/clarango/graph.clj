@@ -115,7 +115,7 @@
   "Creates a vertex. 
 
   First argument: A map that represents the vertex. 
-  If you want to specify a key by yourself, add it as the :_key parameter to the vertex map. 
+  If you want to specify a key by yourself, add it as the :_key parameter to the vertex map or use method create-vertex-with-key. 
   If you would like the key to be created automatically, just leave this parameter out.
 
   Takes optional a graph name and a db name as further arguments.
@@ -128,6 +128,23 @@
   [vertex & args]
   {:pre [(map? vertex)]}
   (http/post-uri [:body "vertex"] (apply build-resource-uri "graph" "vertex" (remove-map args)) vertex (filter-out-map args)))
+
+(defn create-vertex-with-key
+  "Creates a vertex with a given key.
+
+  First argument: A map that represents the vertex. 
+  Second argument: The key for the new vertex (string or clojure keyword).
+
+  Takes optional a graph name and a db name as further arguments.
+  If omitted by user, the default graph and db will be used.
+
+  Also optional as argument is another map containing further options:
+  {'waitForSync' true/false} (replace the single quotes with double quotes)
+  - waitForSync meaning if the server response should wait until the vertex is saved to disk;
+  The option map might be passed in an arbitrary position after the first argument."
+  [vertex key & args]
+  {:pre [(map? vertex) (or (keyword? key) (string? key))]}
+  (http/post-uri [:body "vertex"] (apply build-resource-uri "graph" "vertex" (remove-map args)) (assoc vertex :_key key) (filter-out-map args)))
 
 (defn get-vertex
   "Gets a vertex.
@@ -204,7 +221,7 @@
   "Creates a new edge.
 
   First argument: A map that represents the edge.
-  If you want to specify a key by yourself, add it as the :_key parameter to the edge map. 
+  If you want to specify a key by yourself, add it as the :_key parameter to the edge map or use method create-edge-with-key. 
   If you would like the key to be created automatically, just leave this parameter out.
   If you optionally want to specify a label for the edge, you can add it as the :$label parameter to the edge map.
 
@@ -222,6 +239,30 @@
   {:pre [(map? edge) (or (keyword? vertex-from-name) (string? vertex-from-name)) (or (keyword? vertex-to-name) (string? vertex-to-name))]}
   (http/post-uri [:body "edge"] (apply build-resource-uri "graph" "edge" (remove-map args)) 
     (assoc edge "_from" vertex-from-name "_to" vertex-to-name) 
+    (filter-out-map args)))
+
+(defn create-edge-with-key
+  "Creates a new edge with a given key.
+
+  First argument: A map that represents the edge.
+  Second argument: The key for the new edge (string or clojure keyword). If you pass nil, a key will be generated automatically.
+  Third argument: A label for the new edge. If you don't want to set one, just pass nil.
+  Fourth argument: The name of the from vertex.
+  Fifth argument: The name of the to vertex.
+
+  Takes optional a graph name and a db name as further arguments.
+  If omitted by user, the default graph and db will be used.
+
+  Also optional as argument is another map containing further options:
+  {'waitForSync' true/false} (replace the single quotes with double quotes)
+  - waitForSync meaning if the server response should wait until the edge is saved to disk;
+  The option map might be passed in an arbitrary position after the first four arguments."
+  [edge key label vertex-from-name vertex-to-name & args]
+  {:pre [(map? edge) (or (nil? key) (or (keyword? key) (string? key))) (or (nil? label) (or (keyword? label) (string? label))) (or (keyword? vertex-from-name) (string? vertex-from-name)) (or (keyword? vertex-to-name) (string? vertex-to-name))]}
+  (http/post-uri [:body "edge"] (apply build-resource-uri "graph" "edge" (remove-map args)) 
+    (let [edge-with-or-without-key (if (nil? key) edge (assoc edge :_key key))
+          edge-with-or-without-label (if (nil? label) edge-with-or-without-key (assoc edge-with-or-without-key :$label label))]
+      (assoc edge-with-or-without-label "_from" vertex-from-name "_to" vertex-to-name))
     (filter-out-map args)))
 
 (defn get-edge

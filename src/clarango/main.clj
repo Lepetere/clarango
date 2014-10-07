@@ -89,11 +89,11 @@
       (pprint (query/execute "FOR p IN people FILTER p.age > 24 RETURN p"))
 
       (println "\ncreate edges with labels 'friend', 'boyfriend', 'girlfriend'; save one key to use this edge later")
-      (let [edge-key (get (graph/create-edge {:$label "friend"} "peter" "alice") "_key")]
-        (graph/create-edge {:$label "friend"} "alice" "clara")
-        (graph/create-edge {:$label "friend"} "clara" "jessica")
-        (graph/create-edge {:$label "boyfriend"} "alice" "bob")
-        (graph/create-edge {:$label "girlfriend"} "bob" "alice")
+      (let [edge-key (get (graph/create-edge-with-key {:content "some content"} "somegreatedgekey" "friend" "alice" "clara") "_key")]
+        (graph/create-edge {:$label "friend" :_key "edgekey1"} "peter" "alice")
+        (graph/create-edge-with-key {:content "some content"} nil "friend" "clara" "jessica")
+        (graph/create-edge-with-key {:content "some content"} nil "boyfriend" "alice" "bob")
+        (graph/create-edge-with-key {:content "some content"} nil "girlfriend" "bob" "alice")
         (println "\nget vertices that have connections going from the vertex 'peter'")
         (pprint (graph/execute-vertex-traversal "peter" 10 10 true nil))
         (println "\nupdate one edge")
