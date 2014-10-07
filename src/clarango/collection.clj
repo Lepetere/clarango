@@ -91,8 +91,7 @@
   {:pre [(or (keyword? collection-name) (string? collection-name))]}
   (http/delete-uri [:body] (apply build-resource-uri "collection" nil collection-name args)))
 
-;; Hides .../load -> Find a different name?
-(defn load
+(defn load-mem
   "Loads a collection into the memory. Returns the collection on success. (?)
 
   Can be called without arguments. In that case the default collection from the default database will be loaded.
@@ -106,7 +105,7 @@
   [& args]
   (http/put-uri [:body] (apply build-resource-uri "collection" "load" (remove-map args)) (filter-out-map args)))
 
-(defn unload
+(defn unload-mem
   "Removes a collection from the memory. On success a map containing collection properties is returned.
 
   Can be called without arguments. In that case the default collection from the default database will be truncated.

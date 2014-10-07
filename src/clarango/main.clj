@@ -53,7 +53,7 @@
   (pprint (collection/modify-properties {"waitForSync" true} "new-name-test-collection"))
   (pprint (collection/get-extended-info-figures "new-name-test-collection"))
   (println "\nunload and delete collection")
-  (pprint (collection/unload "new-name-test-collection"))
+  (pprint (collection/unload-mem "new-name-test-collection"))
   (pprint (collection/delete "new-name-test-collection"))
 
 
