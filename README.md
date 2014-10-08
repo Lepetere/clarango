@@ -37,7 +37,8 @@ Then require the lib in your clojure file. For example:
 ``` Clojure
 (:require [clarango.core :as clacore]
           [clarango.document :as document]
-          [clarango.collection :as collection])
+          [clarango.collection :as collection]
+          [clarango.graph :as graph])
 ```
 
 ## Setting the Connection
@@ -76,6 +77,19 @@ The server url is mandatory. Default database and collection are optional.
   ;; delete
   (document/delete-by-key "test-doc"))
 
+```
+
+## Graph
+
+```clojure
+(collection/create "people" {"type" 2})
+(collection/create "connections" {"type" 3})
+(graph/create "test-graph" "people" "connections")
+(graph/create-edge-with-key {:content "some content"} :myedgekey "friend" 
+  ;; when creating edges you can just pass vertices instead of their keys as a shortcut
+  (graph/create-vertex {:_key "bob" :name "Bob" :age 28})
+  (graph/create-vertex {:_key "peter" :name "Peter" :age 25})
+  :test-graph)
 ```
 
 All methods will use the default database and collection unless the names of different ones are passed as optional arguments. For a complete list of methods see the [API overview](http://edlich.github.io/clarango/doc/index.html)

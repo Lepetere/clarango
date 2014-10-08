@@ -66,16 +66,16 @@
   (println "\nperform next operations in the context of 'GraphTestDB'")
   (with-db "GraphTestDB"
     (println "\ncreate vertex and edge collections 'people' and 'connections'")
-    (collection/create "people" {"type" 2})
-    (collection/create "connections" {"type" 3})
+    (collection/create :people {"type" 2})
+    (collection/create :connections {"type" 3})
     (println "\nnow list all available collections, excluding the system collections")
     (pprint (database/get-collection-info-list {"excludeSystem" true}))
     (println "\ncreate graph 'test-graph'")
-    (pprint (graph/create "test-graph" "people" "connections"))
+    (pprint (graph/create "test-graph" :people :connections))
     (println "\nnow get all available graphs")
     (pprint (database/get-all-graphs))
     (println "\nperform next operations in the context of the graph 'test-graph'")
-    (with-graph "test-graph"
+    (with-graph :test-graph
       (println "\ncreate vertices 'Peter', 'Bob', 'Clara', 'Jessica', 'Alice' with :ages")
         (let [bob (graph/create-vertex {:_key "bob" :name "Bob" :age 28})
               peter (graph/create-vertex {:_key "peter" :name "Peter" :age 25})]
@@ -89,7 +89,7 @@
             (pprint (query/execute "FOR p IN people FILTER p.age > 24 RETURN p"))
       
             (println "\ncreate edges with labels 'friend', 'boyfriend', 'girlfriend'; save one key to use this edge later")
-            (let [edge-key (get (graph/create-edge-with-key {:content "some content"} "somegreatedgekey" "friend" "alice" "clara") "_key")]
+            (let [edge-key (get (graph/create-edge-with-key {:content "some content"} :somegreatedgekey "friend" "alice" "clara") "_key")]
               (graph/create-edge {:$label "friend" :_key "edgekey1"} peter :alice)
               (graph/create-edge-with-key {:content "some content"} nil "friend" "clara" "jessica")
               (graph/create-edge-with-key {:content "some content"} nil "boyfriend" :alice bob)
@@ -103,11 +103,11 @@
               (println "\nexecute a graph traversal")
               (pprint (graph/execute-traversal "peter" "people" "connections" "inbound"))
               (println "\ndelete one edge")
-              (pprint (graph/delete-edge edge-key))
-              (println "\ndelete one vertex")
-              (pprint (graph/delete-vertex "peter")))))
+              (pprint (graph/delete-edge edge-key)))))
+    (println "\ndelete one vertex")
+    (pprint (graph/delete-vertex "peter" :test-graph))
     (println "\ndelete the graph")
-    (pprint (graph/delete "test-graph")))
+    (pprint (graph/delete :test-graph)))
 
   (println "\nFlush:") ;; all admin functions now
   (pprint (admin/flush))
