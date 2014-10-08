@@ -13,6 +13,7 @@
 
   Optionally you can pass a database name as third or second argument. If omitted, the default db will be used."
   [query-string & args]
+  {:pre [(string? query-string)]}
   	(let [body {"query" query-string}
   		  bind-vars (filter-out-map args)
   		  body-bind-vars (if (nil? bind-vars) body (merge body {"bindVars" bind-vars}))]
@@ -25,6 +26,7 @@
 
   Takes as only argument the query string to be evaluated."
   [query-string]
+  {:pre [(string? query-string)]}
   (http/post-uri [:body] (build-resource-uri "query") {"query" query-string}))
 
 (defn execute
@@ -41,6 +43,7 @@
   The actual result of the query will be contained in the attribute 'result' as a vector.
   For more options see the method execute-count."
   [query-string & args]
+  {:pre [(string? query-string)]}
     (let [body {"query" query-string}
         bind-vars (filter-out-map args)
         body-bind-vars (if (nil? bind-vars) body (merge body {"bindVars" bind-vars}))]
@@ -67,6 +70,7 @@
 
   The actual result of the query will be contained in the attribute 'result' as a vector."
   [query-string batch-size count & args]
+  {:pre [(string? query-string) (number? batch-size) (= (type count) java.lang.Boolean)]}
     (let [body {"query" query-string, "batchSize" batch-size, "count" count}
         bind-vars (filter-out-map args)
         body-bind-vars (if (nil? bind-vars) body (merge body {"bindVars" bind-vars}))]
@@ -82,6 +86,7 @@
 
   Optionally you can pass a database name. If omitted, the default db will be used."
   [cursor-id & args]
+  {:pre [(or (keyword? cursor-id) (string? cursor-id))]}
   (http/put-uri [:body] (apply build-resource-uri "cursor" cursor-id nil args)))
 
 (defn delete-cursor
@@ -94,4 +99,5 @@
 
   Optionally you can pass a database name. If omitted, the default db will be used."
   [cursor-id & args]
+  {:pre [(or (keyword? cursor-id) (string? cursor-id))]}
   (http/delete-uri [:body] (apply build-resource-uri "cursor" cursor-id nil args)))

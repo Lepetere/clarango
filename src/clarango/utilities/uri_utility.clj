@@ -16,12 +16,15 @@
   [& parts]
     (let [url-string 
         (reduce 
-          (fn [base-string add-string]
-            (if (nil? add-string) base-string 
-              (let [url-string (str base-string (clojure.string/trim add-string))]
-                ;; if already ends with '/' just add it, otherwise append '/'
-                ;; if it ends with '=' it's a parameter and also doesn't need a '/'
-                (if (or (.endsWith add-string "/") (.endsWith add-string "=")) url-string (str url-string "/")))))
+          (fn [base-part add-part]
+            ;; if parts are keywords, cast them into strings
+            (let [base-string (if (keyword? base-part) (name base-part) base-part)
+                  add-string (if (keyword? add-part) (name add-part) add-part)]
+              (if (nil? add-string) base-string 
+                          (let [url-string (str base-string (clojure.string/trim add-string))]
+                            ;; if already ends with '/' just add it, otherwise append '/'
+                            ;; if it ends with '=' it's a parameter and also doesn't need a '/'
+                            (if (or (.endsWith add-string "/") (.endsWith add-string "=")) url-string (str url-string "/"))))))
         "" parts)]
       ;; cut off the last '/'
       (.substring url-string 0 (dec (count url-string)))))
@@ -35,10 +38,14 @@
   appending a collection name (in this case you should explicitely pass nil as collection-name)
   OR 'document/?collection=' if you need the collection name appended as a parameter."
   ([type]
+    {:pre [(or (string? type) (nil? type))]}
     (connect-url-parts (get-safe-connection-url) "_api/" type))
   ([type resource-key]
+    {:pre [(or (string? type) (nil? type)) (or (string? resource-key) (nil? resource-key) (keyword? resource-key))]}
   	(connect-url-parts (get-safe-connection-url) "_db/" (get-default-db) "_api/" type (get-default-collection-or-graph type) resource-key))
   ([type resource-key collection-name]
+    {:pre [(or (string? type) (nil? type)) (or (string? resource-key) (nil? resource-key) (keyword? resource-key)) (or (string? collection-name) (nil? collection-name) (keyword? collection-name))]}
   	(connect-url-parts (get-safe-connection-url) "_db/" (get-default-db) "_api/" type collection-name resource-key))
   ([type resource-key collection-name db-name]
+    {:pre [(or (string? type) (nil? type)) (or (string? resource-key) (nil? resource-key) (keyword? resource-key)) (or (string? collection-name) (nil? collection-name) (keyword? collection-name)) (or (string? db-name) (nil? db-name) (keyword? db-name))]}
   	(connect-url-parts (get-safe-connection-url) "_db/" db-name "_api/" type collection-name resource-key)))

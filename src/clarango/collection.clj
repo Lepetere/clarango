@@ -71,6 +71,7 @@
       - increment is the increment value for the autoincrement key generator (optional)
       - offset is the initial offset value for the autoincrement key generator (optional)"
   [collection-name & args]
+  {:pre [(or (keyword? collection-name) (string? collection-name))]}
   (http/post-uri [:body] (apply build-resource-uri "collection" nil nil (remove-map args)) (merge {:name collection-name} (filter-out-map args))))
 
 (defn truncate
@@ -87,10 +88,10 @@
   Takes the name of the collection to be deleted as first argument.
   Optionally you can pass a database name as second argument."
   [collection-name & args]
+  {:pre [(or (keyword? collection-name) (string? collection-name))]}
   (http/delete-uri [:body] (apply build-resource-uri "collection" nil collection-name args)))
 
-;; Hides .../load -> Find a different name?
-(defn load
+(defn load-mem
   "Loads a collection into the memory. Returns the collection on success. (?)
 
   Can be called without arguments. In that case the default collection from the default database will be loaded.
@@ -104,7 +105,7 @@
   [& args]
   (http/put-uri [:body] (apply build-resource-uri "collection" "load" (remove-map args)) (filter-out-map args)))
 
-(defn unload
+(defn unload-mem
   "Removes a collection from the memory. On success a map containing collection properties is returned.
 
   Can be called without arguments. In that case the default collection from the default database will be truncated.
@@ -124,6 +125,7 @@
   - waitForSync meaning if the server response should wait until the document is saved to disk
   - journalSize is the size (in bytes) for new journal files that are created for the collection"
   [properties & args]
+  {:pre [(map? properties)]}
   (http/put-uri [:body] (apply build-resource-uri "collection" "properties" (remove-map args)) (filter-out-map args)))
 
 ;; Hides clojure.set/rename -> Find a different name?
@@ -136,6 +138,7 @@
   Takes optional a db name as further argument.
   If omitted by user, the default db will be used."
   [new-name collection-name & args]
+  {:pre [(or (keyword? new-name) (string? new-name)) (or (keyword? collection-name) (string? collection-name))]}
   (http/put-uri [:body] (apply build-resource-uri "collection" "rename" collection-name args) {:name new-name}))
 
 (defn rotate
@@ -147,3 +150,11 @@
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
   (http/put-uri [:body] (apply build-resource-uri "collection" "rotate" args)))
+
+(defn get-all-indexes
+  "Returns a list with the URIs of all indexes for the collection.
+
+  Can be called without arguments. In that case the default collection from the default database will be used.
+  Optionally you can pass a collection name as the first argument and a database name as the second argument."
+  [& args]
+  (http/get-uri [:body "indexes"](apply build-resource-uri "index/?collection=" nil (remove-map args))))
