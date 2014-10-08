@@ -41,11 +41,11 @@
 
   Takes optional a graph name and a db name as further arguments.
   If omitted by user, the default graph and db will be used."
-  [key batch-size limit count filter & args]
-  {:pre [(or (keyword? key) (string? key)) (number? batch-size) (number? limit) (= (type count) java.lang.Boolean) (or (map? filter) (nil? filter))]}
+  [start-vertex batch-size limit count filter & args]
+  {:pre [(or (keyword? start-vertex) (string? start-vertex)) (number? batch-size) (number? limit) (= (type count) java.lang.Boolean) (or (map? filter) (nil? filter))]}
   (let [body {"batchSize" batch-size "limit" limit "count" count}
         body-with-filter (if (nil? filter) body (assoc body "filter" filter))]
-    (http/post-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "vertices" key) (remove-map args)) 
+    (http/post-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "vertices" start-vertex) (remove-map args)) 
       body-with-filter
       (filter-out-map args))))
 
@@ -56,17 +56,17 @@
   First argument: The key of the start edge.
   Second argument: The batch size of the returned cursor.
   Third argument: The result size.
-  Fourth argument: ???
+  Fourth argument: A boolean value which determines if the result should return a property 'count' with the total amount of traversed vertices.
   Fifth argument: An optional filter for the results. If you don't want to use it, just pass nil here.
   For details on the filter see http://www.arangodb.org/manuals/current/HttpGraph.html#A_JSF_POST_graph_edges
 
   Takes optional a graph name and a db name as further arguments.
   If omitted by user, the default graph and db will be used."
-  [key batch-size limit count filter & args]
-  {:pre [(or (keyword? key) (string? key)) (number? batch-size) (number? limit) (= (type count) java.lang.Boolean) (or (map? filter) (nil? filter))]}
+  [start-edge batch-size limit count filter & args]
+  {:pre [(or (keyword? start-edge) (string? start-edge)) (number? batch-size) (number? limit) (= (type count) java.lang.Boolean) (or (map? filter) (nil? filter))]}
   (let [body {"batchSize" batch-size "limit" limit "count" count}
         body-with-filter (if (nil? filter) body (assoc body "filter" filter))]
-    (http/post-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "edges" key) (remove-map args)) 
+    (http/post-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "edges" start-edge) (remove-map args)) 
       body-with-filter
       (filter-out-map args))))
 
@@ -225,8 +225,8 @@
   If you would like the key to be created automatically, just leave this parameter out.
   If you optionally want to specify a label for the edge, you can add it as the :$label parameter to the edge map.
 
-  Second argument: The name of the from vertex.
-  Third argument: The name of the to vertex.
+  Second argument: The name of the from vertex (or just the vertex itself as a map).
+  Third argument: The name of the to vertex (or just the vertex itself as a map).
 
   Takes optional a graph name and a db name as further arguments.
   If omitted by user, the default graph and db will be used.
@@ -235,11 +235,13 @@
   {'waitForSync' true/false} (replace the single quotes with double quotes)
   - waitForSync meaning if the server response should wait until the edge is saved to disk;
   The option map might be passed in an arbitrary position after the first four arguments."
-  [edge vertex-from-name vertex-to-name & args]
-  {:pre [(map? edge) (or (keyword? vertex-from-name) (string? vertex-from-name)) (or (keyword? vertex-to-name) (string? vertex-to-name))]}
-  (http/post-uri [:body "edge"] (apply build-resource-uri "graph" "edge" (remove-map args)) 
-    (assoc edge "_from" vertex-from-name "_to" vertex-to-name) 
-    (filter-out-map args)))
+  [edge vertex-from vertex-to & args]
+  {:pre [(map? edge) (or (keyword? vertex-from) (string? vertex-from) (map? vertex-from)) (or (keyword? vertex-to) (string? vertex-to) (map? vertex-to))]}
+  (let [vertex-from-name (if (map? vertex-from) (get vertex-from "_key") vertex-from)
+        vertex-to-name (if (map? vertex-to) (get vertex-to "_key") vertex-to)]
+    (http/post-uri [:body "edge"] (apply build-resource-uri "graph" "edge" (remove-map args)) 
+      (assoc edge "_from" vertex-from-name "_to" vertex-to-name) 
+      (filter-out-map args))))
 
 (defn create-edge-with-key
   "Creates a new edge with a given key.
@@ -247,8 +249,8 @@
   First argument: A map that represents the edge.
   Second argument: The key for the new edge (string or clojure keyword). If you pass nil, a key will be generated automatically.
   Third argument: A label for the new edge. If you don't want to set one, just pass nil.
-  Fourth argument: The name of the from vertex.
-  Fifth argument: The name of the to vertex.
+  Fourth argument: The name of the from vertex (or just the vertex itself as a map).
+  Fifth argument: The name of the to vertex (or just the vertex itself as a map).
 
   Takes optional a graph name and a db name as further arguments.
   If omitted by user, the default graph and db will be used.
@@ -257,13 +259,15 @@
   {'waitForSync' true/false} (replace the single quotes with double quotes)
   - waitForSync meaning if the server response should wait until the edge is saved to disk;
   The option map might be passed in an arbitrary position after the first four arguments."
-  [edge key label vertex-from-name vertex-to-name & args]
-  {:pre [(map? edge) (or (nil? key) (or (keyword? key) (string? key))) (or (nil? label) (or (keyword? label) (string? label))) (or (keyword? vertex-from-name) (string? vertex-from-name)) (or (keyword? vertex-to-name) (string? vertex-to-name))]}
-  (http/post-uri [:body "edge"] (apply build-resource-uri "graph" "edge" (remove-map args)) 
-    (let [edge-with-or-without-key (if (nil? key) edge (assoc edge :_key key))
-          edge-with-or-without-label (if (nil? label) edge-with-or-without-key (assoc edge-with-or-without-key :$label label))]
-      (assoc edge-with-or-without-label "_from" vertex-from-name "_to" vertex-to-name))
-    (filter-out-map args)))
+  [edge key label vertex-from vertex-to & args]
+  {:pre [(map? edge) (or (nil? key) (or (keyword? key) (string? key))) (or (nil? label) (or (keyword? label) (string? label))) (or (keyword? vertex-from) (string? vertex-from) (map? vertex-from)) (or (keyword? vertex-to) (string? vertex-to) (map? vertex-to))]}
+  (let [vertex-from-name (if (map? vertex-from) (get vertex-from "_key") vertex-from)
+        vertex-to-name (if (map? vertex-to) (get vertex-to "_key") vertex-to)]
+    (http/post-uri [:body "edge"] (apply build-resource-uri "graph" "edge" (remove-map args)) 
+      (let [edge-with-or-without-key (if (nil? key) edge (assoc edge :_key key))
+            edge-with-or-without-label (if (nil? label) edge-with-or-without-key (assoc edge-with-or-without-key :$label label))]
+        (assoc edge-with-or-without-label "_from" vertex-from-name "_to" vertex-to-name))
+      (filter-out-map args))))
 
 (defn get-edge
   "Gets an edge.
