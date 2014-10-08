@@ -1,28 +1,36 @@
-(ns clarango.main
-	(:require [clarango.core :as cla-core]
-				[clarango.collection :as collection]
-				[clarango.document :as document]
-        [clarango.database :as database]
-        [clarango.query :as query]
-        [clarango.graph :as graph]
-        [clarango.admin :as admin])
-	(:use clojure.pprint)
+(ns clarango.test.main
+  (:require [clarango.core :as clacore]
+            [clarango.collection :as collection]
+            [clarango.document :as document]
+            [clarango.database :as database]
+            [clarango.query :as query]
+            [clarango.graph :as graph]
+            [clarango.admin :as admin])
+  (:use clojure.pprint)
   (:use clarango.collection-ops)
   (:use clarango.core))
 
+(defn setup []
+  (clacore/set-connection!)
+  (pprint (database/create "test-DB" [{:username "test-user"}]))
+  (clacore/set-default-db! "test-DB"))
 
-(defn -main []
+(defn teardown []
+  (pprint (database/delete "test-DB")))
+
+(defn fixture [f]
+  (setup)
+  (f)
+  (teardown))
+
+(use-fixtures :once fixture)
+
+(deftest main-test
 
   ;;;; this is a comprehensive usage example that tries to give an overview over all the features of the Clarango API
   ;;;; it tries to make use of all methods available in Clarango, but sometimes methods are left out if they are 
   ;;;; very similar to methods already used
 
-  (println "\n\n---- first create a database and a collection and make some document CRUD ----\n")
-
-  (println "\nconnect to defaults: localhost and port 8529")
-  (cla-core/set-connection!)
-  (println "\ncreate Database 'test-DB'")
-  (pprint (database/create "test-DB" [{:username "test-user"}]))
   (println "\ncreate Collection 'test-collection' in DB 'test-DB'")
   (pprint (collection/create "test-collection" "test-DB"))
   (println "\ndocument CRUD")
@@ -124,4 +132,30 @@
   
   (println "\ndelete databases")
   (pprint (database/delete "GraphTestDB"))
-  (database/delete "test-DB"))
+
+  ; (testing "get-all-indexes"
+  ;   (collection/create "col")
+  ;   (let [result (collection/get-all-indexes "col")]
+  ;     (is (= (count result) 1))
+  ;     (is (= (get (first result) "type") "primary"))))
+
+  ; (testing "get-by-key"
+  ;   (let [i1 (first (collection/get-all-indexes "col"))
+  ;         i2 (index/get-by-key (i1 "id"))]
+  ;     (is (= (i1 "type" (i2 "type"))))))
+
+  ; (testing "create index"
+  ;   (index/create {"type" "cap"
+  ;                  "size" 10} "col")
+  ;   (is (= (count (collection/get-all-indexes "col")) 2)))
+
+  ; (testing "delete index"
+  ;   (is (= (count (collection/get-all-indexes "col")) 2))
+  ;   (let [idx ((second (collection/get-all-indexes "col")) "id")]
+  ;     (println "delete index")
+  ;     (println idx)
+  ;     (index/delete-by-key idx)
+  ;   (is (= (count (collection/get-all-indexes "col")) 1))))
+  )
+
+
