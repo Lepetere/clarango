@@ -11,6 +11,4 @@
            :src-linenum-anchor-prefix "L"
            :exclude [clarango.utilities.core-utility
                      clarango.utilities.http-utility
-                     clarango.utilities.uri-utility]}
-  :main clarango.main
-)
+                     clarango.utilities.uri-utility]})
