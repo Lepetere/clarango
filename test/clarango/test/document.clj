@@ -25,34 +25,38 @@
 
 (deftest document-test
 
-  (println "\ncreate Collection 'test-collection' in DB 'test-DB'")
-  (pprint (collection/create "test-collection" "test-DB"))
-  (println "\ndocument CRUD")
-  (pprint (document/create-with-key {:name "some test document"} :test-doc :test-collection :test-DB))
-  (pprint (document/update-by-key {:additional "some additional info"} :test-doc :test-collection :test-DB))
-  (pprint (document/get-by-key :test-doc :test-collection :test-DB))
-  (pprint (document/replace-by-example {:name "new version of our test document"} {:additional "some additional info"} :test-collection :test-DB)))
+  (testing "create collection"
+    (pprint (collection/create "test-collection" "test-DB")))
+
+  (testing "document CRUD"
+    (pprint (document/create-with-key {:name "some test document"} :test-doc :test-collection :test-DB))
+    (pprint (document/update-by-key {:additional "some additional info"} :test-doc :test-collection :test-DB))
+    (pprint (document/get-by-key :test-doc :test-collection :test-DB))
+    (pprint (document/replace-by-example {:name "new version of our test document"} {:additional "some additional info"} :test-collection :test-DB))))
   
 (deftest collection-ops-test
 
-  (println "\nset default DB; this database will be used in the following methods without explicitely having to pass it")
-  (cla-core/set-default-db! "test-DB")
-  (println "\ncollection ops : assoc, dissoc, conj")
-  (pprint (cla-assoc! "test-collection" "new-document-1" {:description "some test document to test the clojure idiomatic collection methods" :key-type "given key"}))
-  (pprint (cla-conj! "test-collection" {:description "some test document to test the clojure idiomatic collection methods" :key-type "auto generated key"}))
-  (pprint (cla-get! "test-collection" "new-document-1"))
-  (pprint (cla-dissoc! "test-collection" "new-document-1")))
+  (testing "set default DB"
+    (cla-core/set-default-db! "test-DB"))
+
+  (testing "collection ops: assoc, dissoc, conj"
+    (pprint (cla-assoc! "test-collection" "new-document-1" {:description "some test document to test the clojure idiomatic collection methods" :key-type "given key"}))
+    (pprint (cla-conj! "test-collection" {:description "some test document to test the clojure idiomatic collection methods" :key-type "auto generated key"}))
+    (pprint (cla-get! "test-collection" "new-document-1"))
+    (pprint (cla-dissoc! "test-collection" "new-document-1"))))
 
 
 (deftest collection-test
 
-  (println "\nget information about the collection and a list of all documents inside it")
-  (pprint (collection/get-info "test-collection"))
-  (pprint (collection/get-all-documents "test-collection"))
-  (println "\nrename the collection and modify it's properties")
-  (pprint (collection/rename "new-name-test-collection" "test-collection"))
-  (pprint (collection/modify-properties {"waitForSync" true} "new-name-test-collection"))
-  (pprint (collection/get-extended-info-figures "new-name-test-collection"))
-  (println "\nunload and delete collection")
-  (pprint (collection/unload-mem "new-name-test-collection"))
-  (pprint (collection/delete "new-name-test-collection")))
+  (testing "get collection information"
+    (pprint (collection/get-info "test-collection"))
+    (pprint (collection/get-all-documents "test-collection")))
+
+  (testing "rename the collection and modify it's properties"
+    (pprint (collection/rename "new-name-test-collection" "test-collection"))
+    (pprint (collection/modify-properties {"waitForSync" true} "new-name-test-collection"))
+    (pprint (collection/get-extended-info-figures "new-name-test-collection")))
+
+  (testing "unload and delete collection"
+    (pprint (collection/unload-mem "new-name-test-collection"))
+    (pprint (collection/delete "new-name-test-collection"))))
