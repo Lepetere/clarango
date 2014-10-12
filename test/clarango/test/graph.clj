@@ -24,7 +24,7 @@
 
 (use-fixtures :once fixture)
 
-(deftest graph-test
+(deftest graph-and-query-test
   (println "\nlist all available databases")
   (pprint (database/get-info-list))
   (println "\nperform next operations in the context of 'GraphTestDB'")
@@ -71,8 +71,9 @@
     (println "\ndelete one vertex")
     (pprint (graph/delete-vertex "peter" :test-graph))
     (println "\ndelete the graph")
-    (pprint (graph/delete :test-graph)))
+    (pprint (graph/delete :test-graph))))
 
+(deftest admin-test
   (println "\nFlush:") ;; all admin functions now
   (pprint (admin/flush))
   (println "\nReload:")

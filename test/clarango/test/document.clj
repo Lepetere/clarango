@@ -31,10 +31,9 @@
   (pprint (document/create-with-key {:name "some test document"} :test-doc :test-collection :test-DB))
   (pprint (document/update-by-key {:additional "some additional info"} :test-doc :test-collection :test-DB))
   (pprint (document/get-by-key :test-doc :test-collection :test-DB))
-  (pprint (document/replace-by-example {:name "new version of our test document"} {:additional "some additional info"} :test-collection :test-DB))
+  (pprint (document/replace-by-example {:name "new version of our test document"} {:additional "some additional info"} :test-collection :test-DB)))
   
-
-  (println "\n\n---- now make use of the clojure idiomatic methods available in the namespace collection-ops to add and delete more content in the collection ----\n")
+(deftest collection-ops-test
 
   (println "\nset default DB; this database will be used in the following methods without explicitely having to pass it")
   (cla-core/set-default-db! "test-DB")
@@ -42,10 +41,10 @@
   (pprint (cla-assoc! "test-collection" "new-document-1" {:description "some test document to test the clojure idiomatic collection methods" :key-type "given key"}))
   (pprint (cla-conj! "test-collection" {:description "some test document to test the clojure idiomatic collection methods" :key-type "auto generated key"}))
   (pprint (cla-get! "test-collection" "new-document-1"))
-  (pprint (cla-dissoc! "test-collection" "new-document-1"))
+  (pprint (cla-dissoc! "test-collection" "new-document-1")))
 
 
-  (println "\n\n---- modify the collection ----\n")
+(deftest collection-test
 
   (println "\nget information about the collection and a list of all documents inside it")
   (pprint (collection/get-info "test-collection"))
