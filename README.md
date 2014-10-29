@@ -8,7 +8,7 @@ The current lib version on clojars is 0.5.0. The library should work with Arango
 
 For an overview of the features and how to use see below. For more detailed documentation also have a look at:
 * The [API overview](http://edlich.github.io/clarango/doc/index.html) can also be found on [crossclj](http://crossclj.info) [here](http://crossclj.info/ns/clarango/0.3.2/clarango.core.html) (possibly older version)
-* Some examples can be found [here](https://github.com/edlich/clarango/blob/development/src/clarango/main.clj)
+* Some examples can be found [here](https://github.com/edlich/clarango/blob/master/test/clarango/test/main.clj)
 * A book as [pdf](https://leanpub.com/clarango) for printing / download or as [html readable online](https://leanpub.com/clarango/read)
 
 ![Alt Clarango Book](https://raw.githubusercontent.com/edlich/clarango/gh-pages/images/clarangoBook.png)
