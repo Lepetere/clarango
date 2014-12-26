@@ -5,7 +5,7 @@
             [clarango.database :as database]
             [clarango.query :as query]
             [clarango.graph :as graph]
-            [clarango.admin :as admin])
+            [clarango.misc :as misc])
   (:use clojure.pprint)
   (:use clarango.collection-ops)
   (:use clarango.core))
@@ -90,18 +90,10 @@
           (println "\ndelete the graph")
           (pprint (graph/delete :test-graph)))))))
 
-(deftest admin-test
+(deftest misc-test
 
-  (testing "admin functions with output"
-    (println "\nFlush:")
-    (pprint (admin/flush))
-    (println "\nReload:")
-    (pprint (admin/reload))
-    (println "\nStatistics:")
-    (pprint (admin/statistics))
-    (println "\nStatistic descriptions:")
-    (pprint (admin/stat-desc))
-    (println "\nLog")
-    (println (admin/log {"upto" 3}))
-    (println "\nRole:") ; This is >= V2
-    (pprint (admin/role))))
+  (testing "misc functions with output"
+    (println "\nversion without details:")
+    (pprint (misc/version))
+    (println "\nversion with details:")
+    (pprint (misc/version true))))
