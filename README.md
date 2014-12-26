@@ -4,14 +4,14 @@ Clarango: a Clojure driver for ArangoDB
 
 Clarango is a library to connect Clojure with the incredible database [ArangoDB](http://www.arangodb.com/). Although it is work in progress, the parts which are already there are stable. 
 
-The current lib version on clojars is 0.5.0. The library should work with ArangoDB versions at least from 1.4.0 upwards (latest test was with version 2.2.3).
+The current library version on clojars is `0.6.0`. Due to changes in ArangoDB's API this version is only compatible with ArangoDB 2.3 upwards (latest test was with version 2.3.3).
 
-For an overview of the features and how to use see below. For more detailed documentation also have a look at:
-* The [API overview](http://edlich.github.io/clarango/doc/index.html) can also be found on [crossclj](http://crossclj.info) [here](http://crossclj.info/ns/clarango/0.3.2/clarango.core.html) (possibly older version)
-* Some examples can be found [here](https://github.com/edlich/clarango/blob/development/src/clarango/main.clj)
-* A book as [pdf](https://leanpub.com/clarango) for printing / download or as [html readable online](https://leanpub.com/clarango/read)
+For compatibility with ArangoDB versions 1.4 to 2.2 use Clarango version `0.5.0`.
 
-![Alt Clarango Book](https://raw.githubusercontent.com/edlich/clarango/gh-pages/images/clarangoBook.png)
+For an overview of the features and how to use see below. For more detailed documentation have a look at:
+* The [Clarango API overview](http://edlich.github.io/clarango/doc/index.html)
+* or the [API overview on crossclj](http://crossclj.info/ns/clarango/latest/clarango.core.html) (possibly older version)
+* our book as [pdf](https://leanpub.com/clarango) for printing / download or as [html readable online](https://leanpub.com/clarango/read) (possibly older version)
 
 ## Features
 
@@ -22,7 +22,6 @@ For an overview of the features and how to use see below. For more detailed docu
 * collection management
 * database management
 * graph functions
-* admin and monitoring
 * index managing
 * experimental clojure idiomatic collection methods like `cla-assoc!` and `cla-conj!`
 * simple exception handling
@@ -31,7 +30,7 @@ For an overview of the features and how to use see below. For more detailed docu
 
 The driver is hosted on [Clojars](https://clojars.org/clarango). Add this Leiningen dependency to your project.clj:
 ```
-[clarango "0.5.0"]
+[clarango "0.6.0"]
 ```
 Then require the lib in your clojure file. For example:
 ``` Clojure
@@ -58,6 +57,11 @@ Then require the lib in your clojure file. For example:
 
 ;; change default db
 (clacore/set-default-db! "my-db")
+
+;; ... or just
+(clacore/with-connection {:connection-url "http://localhost:8529/" ...}
+  ;; ... do your business here
+  )
 ```
 
 The server url is mandatory. Default database and collection are optional.
@@ -68,14 +72,14 @@ The server url is mandatory. Default database and collection are optional.
 (collection/create "test-collection")
 (with-collection "test-collection"
   ;; create
-  (document/create-with-key {:description "some test document"} "test-doc")
+  (document/create-with-key {:description "some test document"} :test-doc)
   ;; read
-  (document/get-by-key "test-doc")
+  (document/get-by-key :test-doc)
   (document/get-by-example {:description "some test document"})
   ;; update
-  (document/update-by-key {:additional "some additional info"} "test-doc")
+  (document/update-by-key {:additional "some additional info"} :test-doc)
   ;; delete
-  (document/delete-by-key "test-doc"))
+  (document/delete-by-key :test-doc))
 
 ```
 
@@ -94,9 +98,11 @@ The server url is mandatory. Default database and collection are optional.
 
 All methods will use the default database and collection unless the names of different ones are passed as optional arguments. For a complete list of methods see the [API overview](http://edlich.github.io/clarango/doc/index.html)
 
-## Bugs
+## Bugs / Contributors
 
 If you find bugs or are missing a feature open an issue or feel free to pull request!
+
+We are looking for contributors to keep the project running, so please get in touch!
 
 If you like it give us a :star:
 
