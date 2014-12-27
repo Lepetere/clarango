@@ -20,7 +20,7 @@
   Can be called without arguments. In that case the default database will be used.
   Optionally you can pass a database name as argument."
   [& args]
-  (http/get-uri [:body "graphs"] (apply build-resource-uri "graph" nil nil (remove-map args))))
+  (http/get-uri [:body "graphs"] (apply build-resource-uri "gharial" nil nil (remove-map args))))
 
 (defn create
   "Creates a new database.
