@@ -9,7 +9,7 @@
   "In case the type parameter is 'graph', returns the default graph that was set in core.
   In all other cases returns the default collection."
   [type]
-  (if (= type "graph") (get-default-graph-name) (get-default-collection-name)))
+  (if (or (= type "graph") (= type "gharial")) (get-default-graph-name) (get-default-collection-name)))
 
 (defn connect-url-parts
   "Builds a string out of different parts. Adds a '/' between the string parts if not present."

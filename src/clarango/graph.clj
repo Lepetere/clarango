@@ -118,6 +118,8 @@
   If you want to specify a key by yourself, add it as the :_key parameter to the vertex map or use method create-vertex-with-key. 
   If you would like the key to be created automatically, just leave this parameter out.
 
+  Second argument: The vertex collection where the vertex should be stored.
+
   Takes optional a graph name and a db name as further arguments.
   If omitted by user, the default graph and db will be used.
 
@@ -125,9 +127,9 @@
   {'waitForSync' true/false} (replace the single quotes with double quotes)
   - waitForSync meaning if the server response should wait until the vertex is saved to disk;
   The option map might be passed in an arbitrary position after the first argument."
-  [vertex & args]
-  {:pre [(map? vertex)]}
-  (http/post-uri [:body "vertex"] (apply build-resource-uri "graph" "vertex" (remove-map args)) vertex (filter-out-map args)))
+  [vertex vertex-collection & args]
+  {:pre [(map? vertex) (or (string? vertex-collection) (keyword? vertex-collection))]}
+  (http/post-uri [:body "vertex"] (apply build-resource-uri "gharial" (str "vertex/" (if (keyword? vertex-collection) (name vertex-collection) vertex-collection)) (remove-map args)) vertex (filter-out-map args)))
 
 (defn create-vertex-with-key
   "Creates a vertex with a given key.

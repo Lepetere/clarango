@@ -47,13 +47,13 @@
       (testing "set graph context and create vertices"
         (with-graph :test-graph
               
-          (let [bob (graph/create-vertex {:_key "bob" :name "Bob" :age 28})
-                peter (graph/create-vertex {:_key "peter" :name "Peter" :age 25})]
+          (let [bob (graph/create-vertex {:_key "bob" :name "Bob" :age 28} :people)
+                peter (graph/create-vertex {:_key "peter" :name "Peter" :age 25} :people)]
 
             (testing "create vertices"
-              (graph/create-vertex {:_key "clara" :name "Clara" :age 29})
-              (graph/create-vertex {:_key "jessica" :name "Jessica" :age 23})
-              (graph/create-vertex {:_key "alice" :name "Alice" :age 20}))
+              (graph/create-vertex {:_key "clara" :name "Clara" :age 29} :people)
+              (graph/create-vertex {:_key "jessica" :name "Jessica" :age 23} :people)
+              (graph/create-vertex {:_key "alice" :name "Alice" :age 20} :people))
               
             (testing "perform query: find all people who are older than 24"
               (pprint (query/validate "FOR p IN people FILTER p.age > 24 RETURN p"))
