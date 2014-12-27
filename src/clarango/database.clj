@@ -14,6 +14,14 @@
   [& args]
   (http/get-uri [:body "collections"] (apply build-resource-uri "collection" nil nil (remove-map args)) (filter-out-map args)))
 
+(defn collection-exists?
+  "Returns true if a collection with the given name exists, otherwise returns false.
+
+  Can be called without arguments. In that case the default database will be used.
+  Optionally you can pass a database name as second argument."
+  [collection-name & args]
+  (contains? (set (map #(get % "name") (apply get-collection-info-list args))) collection-name))
+
 (defn get-all-graphs
   "Gets a list of all existing graphs within the database.
 
