@@ -9,7 +9,7 @@
 
   (def testdb "clatest")
   (db/create testdb []) ;; Take care: any errors might leave the created db
-  (is (> (count (db/get-info-list)) 1) "One more db must exist!")
+  (is (db/database-exists? testdb) "DB must now exist!")
   (println "*** Database List: " (db/get-info-list))
 
   (set-default-db! testdb)

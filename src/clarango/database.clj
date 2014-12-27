@@ -71,6 +71,11 @@
   []
   (http/get-uri [:body "result"] (build-resource-uri "database" nil nil "_system")))
 
+(defn database-exists?
+  "Returns true if a database with the given name exists, otherwise returns false."
+  [database-name]
+  (contains? (set (get-info-list)) database-name))
+
 (defn get-info-user
   "Returns a list of all databases the current user can access.
 
