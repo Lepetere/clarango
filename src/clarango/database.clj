@@ -30,6 +30,14 @@
   [& args]
   (http/get-uri [:body "graphs"] (apply build-resource-uri "gharial" nil nil (remove-map args))))
 
+(defn graph-exists?
+  "Returns true if a graph with the given name exists, otherwise returns false.
+
+  Can be called without arguments. In that case the default database will be used.
+  Optionally you can pass a database name as second argument."
+  [graph-name & args]
+  (contains? (set (map #(get % "_key") (apply get-all-graphs args))) graph-name))
+
 (defn create
   "Creates a new database.
 

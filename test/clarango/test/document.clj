@@ -27,8 +27,8 @@
 
   (testing "create collection"
     (pprint (collection/create "test-collection" "test-DB"))
-    (println "test if collection exists")
-    (pprint (database/collection-exists? "test-collection" "test-DB")))
+    (println "\ntest if collection exists\n")
+    (is (database/collection-exists? "test-collection" "test-DB")))
 
   (testing "document CRUD"
     (pprint (document/create-with-key {:name "some test document"} :test-doc :test-collection :test-DB))

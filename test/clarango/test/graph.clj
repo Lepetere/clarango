@@ -42,7 +42,9 @@
         (println "\ncreate graph 'test-graph'")
         (pprint (graph/create "test-graph" :people :connections))
         (println "\nnow get all available graphs")
-        (pprint (database/get-all-graphs)))
+        (pprint (database/get-all-graphs))
+        (println "\ntest if graph exists\n")
+        (is (database/graph-exists? "test-graph")))
 
       (testing "set graph context and create vertices"
         (with-graph :test-graph
