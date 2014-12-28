@@ -21,10 +21,11 @@
             (let [base-string (if (keyword? base-part) (name base-part) base-part)
                   add-string (if (keyword? add-part) (name add-part) add-part)]
               (if (nil? add-string) base-string 
-                          (let [url-string (str base-string (clojure.string/trim add-string))]
-                            ;; if already ends with '/' just add it, otherwise append '/'
-                            ;; if it ends with '=' it's a parameter and also doesn't need a '/'
-                            (if (or (.endsWith add-string "/") (.endsWith add-string "=")) url-string (str url-string "/"))))))
+                (let [add-url-string (if (.startsWith (clojure.string/trim add-string) "/") (subs (clojure.string/trim add-string) 1) (clojure.string/trim add-string))
+                      url-string (str base-string (clojure.string/trim add-url-string))]
+                  ;; if already ends with '/' just add it, otherwise append '/'
+                  ;; if it ends with '=' it's a parameter and also doesn't need a '/'
+                  (if (or (.endsWith add-url-string "/") (.endsWith add-url-string "=")) url-string (str url-string "/"))))))
         "" parts)]
       ;; cut off the last '/'
       (.substring url-string 0 (dec (count url-string)))))
@@ -42,10 +43,20 @@
     (connect-url-parts (get-safe-connection-url) "_api/" type))
   ([type resource-key]
     {:pre [(or (string? type) (nil? type)) (or (string? resource-key) (nil? resource-key) (keyword? resource-key))]}
-  	(connect-url-parts (get-safe-connection-url) "_db/" (get-default-db) "_api/" type (get-default-collection-or-graph type) resource-key))
+    (connect-url-parts (get-safe-connection-url) "_db/" (get-default-db) "_api/" type (get-default-collection-or-graph type) resource-key))
   ([type resource-key collection-name]
     {:pre [(or (string? type) (nil? type)) (or (string? resource-key) (nil? resource-key) (keyword? resource-key)) (or (string? collection-name) (nil? collection-name) (keyword? collection-name))]}
   	(connect-url-parts (get-safe-connection-url) "_db/" (get-default-db) "_api/" type collection-name resource-key))
   ([type resource-key collection-name db-name]
     {:pre [(or (string? type) (nil? type)) (or (string? resource-key) (nil? resource-key) (keyword? resource-key)) (or (string? collection-name) (nil? collection-name) (keyword? collection-name)) (or (string? db-name) (nil? db-name) (keyword? db-name))]}
   	(connect-url-parts (get-safe-connection-url) "_db/" db-name "_api/" type collection-name resource-key)))
+
+(defn build-document-uri-from-two-parts
+  "Builds a document uri from the part url that is returned by the collection/get-all-documents method and a db name.
+  The db name can be nil, in which case the default database will be used.
+
+  This method is meant to be used only by the collection/get-delayed-collection method."
+  [document-uri db-name]
+  {:pre [(string? document-uri) (or (string? db-name) (nil? db-name))]}
+  (let [db-name-not-nil (if (nil? db-name) (get-default-db) db-name)]
+    (connect-url-parts (get-safe-connection-url) "_db/" db-name-not-nil document-uri)))

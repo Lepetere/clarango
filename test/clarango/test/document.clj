@@ -47,12 +47,18 @@
     (pprint (cla-get! "test-collection" "new-document-1"))
     (pprint (cla-dissoc! "test-collection" "new-document-1"))))
 
-
 (deftest collection-test
 
   (testing "get collection information"
     (pprint (collection/get-info "test-collection"))
     (pprint (collection/get-all-documents "test-collection")))
+
+  (testing "get delayed collection and a delayed documents"
+    (let [delayed-collection (collection/get-delayed-collection "test-collection" "test-DB") 
+          _ (pprint delayed-collection)]
+      (doseq [k (keys delayed-collection)]
+        (println k)
+        (pprint @(get delayed-collection k)))))
 
   (testing "rename the collection and modify it's properties"
     (pprint (collection/rename "new-name-test-collection" "test-collection"))

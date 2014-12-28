@@ -1,15 +1,27 @@
 (ns clarango.collection
   (:require [clarango.utilities.http-utility :as http])
-  (:use [clarango.utilities.core-utility :only [remove-map filter-out-map]]
-        [clarango.utilities.uri-utility :only [build-resource-uri]]))
+  (:use [clarango.utilities.core-utility :only [remove-map filter-out-map filter-out-database-name]]
+        [clarango.utilities.uri-utility :only [build-resource-uri build-document-uri-from-two-parts]]))
 
 (defn get-all-documents
-  "Returns a list with the URIs of all documents in the collection.
+  "Returns a vector with the URIs of all documents in the collection.
 
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
   (http/get-uri [:body "documents"] (apply build-resource-uri "document/?collection=" nil (remove-map args))))
+
+(defn get-delayed-collection
+  "Returns a map with all documents in the collection as delays in the form {:document-name (delay (document/get document-name)) ...}.
+
+  If you want to retreive the content of a document, just dereference it like so:
+  @(get delayed-collection 'document-name').
+
+  Takes the collection name as first and the database name as second argument. Both are mandatory."
+  [& args]
+  (reduce #(assoc %1 %2 
+    (delay (http/get-uri [:body] (build-document-uri-from-two-parts %2 (filter-out-database-name args))))) {} 
+    (apply get-all-documents args)))
 
 (defn get-info
   "Returns information about a collection.
