@@ -12,14 +12,14 @@
   (http/get-uri [:body "documents"] (apply build-resource-uri "document/?collection=" nil (remove-map args))))
 
 (defn get-delayed-collection
-  "Returns a map with all documents in the collection as delays in the form {:document-name (delay (document/get document-name)) ...}.
+  "Returns a map with all documents in the collection as delays in the form {:document-key (delay (document/get document-name)) ...}.
 
   If you want to retreive the content of a document, just dereference it like so:
-  @(get delayed-collection 'document-name').
+  @(get delayed-collection 'document-key').
 
   Takes the collection name as first and the database name as second argument. Both are mandatory."
   [& args]
-  (reduce #(assoc %1 %2 
+  (reduce #(assoc %1 (keyword (subs %2 (inc (.lastIndexOf %2 "/")))) 
     (delay (http/get-uri [:body] (build-document-uri-from-two-parts %2 (filter-out-database-name args))))) {} 
     (apply get-all-documents args)))
 
