@@ -53,12 +53,23 @@
     (pprint (collection/get-info "test-collection"))
     (pprint (collection/get-all-documents "test-collection")))
 
-  (testing "get delayed collection and a delayed documents"
+  (testing "get delayed collection and delayed documents with explicit collection and db"
+    (println "\ndelayed collection test 1")
     (let [delayed-collection (collection/get-delayed-collection "test-collection" "test-DB") 
           _ (pprint delayed-collection)]
       (doseq [k (keys delayed-collection)]
-        (println k)
+        (println "\nget document" k ":")
         (pprint @(get delayed-collection k)))))
+
+  (testing "get delayed collection and delayed documents with default collection and db"
+    (println "\ndelayed collection test 2")
+    (with-db "test-DB"
+      (with-collection "test-collection"
+        (let [delayed-collection (collection/get-delayed-collection) 
+                    _ (pprint delayed-collection)]
+                (doseq [k (keys delayed-collection)]
+                  (println "\nget document" k ":")
+                  (pprint @(get delayed-collection k)))))))
 
   (testing "rename the collection and modify it's properties"
     (pprint (collection/rename "new-name-test-collection" "test-collection"))
