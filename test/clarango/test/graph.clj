@@ -90,7 +90,11 @@
         
         (testing "delete graph" 
           (println "\ndelete the graph")
-          (pprint (graph/delete :test-graph)))))))
+          (pprint (graph/delete :test-graph)))
+
+        (testing "test nested graph/collection creation"
+          (println "test nested graph/collection creation")
+          (pprint (graph/create :test-graph-2 (collection/create :people-2 {"type" 2}) (collection/create :connections-2 {"type" 3}))))))))
 
 (deftest misc-test
 

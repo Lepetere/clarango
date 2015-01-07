@@ -15,7 +15,6 @@
   "Takes a piece of data and extracts the :collection-name or :database-name from its metadata, if present.
   If not present, throws an error."
   [data]
-  (println "extract-db-or-collection-name from" data)
   (if (contains? (meta data) :database-name)
     (:database-name (meta data))
     (if (contains? (meta data) :collection-name)

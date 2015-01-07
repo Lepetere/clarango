@@ -41,12 +41,13 @@
 
   (testing "create a document with a nested collection/document create call"
     (pprint (document/create-with-key {:description "what a great way to create a document"} :new-doc 
-      (collection/create "a-nested-collection" "test-DB") :test-DB)))
+      (collection/create "a-nested-collection"))))
 
   (testing "create a document with a nested db/collection create call"
     (with-db (database/create "nested-test-DB" [])
       (pprint (document/create-with-key {:description "what a great way to create a document"} :new-doc 
-      (collection/create "a-nested-collection"))))))
+      (collection/create "a-nested-collection"))))
+      (database/delete "nested-test-DB")))
   
 (deftest collection-ops-test
 

@@ -70,6 +70,13 @@
       body-with-filter
       (filter-out-options-map args))))
 
+(defn- extract-collection-name
+  "Extracts the collection name from the metadata of a collection. If not present, throws an error."
+  [collection]
+  (if (contains? (meta collection) :collection-name) 
+    (:collection-name (meta collection)) 
+    (throw (Exception. "Please pass a collection for the vertices and edges to the graph create method."))))
+
 (defn create
   "Creates a new graph.
 
@@ -84,10 +91,12 @@
   {'waitForSync' true/false} (replace the single quotes with double quotes)
   - waitForSync meaning if the server response should wait until the graph has been to disk;"
   [graph-name vertices-collection edges-collection & args]
-  {:pre [(or (keyword? graph-name) (string? graph-name)) (or (keyword? vertices-collection) (string? vertices-collection)) (or (keyword? edges-collection) (string? edges-collection))]}
-  (http/post-uri [:body "graph"] (apply build-resource-uri "graph" nil nil (remove-options-map args)) 
-    {"_key" graph-name, "vertices" vertices-collection, "edges" edges-collection} 
-    (filter-out-options-map args)))
+  {:pre [(or (keyword? graph-name) (string? graph-name))]}
+  (let [vertices-collection-name (if (or (keyword? vertices-collection) (string? vertices-collection)) vertices-collection (extract-collection-name vertices-collection))
+        edges-collection-name (if (or (keyword? edges-collection) (string? edges-collection)) edges-collection (extract-collection-name edges-collection))]
+    (http/post-uri [:body "graph"] (apply build-resource-uri "graph" nil nil (remove-options-map args)) 
+      {"_key" graph-name, "vertices" vertices-collection-name, "edges" edges-collection-name}
+      (filter-out-options-map args))))
 
 (defn get-info
   "Gets info about a graph.
