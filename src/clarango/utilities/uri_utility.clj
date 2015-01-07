@@ -11,8 +11,21 @@
   [type]
   (if (or (= type "graph") (= type "gharial")) (get-default-graph-name) (get-default-collection-name)))
 
+(defn- extract-db-or-collection-name
+  "Takes a piece of data and extracts the :collection-name or :database-name from its metadata, if present.
+  If not present, throws an error."
+  [data]
+  (println "extract-db-or-collection-name from" data)
+  (if (contains? (meta data) :database-name)
+    (:database-name (meta data))
+    (if (contains? (meta data) :collection-name)
+      (:collection-name (meta data))
+      (throw (Exception. "Map passed to build url string does not contain a database-name or collection-name in its metadata. Please check your call arguments.")))))
+
 (defn connect-url-parts
-  "Builds a string out of different parts. Adds a '/' between the string parts if not present."
+  "Builds a string out of different parts. Adds a '/' between the string parts if not present.
+  Apart from strings or keywords this method accepts also maps as arguments but then expects that they contain
+  either a :database-name or a :collection-name in their metadata and that is used to build the url string."
   [& parts]
     (let [url-string 
         (reduce 
@@ -26,7 +39,8 @@
                   ;; if already ends with '/' just add it, otherwise append '/'
                   ;; if it ends with '=' it's a parameter and also doesn't need a '/'
                   (if (or (.endsWith add-url-string "/") (.endsWith add-url-string "=")) url-string (str url-string "/"))))))
-        "" parts)]
+        "" ;the start of the url string is an empty string
+        (map #(if (or (= (type %) clojure.lang.PersistentHashMap) (= (type %) clojure.lang.PersistentArrayMap)) (extract-db-or-collection-name %) %) parts))]
       ;; cut off the last '/'
       (.substring url-string 0 (dec (count url-string)))))
 
@@ -45,10 +59,10 @@
     {:pre [(or (string? type) (nil? type)) (or (string? resource-key) (nil? resource-key) (keyword? resource-key))]}
     (connect-url-parts (get-safe-connection-url) "_db/" (get-default-db) "_api/" type (get-default-collection-or-graph type) resource-key))
   ([type resource-key collection-name]
-    {:pre [(or (string? type) (nil? type)) (or (string? resource-key) (nil? resource-key) (keyword? resource-key)) (or (string? collection-name) (nil? collection-name) (keyword? collection-name))]}
+    {:pre [(or (string? type) (nil? type)) (or (string? resource-key) (nil? resource-key) (keyword? resource-key))]}
   	(connect-url-parts (get-safe-connection-url) "_db/" (get-default-db) "_api/" type collection-name resource-key))
   ([type resource-key collection-name db-name]
-    {:pre [(or (string? type) (nil? type)) (or (string? resource-key) (nil? resource-key) (keyword? resource-key)) (or (string? collection-name) (nil? collection-name) (keyword? collection-name)) (or (string? db-name) (nil? db-name) (keyword? db-name))]}
+    {:pre [(or (string? type) (nil? type)) (or (string? resource-key) (nil? resource-key) (keyword? resource-key))]}
   	(connect-url-parts (get-safe-connection-url) "_db/" db-name "_api/" type collection-name resource-key)))
 
 (defn build-document-uri-from-two-parts
