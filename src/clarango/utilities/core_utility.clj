@@ -43,21 +43,23 @@
       (if (nil? graph-name) (throw (Exception. "No default graph set.")) graph-name)) 
         (throw (Exception. "No connection set."))))
 
-(defn remove-map
-  "Takes a vector and returns it without the elements that are of type map."
+(defn remove-options-map
+  "Takes a vector and returns it without the elements that are of type map. Only removes maps that do not
+  contain the keywords :database-name or :collection-name in their metadata."
   [vect]
-  (remove #(= (type %) clojure.lang.PersistentArrayMap) vect))
+  (remove #(if (= (type %) clojure.lang.PersistentArrayMap) (not (or (contains? (meta %) :database-name) (contains? (meta %) :collection-name))) false) vect))
 
-(defn filter-out-map
-  "Returns the first element in a vector that is of type map."
+(defn filter-out-options-map
+  "Returns the first element in a vector that is of type map, except for maps that contain the keywords 
+  :database-name or :collection-name."
   [vect]
-  (first (filter #(= (type %) clojure.lang.PersistentArrayMap) vect)))
+  (first (filter #(if (= (type %) clojure.lang.PersistentArrayMap) (not (or (contains? (meta %) :database-name) (contains? (meta %) :collection-name))) false) vect)))
 
 (defn filter-out-collection-name
   "Filters out the collection name of the additional argument vector of the clojure API methods.
   Returns the default collection, if not present in the argument vector."
   [args]
-  (let [args-without-map (remove-map args)]
+  (let [args-without-map (remove-options-map args)]
     (case (count args-without-map)
       0 (get-default-collection-name)
       1 (nth args-without-map 0)
@@ -67,7 +69,7 @@
   "Filters out the database name of the additional argument vector of the clojure API methods.
   Returns the default database, if not present in the argument vector."
   [args]
-  (let [args-without-map (remove-map args)]
+  (let [args-without-map (remove-options-map args)]
     (case (count args-without-map)
       0 (get-default-db)
       1 (get-default-db)

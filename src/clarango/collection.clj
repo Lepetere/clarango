@@ -1,6 +1,6 @@
 (ns clarango.collection
   (:require [clarango.utilities.http-utility :as http])
-  (:use [clarango.utilities.core-utility :only [remove-map filter-out-map filter-out-database-name]]
+  (:use [clarango.utilities.core-utility :only [remove-options-map filter-out-options-map filter-out-database-name]]
         [clarango.utilities.uri-utility :only [build-resource-uri build-document-uri-from-two-parts]]))
 
 (defn get-all-documents
@@ -9,7 +9,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri [:body "documents"] (apply build-resource-uri "document/?collection=" nil (remove-map args))))
+  (http/get-uri [:body "documents"] (apply build-resource-uri "document/?collection=" nil (remove-options-map args))))
 
 (defn get-delayed-collection
   "Returns a map with all documents in the collection as delays in the form {:document-key (delay (document/get document-name)) ...}.
@@ -29,7 +29,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri [:body] (apply build-resource-uri "collection" nil (remove-map args)) (filter-out-map args)))
+  (http/get-uri [:body] (apply build-resource-uri "collection" nil (remove-options-map args)) (filter-out-options-map args)))
 
 (defn get-extended-info
   "Returns extended information about a collection. Forces a load of the collection.
@@ -37,7 +37,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri [:body] (apply build-resource-uri "collection" "properties" (remove-map args)) (filter-out-map args)))
+  (http/get-uri [:body] (apply build-resource-uri "collection" "properties" (remove-options-map args)) (filter-out-options-map args)))
 
 (defn get-extended-info-count
   "Returns extended information about a collection including the number of documents in the collection.
@@ -46,7 +46,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri [:body] (apply build-resource-uri "collection" "count" (remove-map args)) (filter-out-map args)))
+  (http/get-uri [:body] (apply build-resource-uri "collection" "count" (remove-options-map args)) (filter-out-options-map args)))
 
 (defn get-extended-info-figures
   "Returns extended information about a collection including detailed information about the documents in the collection.
@@ -55,7 +55,7 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/get-uri [:body] (apply build-resource-uri "collection" "figures" (remove-map args)) (filter-out-map args)))
+  (http/get-uri [:body] (apply build-resource-uri "collection" "figures" (remove-options-map args)) (filter-out-options-map args)))
 
 (defn create
   "Creates a new collection.
@@ -84,7 +84,7 @@
       - offset is the initial offset value for the autoincrement key generator (optional)"
   [collection-name & args]
   {:pre [(or (keyword? collection-name) (string? collection-name))]}
-  (http/post-uri [:body] (apply build-resource-uri "collection" nil nil (remove-map args)) (merge {:name collection-name} (filter-out-map args)) nil {:collection-name collection-name}))
+  (http/post-uri [:body] (apply build-resource-uri "collection" nil nil (remove-options-map args)) (merge {:name collection-name} (filter-out-options-map args)) nil {:collection-name collection-name}))
 
 (defn truncate
   "Removes all documents from a collection, but leaves the indexes intact.
@@ -115,7 +115,7 @@
 
   The option map might be passed in an arbitrary position between the other arguments."
   [& args]
-  (http/put-uri [:body] (apply build-resource-uri "collection" "load" (remove-map args)) (filter-out-map args)))
+  (http/put-uri [:body] (apply build-resource-uri "collection" "load" (remove-options-map args)) (filter-out-options-map args)))
 
 (defn unload-mem
   "Removes a collection from the memory. On success a map containing collection properties is returned.
@@ -123,7 +123,7 @@
   Can be called without arguments. In that case the default collection from the default database will be truncated.
   Optionally you can pass a collection name as first and a database name as second argument."
   [& args]
-  (http/put-uri [:body] (apply build-resource-uri "collection" "unload" (remove-map args)) (filter-out-map args)))
+  (http/put-uri [:body] (apply build-resource-uri "collection" "unload" (remove-options-map args)) (filter-out-options-map args)))
 
 (defn modify-properties ;; or update-properties?
   "Modifies  the properties of a collection.
@@ -138,7 +138,7 @@
   - journalSize is the size (in bytes) for new journal files that are created for the collection"
   [properties & args]
   {:pre [(map? properties)]}
-  (http/put-uri [:body] (apply build-resource-uri "collection" "properties" (remove-map args)) (filter-out-map args)))
+  (http/put-uri [:body] (apply build-resource-uri "collection" "properties" (remove-options-map args)) (filter-out-options-map args)))
 
 ;; Hides clojure.set/rename -> Find a different name?
 (defn rename
@@ -169,4 +169,4 @@
   Can be called without arguments. In that case the default collection from the default database will be used.
   Optionally you can pass a collection name as the first argument and a database name as the second argument."
   [& args]
-  (http/get-uri [:body "indexes"](apply build-resource-uri "index/?collection=" nil (remove-map args))))
+  (http/get-uri [:body "indexes"](apply build-resource-uri "index/?collection=" nil (remove-options-map args))))

@@ -1,6 +1,6 @@
 (ns clarango.query
   (:require [clarango.utilities.http-utility :as http])
-  (:use [clarango.utilities.core-utility :only [remove-map filter-out-map]]
+  (:use [clarango.utilities.core-utility :only [remove-options-map filter-out-options-map]]
         [clarango.utilities.uri-utility :only [build-resource-uri]]))
 
 (defn explain
@@ -15,9 +15,9 @@
   [query-string & args]
   {:pre [(string? query-string)]}
   	(let [body {"query" query-string}
-  		  bind-vars (filter-out-map args)
+  		  bind-vars (filter-out-options-map args)
   		  body-bind-vars (if (nil? bind-vars) body (merge body {"bindVars" bind-vars}))]
-  	  (http/post-uri [:body "plan"] (apply build-resource-uri "explain" nil nil (remove-map args)) body-bind-vars)))
+  	  (http/post-uri [:body "plan"] (apply build-resource-uri "explain" nil nil (remove-options-map args)) body-bind-vars)))
 
 (defn validate
   "Validates a query without executing it.
@@ -45,9 +45,9 @@
   [query-string & args]
   {:pre [(string? query-string)]}
     (let [body {"query" query-string}
-        bind-vars (filter-out-map args)
+        bind-vars (filter-out-options-map args)
         body-bind-vars (if (nil? bind-vars) body (merge body {"bindVars" bind-vars}))]
-      (http/post-uri [:body] (apply build-resource-uri "cursor" nil nil (remove-map args)) body-bind-vars)))
+      (http/post-uri [:body] (apply build-resource-uri "cursor" nil nil (remove-options-map args)) body-bind-vars)))
 
 (defn execute-count
   "Executes a query. Takes also the options 'batch-size' and 'count'.
@@ -72,9 +72,9 @@
   [query-string batch-size count & args]
   {:pre [(string? query-string) (number? batch-size) (= (type count) java.lang.Boolean)]}
     (let [body {"query" query-string, "batchSize" batch-size, "count" count}
-        bind-vars (filter-out-map args)
+        bind-vars (filter-out-options-map args)
         body-bind-vars (if (nil? bind-vars) body (merge body {"bindVars" bind-vars}))]
-      (http/post-uri [:body] (apply build-resource-uri "cursor" nil nil (remove-map args)) body-bind-vars)))
+      (http/post-uri [:body] (apply build-resource-uri "cursor" nil nil (remove-options-map args)) body-bind-vars)))
 
 (defn get-more-results
   "This method gets the remaining results of a query. More results to a query are available if the return value of the

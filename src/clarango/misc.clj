@@ -1,7 +1,6 @@
 (ns clarango.misc
   (:require [clarango.utilities.http-utility :as http])
-  (:use [clarango.utilities.core-utility :only [get-safe-connection-url filter-out-map]]
-        [clarango.utilities.uri-utility :only [build-resource-uri]]))
+  (:use [clarango.utilities.uri-utility :only [build-resource-uri]]))
 
 (defn version
   "Returns the version of the ArangoDB server.

@@ -1,6 +1,6 @@
 (ns clarango.graph
   (:require [clarango.utilities.http-utility :as http])
-  (:use [clarango.utilities.core-utility :only [remove-map filter-out-map]]
+  (:use [clarango.utilities.core-utility :only [remove-options-map filter-out-options-map]]
         [clarango.utilities.uri-utility :only [build-resource-uri connect-url-parts]]))
 
 (defn execute-traversal
@@ -24,9 +24,9 @@
   {:pre [(or (keyword? start-vertex) (string? start-vertex)) (or (keyword? vertex-collection) (string? vertex-collection)) (or (keyword? edges-collection) (string? edges-collection)) (or (nil? direction) (string? direction))]}
   (let [body {"startVertex" (str vertex-collection "/" start-vertex) "edgeCollection" edges-collection}
         body-with-direction (if (nil? direction) body (assoc body "direction" direction))]
-    (http/post-uri [:body "result" "visited"] (apply build-resource-uri "traversal" nil nil (remove-map args)) 
+    (http/post-uri [:body "result" "visited"] (apply build-resource-uri "traversal" nil nil (remove-options-map args)) 
         body-with-direction
-        (filter-out-map args))))
+        (filter-out-options-map args))))
 
 (defn execute-vertex-traversal
   "Executes a traversal on vertices only.
@@ -45,9 +45,9 @@
   {:pre [(or (keyword? start-vertex) (string? start-vertex)) (number? batch-size) (number? limit) (= (type count) java.lang.Boolean) (or (map? filter) (nil? filter))]}
   (let [body {"batchSize" batch-size "limit" limit "count" count}
         body-with-filter (if (nil? filter) body (assoc body "filter" filter))]
-    (http/post-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "vertices" start-vertex) (remove-map args)) 
+    (http/post-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "vertices" start-vertex) (remove-options-map args)) 
       body-with-filter
-      (filter-out-map args))))
+      (filter-out-options-map args))))
 
 (defn execute-edge-traversal
   "Executes a traversal on edges only.
@@ -66,9 +66,9 @@
   {:pre [(or (keyword? start-edge) (string? start-edge)) (number? batch-size) (number? limit) (= (type count) java.lang.Boolean) (or (map? filter) (nil? filter))]}
   (let [body {"batchSize" batch-size "limit" limit "count" count}
         body-with-filter (if (nil? filter) body (assoc body "filter" filter))]
-    (http/post-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "edges" start-edge) (remove-map args)) 
+    (http/post-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "edges" start-edge) (remove-options-map args)) 
       body-with-filter
-      (filter-out-map args))))
+      (filter-out-options-map args))))
 
 (defn create
   "Creates a new graph.
@@ -85,9 +85,9 @@
   - waitForSync meaning if the server response should wait until the graph has been to disk;"
   [graph-name vertices-collection edges-collection & args]
   {:pre [(or (keyword? graph-name) (string? graph-name)) (or (keyword? vertices-collection) (string? vertices-collection)) (or (keyword? edges-collection) (string? edges-collection))]}
-  (http/post-uri [:body "graph"] (apply build-resource-uri "graph" nil nil (remove-map args)) 
+  (http/post-uri [:body "graph"] (apply build-resource-uri "graph" nil nil (remove-options-map args)) 
     {"_key" graph-name, "vertices" vertices-collection, "edges" edges-collection} 
-    (filter-out-map args)))
+    (filter-out-options-map args)))
 
 (defn get-info
   "Gets info about a graph.
@@ -98,7 +98,7 @@
   Optionally you can pass a database name as second argument. If omitted, the default db will be used."
   [graph-name & args]
   {:pre [(or (keyword? graph-name) (string? graph-name))]}
-  (http/get-uri [:body "graph"] (apply build-resource-uri "graph" graph-name nil (remove-map args))))
+  (http/get-uri [:body "graph"] (apply build-resource-uri "graph" graph-name nil (remove-options-map args))))
 
 (defn delete
   "Deletes a graph.
@@ -109,7 +109,7 @@
   Optionally you can pass a database name as second argument. If omitted, the default db will be used."
   [graph-name & args]
   {:pre [(or (keyword? graph-name) (string? graph-name))]}
-  (http/delete-uri [:body] (apply build-resource-uri "graph" graph-name nil (remove-map args))))
+  (http/delete-uri [:body] (apply build-resource-uri "graph" graph-name nil (remove-options-map args))))
 
 (defn create-vertex
   "Creates a vertex. 
@@ -129,7 +129,7 @@
   The option map might be passed in an arbitrary position after the first argument."
   [vertex vertex-collection & args]
   {:pre [(map? vertex) (or (string? vertex-collection) (keyword? vertex-collection))]}
-  (http/post-uri [:body "vertex"] (apply build-resource-uri "gharial" (str "vertex/" (if (keyword? vertex-collection) (name vertex-collection) vertex-collection)) (remove-map args)) vertex (filter-out-map args)))
+  (http/post-uri [:body "vertex"] (apply build-resource-uri "gharial" (str "vertex/" (if (keyword? vertex-collection) (name vertex-collection) vertex-collection)) (remove-options-map args)) vertex (filter-out-options-map args)))
 
 (defn create-vertex-with-key
   "Creates a vertex with a given key.
@@ -146,7 +146,7 @@
   The option map might be passed in an arbitrary position after the first argument."
   [vertex key & args]
   {:pre [(map? vertex) (or (keyword? key) (string? key))]}
-  (http/post-uri [:body "vertex"] (apply build-resource-uri "graph" "vertex" (remove-map args)) (assoc vertex :_key key) (filter-out-map args)))
+  (http/post-uri [:body "vertex"] (apply build-resource-uri "graph" "vertex" (remove-options-map args)) (assoc vertex :_key key) (filter-out-options-map args)))
 
 (defn get-vertex
   "Gets a vertex.
@@ -162,7 +162,7 @@
   The option map might be passed in an arbitrary position after the first argument."
   [key & args]
   {:pre [(or (keyword? key) (string? key))]}
-  (http/get-uri [:body "vertex"] (apply build-resource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) (filter-out-map args)))
+  (http/get-uri [:body "vertex"] (apply build-resource-uri "graph" (connect-url-parts "vertex" key) (remove-options-map args)) (filter-out-options-map args)))
 
 (defn replace-vertex
   "Replaces a vertex.
@@ -180,7 +180,7 @@
   The option map might be passed in an arbitrary position after the first argument."
   [vertex-properties key & args]
   {:pre [(map? vertex-properties) (or (keyword? key) (string? key))]}
-  (http/put-uri [:body "vertex"] (apply build-resource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) vertex-properties (filter-out-map args)))
+  (http/put-uri [:body "vertex"] (apply build-resource-uri "graph" (connect-url-parts "vertex" key) (remove-options-map args)) vertex-properties (filter-out-options-map args)))
 
 (defn update-vertex
   "Updates a vertex.
@@ -200,7 +200,7 @@
   The option map might be passed in an arbitrary position after the first argument."
   [vertex-properties key & args]
   {:pre [(map? vertex-properties) (or (keyword? key) (string? key))]}
-  (http/patch-uri [:body "vertex"] (apply build-resource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) vertex-properties (filter-out-map args)))
+  (http/patch-uri [:body "vertex"] (apply build-resource-uri "graph" (connect-url-parts "vertex" key) (remove-options-map args)) vertex-properties (filter-out-options-map args)))
 
 (defn delete-vertex
   "Deletes a vertex.
@@ -217,7 +217,7 @@
   The option map might be passed in an arbitrary position after the first argument."
   [key & args]
   {:pre [(or (keyword? key) (string? key))]}
-  (http/delete-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "vertex" key) (remove-map args)) (filter-out-map args)))
+  (http/delete-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "vertex" key) (remove-options-map args)) (filter-out-options-map args)))
 
 (defn create-edge
   "Creates a new edge.
@@ -241,9 +241,9 @@
   {:pre [(map? edge) (or (keyword? vertex-from) (string? vertex-from) (map? vertex-from)) (or (keyword? vertex-to) (string? vertex-to) (map? vertex-to))]}
   (let [vertex-from-name (if (map? vertex-from) (get vertex-from "_key") vertex-from)
         vertex-to-name (if (map? vertex-to) (get vertex-to "_key") vertex-to)]
-    (http/post-uri [:body "edge"] (apply build-resource-uri "graph" "edge" (remove-map args)) 
+    (http/post-uri [:body "edge"] (apply build-resource-uri "graph" "edge" (remove-options-map args)) 
       (assoc edge "_from" vertex-from-name "_to" vertex-to-name) 
-      (filter-out-map args))))
+      (filter-out-options-map args))))
 
 (defn create-edge-with-key
   "Creates a new edge with a given key.
@@ -265,11 +265,11 @@
   {:pre [(map? edge) (or (nil? key) (or (keyword? key) (string? key))) (or (nil? label) (or (keyword? label) (string? label))) (or (keyword? vertex-from) (string? vertex-from) (map? vertex-from)) (or (keyword? vertex-to) (string? vertex-to) (map? vertex-to))]}
   (let [vertex-from-name (if (map? vertex-from) (get vertex-from "_key") vertex-from)
         vertex-to-name (if (map? vertex-to) (get vertex-to "_key") vertex-to)]
-    (http/post-uri [:body "edge"] (apply build-resource-uri "graph" "edge" (remove-map args)) 
+    (http/post-uri [:body "edge"] (apply build-resource-uri "graph" "edge" (remove-options-map args)) 
       (let [edge-with-or-without-key (if (nil? key) edge (assoc edge :_key key))
             edge-with-or-without-label (if (nil? label) edge-with-or-without-key (assoc edge-with-or-without-key :$label label))]
         (assoc edge-with-or-without-label "_from" vertex-from-name "_to" vertex-to-name))
-      (filter-out-map args))))
+      (filter-out-options-map args))))
 
 (defn get-edge
   "Gets an edge.
@@ -285,7 +285,7 @@
   The option map might be passed in an arbitrary position after the first argument."
   [key & args]
   {:pre [(or (keyword? key) (string? key))]}
-  (http/get-uri [:body "edge"] (apply build-resource-uri "graph" (connect-url-parts "edge" key) (remove-map args)) (filter-out-map args)))
+  (http/get-uri [:body "edge"] (apply build-resource-uri "graph" (connect-url-parts "edge" key) (remove-options-map args)) (filter-out-options-map args)))
 
 (defn replace-edge
   "Replaces an edge.
@@ -303,7 +303,7 @@
   The option map might be passed in an arbitrary position after the first argument."
   [edge-properties key & args]
   {:pre [(map? edge-properties) (or (keyword? key) (string? key))]}
-  (http/put-uri [:body "edge"] (apply build-resource-uri "graph" (connect-url-parts "edge" key) (remove-map args)) edge-properties (filter-out-map args)))
+  (http/put-uri [:body "edge"] (apply build-resource-uri "graph" (connect-url-parts "edge" key) (remove-options-map args)) edge-properties (filter-out-options-map args)))
 
 (defn update-edge
   "Updates an edge.
@@ -323,7 +323,7 @@
   The option map might be passed in an arbitrary position after the first argument."
   [edge-properties key & args]
   {:pre [(map? edge-properties) (or (keyword? key) (string? key))]}
-  (http/patch-uri [:body "edge"] (apply build-resource-uri "graph" (connect-url-parts "edge" key) (remove-map args)) edge-properties (filter-out-map args)))
+  (http/patch-uri [:body "edge"] (apply build-resource-uri "graph" (connect-url-parts "edge" key) (remove-options-map args)) edge-properties (filter-out-options-map args)))
 
 (defn delete-edge
   "Deletes an edge.
@@ -340,4 +340,4 @@
   The option map might be passed in an arbitrary position after the first argument."
   [key & args]
   {:pre [(or (keyword? key) (string? key))]}
-  (http/delete-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "edge" key) (remove-map args)) (filter-out-map args)))
+  (http/delete-uri [:body] (apply build-resource-uri "graph" (connect-url-parts "edge" key) (remove-options-map args)) (filter-out-options-map args)))

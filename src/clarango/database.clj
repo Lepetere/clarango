@@ -1,6 +1,6 @@
 (ns clarango.database
   (:require [clarango.utilities.http-utility :as http])
-  (:use [clarango.utilities.core-utility :only [remove-map filter-out-map]]
+  (:use [clarango.utilities.core-utility :only [remove-options-map filter-out-options-map]]
         [clarango.utilities.uri-utility :only [build-resource-uri]]))
 
 (defn get-collection-info-list
@@ -12,7 +12,7 @@
   {'excludeSystem' true/false}
   - excludeSystem meaning whether or not the system collections should be excluded from the result."
   [& args]
-  (http/get-uri [:body "collections"] (apply build-resource-uri "collection" nil nil (remove-map args)) (filter-out-map args)))
+  (http/get-uri [:body "collections"] (apply build-resource-uri "collection" nil nil (remove-options-map args)) (filter-out-options-map args)))
 
 (defn collection-exists?
   "Returns true if a collection with the given name exists, otherwise returns false.
@@ -28,7 +28,7 @@
   Can be called without arguments. In that case the default database will be used.
   Optionally you can pass a database name as argument."
   [& args]
-  (http/get-uri [:body "graphs"] (apply build-resource-uri "gharial" nil nil (remove-map args))))
+  (http/get-uri [:body "graphs"] (apply build-resource-uri "gharial" nil nil (remove-options-map args))))
 
 (defn graph-exists?
   "Returns true if a graph with the given name exists, otherwise returns false.
