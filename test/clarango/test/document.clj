@@ -10,7 +10,7 @@
 
 (defn setup []
   (cla-core/set-connection!)
-  (pprint (database/create "test-DB" [{:username "test-user"}]))
+  (pprint (meta (database/create "test-DB" [{:username "test-user"}])))
   (cla-core/set-default-db! "test-DB"))
 
 (defn teardown []
@@ -26,7 +26,8 @@
 (deftest document-test
 
   (testing "create collection"
-    (pprint (collection/create "test-collection" "test-DB"))
+    (is (false? (database/collection-exists? "test-collection" "test-DB")))
+    (pprint (meta (collection/create "test-collection" "test-DB")))
     (println "\ntest if collection exists\n")
     (is (database/collection-exists? "test-collection" "test-DB")))
 
@@ -35,6 +36,17 @@
     (pprint (document/update-by-key {:additional "some additional info"} :test-doc :test-collection :test-DB))
     (pprint (document/get-by-key :test-doc :test-collection :test-DB))
     (pprint (document/replace-by-example {:name "new version of our test document"} {:additional "some additional info"} :test-collection :test-DB))))
+
+(deftest nested-document-creation
+
+  (testing "create a document with a nested collection/document create call"
+    (pprint (document/create-with-key {:description "what a great way to create a document"} :new-doc 
+      (collection/create "a-nested-collection" "test-DB") :test-DB)))
+
+  (testing "create a document with a nested db/collection create call"
+    (with-db (database/create "nested-test-DB" [])
+      (pprint (document/create-with-key {:description "what a great way to create a document"} :new-doc 
+      (collection/create "a-nested-collection"))))))
   
 (deftest collection-ops-test
 

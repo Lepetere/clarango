@@ -73,14 +73,14 @@
   (loop [new-map map keywords keyword-vec]
     (if (empty? keywords) new-map (recur (parse-if-possible (get new-map (first keywords))) (rest keywords)))))
 
-(defn- send-request [method response-keys uri body params]
+(defn- send-request [method response-keys uri body params add-return-metadata]
   (if (console-output-activated?) (println (get-uppercase-string-for-http-method method) " connection address: " uri))
   (try (let [ map-with-body (if (nil? body) {} {:body (generate-string body)})
               response (http/request (merge {:method method :url uri :debug (http-debugging-activated?) :query-params params} map-with-body))
               filtered-response (incremental-keyword-lookup response response-keys)]
             (if (type-output-activated?) (println (type filtered-response)))
             ;; append the original server response (filtered only one level, usually :body) as metadata
-            (with-meta filtered-response (incremental-keyword-lookup response [(first response-keys)])))
+            (with-meta filtered-response (merge {:original-response (incremental-keyword-lookup response [(first response-keys)])} add-return-metadata)))
         (catch Exception e (handle-error e))))
 
 (defn- build-multipart-vector
@@ -107,29 +107,31 @@
 
 (defn get-uri 
   ([response-keys uri]
-  (send-request :get response-keys uri nil nil))
+  (send-request :get response-keys uri nil nil {}))
   ([response-keys uri params]
-  (send-request :get response-keys uri nil params)))
+  (send-request :get response-keys uri nil params {})))
 
 (defn head-uri 
   ([response-keys uri]
-  (send-request :head response-keys uri nil nil))
+  (send-request :head response-keys uri nil nil {}))
   ([response-keys uri params]
-  (send-request :head response-keys uri nil params)))
+  (send-request :head response-keys uri nil params {})))
 
 (defn delete-uri 
   ([response-keys uri]
-  (send-request :delete response-keys uri nil nil))
+  (send-request :delete response-keys uri nil nil {}))
   ([response-keys uri params]
-  (send-request :delete response-keys uri nil params)))
+  (send-request :delete response-keys uri nil params {})))
 
 (defn post-uri 
   ([response-keys uri]
-  (send-request :post response-keys uri nil nil))
+  (send-request :post response-keys uri nil nil {}))
   ([response-keys uri body]
-  (send-request :post response-keys uri body nil))
+  (send-request :post response-keys uri body nil {}))
   ([response-keys uri body params]
-  (send-request :post response-keys uri body params)))
+  (send-request :post response-keys uri body params {}))
+  ([response-keys uri body params add-return-metadata]
+  (send-request :post response-keys uri body params add-return-metadata)))
 
 (defn- build-content-map
   [bodies collection-name db-name]
@@ -145,16 +147,16 @@
 
 (defn put-uri 
   ([response-keys uri]
-  (send-request :put response-keys uri nil nil))
+  (send-request :put response-keys uri nil nil {}))
   ([response-keys uri body]
-  (send-request :put response-keys uri body nil))
+  (send-request :put response-keys uri body nil {}))
   ([response-keys uri body params]
-  (send-request :put response-keys uri body params)))
+  (send-request :put response-keys uri body params {})))
 
 (defn patch-uri 
   ([response-keys uri]
-  (send-request :patch response-keys uri nil nil))
+  (send-request :patch response-keys uri nil nil {}))
   ([response-keys uri body]
-  (send-request :patch response-keys uri body nil))
+  (send-request :patch response-keys uri body nil {}))
   ([response-keys uri body params]
-  (send-request :patch response-keys uri body params)))
+  (send-request :patch response-keys uri body params {})))

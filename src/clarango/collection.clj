@@ -84,7 +84,7 @@
       - offset is the initial offset value for the autoincrement key generator (optional)"
   [collection-name & args]
   {:pre [(or (keyword? collection-name) (string? collection-name))]}
-  (http/post-uri [:body] (apply build-resource-uri "collection" nil nil (remove-map args)) (merge {:name collection-name} (filter-out-map args))))
+  (http/post-uri [:body] (apply build-resource-uri "collection" nil nil (remove-map args)) (merge {:name collection-name} (filter-out-map args)) nil {:collection-name collection-name}))
 
 (defn truncate
   "Removes all documents from a collection, but leaves the indexes intact.

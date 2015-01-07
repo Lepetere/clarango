@@ -51,7 +51,7 @@
       - extra: an optional map of user information that will be saved, but not interpreted by ArangoDB"
   [database-name users]
   {:pre [(or (keyword? database-name) (string? database-name)) (vector? users)]}
-  (http/post-uri [:body] (build-resource-uri "database" nil nil "_system") {:name database-name :users users}))
+  (http/post-uri [:body] (build-resource-uri "database" nil nil "_system") {:name database-name :users users} nil {:database-name database-name}))
 
 (defn delete
   "Deletes a database.
