@@ -11,4 +11,4 @@ pom.xml.asc
 *.swp
 .*.swp
 .idea/
-.iml
+*.iml
