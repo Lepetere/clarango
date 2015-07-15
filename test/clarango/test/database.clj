@@ -22,5 +22,4 @@
   (println "Collections in the testDB: <" (db/get-collection-info-list testdb) ">")
 
   (db/delete testdb)
-  (is (> (count (db/get-info-list)) 0) "The systen must be in the original state!") 
-)
+  (is (> (count (db/get-info-list)) 0) "The systen must be in the original state!"))

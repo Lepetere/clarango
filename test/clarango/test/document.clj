@@ -11,8 +11,7 @@
 (defn setup []
   (cla-core/set-connection!)
   (pprint (meta (database/create "test-DB" [{:username "test-user"}])))
-  (cla-core/set-default-db! "test-DB")
-  )
+  (cla-core/set-default-db! "test-DB"))
 
 (defn teardown []
   (pprint (database/delete "test-DB")))
@@ -92,5 +91,4 @@
 
   (testing "unload and delete collection"
     (pprint (collection/unload-mem "new-name-test-collection"))
-    (pprint (collection/delete "new-name-test-collection")))
-  )
+    (pprint (collection/delete "new-name-test-collection"))))
