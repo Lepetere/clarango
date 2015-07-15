@@ -11,7 +11,8 @@
 (defn setup []
   (cla-core/set-connection!)
   (pprint (meta (database/create "test-DB" [{:username "test-user"}])))
-  (cla-core/set-default-db! "test-DB"))
+  (cla-core/set-default-db! "test-DB")
+  )
 
 (defn teardown []
   (pprint (database/delete "test-DB")))
@@ -40,35 +41,35 @@
 (deftest nested-document-creation
 
   (testing "create a document with a nested collection/document create call"
-    (pprint (document/create-with-key {:description "what a great way to create a document"} :new-doc 
+    (pprint (document/create-with-key {:description "what a great way to create a document"} :new-doc
       (collection/create "a-nested-collection"))))
 
   (testing "create a document with a nested db/collection create call"
     (with-db (database/create "nested-test-DB" [])
-      (pprint (document/create-with-key {:description "what a great way to create a document"} :new-doc 
+      (pprint (document/create-with-key {:description "what a great way to create a document"} :new-doc
       (collection/create "a-nested-collection"))))
       (database/delete "nested-test-DB")))
-  
+
 (deftest collection-ops-test
 
   (testing "set default DB"
     (cla-core/set-default-db! "test-DB"))
-
+  (collection/create "test-collection-0" "test-DB")
   (testing "collection ops: assoc, dissoc, conj"
-    (pprint (cla-assoc! "test-collection" "new-document-1" {:description "some test document to test the clojure idiomatic collection methods" :key-type "given key"}))
-    (pprint (cla-conj! "test-collection" {:description "some test document to test the clojure idiomatic collection methods" :key-type "auto generated key"}))
-    (pprint (cla-get! "test-collection" "new-document-1"))
-    (pprint (cla-dissoc! "test-collection" "new-document-1"))))
+    (pprint (cla-assoc! "test-collection-0" "new-document-1" {:description "some test document to test the clojure idiomatic collection methods" :key-type "given key"}))
+    (pprint (cla-conj! "test-collection-0" {:description "some test document to test the clojure idiomatic collection methods" :key-type "auto generated key"}))
+    (pprint (cla-get! "test-collection-0" "new-document-1"))
+    (pprint (cla-dissoc! "test-collection-0" "new-document-1"))))
 
 (deftest collection-test
-
+  (collection/create "test-collection-1" "test-DB")
   (testing "get collection information"
-    (pprint (collection/get-info "test-collection"))
-    (pprint (collection/get-all-documents "test-collection")))
+    (pprint (collection/get-info "test-collection-1"))
+    (pprint (collection/get-all-documents "test-collection-1")))
 
   (testing "get delayed collection and delayed documents with explicit collection and db"
     (println "\ndelayed collection test 1")
-    (let [delayed-collection (collection/get-delayed-collection "test-collection" "test-DB") 
+    (let [delayed-collection (collection/get-delayed-collection "test-collection-1" "test-DB")
           _ (pprint delayed-collection)]
       (doseq [k (keys delayed-collection)]
         (println "\nget document" k ":")
@@ -77,18 +78,19 @@
   (testing "get delayed collection and delayed documents with default collection and db"
     (println "\ndelayed collection test 2")
     (with-db "test-DB"
-      (with-collection "test-collection"
-        (let [delayed-collection (collection/get-delayed-collection) 
+      (with-collection "test-collection-1"
+        (let [delayed-collection (collection/get-delayed-collection)
                     _ (pprint delayed-collection)]
                 (doseq [k (keys delayed-collection)]
                   (println "\nget document" k ":")
                   (pprint @(get delayed-collection k)))))))
 
   (testing "rename the collection and modify it's properties"
-    (pprint (collection/rename "new-name-test-collection" "test-collection"))
+    (pprint (collection/rename "new-name-test-collection" "test-collection-1"))
     (pprint (collection/modify-properties {"waitForSync" true} "new-name-test-collection"))
     (pprint (collection/get-extended-info-figures "new-name-test-collection")))
 
   (testing "unload and delete collection"
     (pprint (collection/unload-mem "new-name-test-collection"))
-    (pprint (collection/delete "new-name-test-collection"))))
+    (pprint (collection/delete "new-name-test-collection")))
+  )

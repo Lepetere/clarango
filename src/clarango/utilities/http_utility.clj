@@ -3,9 +3,9 @@
 
 (ns clarango.utilities.http-utility
 	(:require [clj-http.client :as http]
-		        [cheshire.core :refer :all])
+		        [cheshire.core :refer [parse-string generate-string]])
   (:use [clojure.pprint]
-        [clarango.utilities.core-utility :only [get-default-db get-default-collection-name]]
+        [clarango.utilities.core-utility :only [get-default-db]]
         [clarango.utilities.uri-utility :only [build-resource-uri]]))
 
 ;;; debug switches:
