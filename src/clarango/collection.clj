@@ -4,12 +4,22 @@
         [clarango.utilities.uri-utility :only [build-resource-uri build-document-uri-from-two-parts]]))
 
 (defn get-all-documents
-  "Returns a vector with the URIs of all documents in the collection.
+  "Returns a vector with the URIs (or keys or ids) of all documents in the collection.
 
   Can be called without arguments. In that case the default collection from the default database will be used.
-  Optionally you can pass a collection name as first and a database name as second argument."
+  Optionally you can pass a collection name as first and a database name as second argument. 
+  You can also include a map as a last argument containing the 'type' parameter that specifies whether vector of URIs, 
+  keys or ids should be returned.
+  
+  E.g. this method call:
+      (get-all-documents \"collection-name\" {:type \"id\"}) 
+  will return list of document ids."
   [& args]
-  (http/get-uri [:body "documents"] (apply build-resource-uri "document/?collection=" nil (remove-options-map args))))
+  (http/get-uri [:body "documents"] 
+                (clojure.string/join
+                  [(apply build-resource-uri "document/?collection=" nil (remove-options-map args))
+                   "&type=" 
+                   (or (:type (last args)) "path")])))
 
 (defn get-delayed-collection
   "Returns a map with all documents in the collection as delays in the form {:document-key (delay (document/get document-name)) ...}.
