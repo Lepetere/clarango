@@ -28,7 +28,7 @@
   {:pre [(map? document)]}
   (http/post-uri [:body] (apply build-resource-uri "user" nil) document))
 
-;; Update / PATCH
+;; Update / PUT
 (defn replace-by-username
   "Replaces the data of an existing user. The name of an existing user must be specified for the {username} parameter.
 
@@ -42,6 +42,7 @@
   {:pre [(map? document) (string? username)]}
   (http/put-uri [:body] (apply build-resource-uri (format "user/%s" username) nil) document))
 
+; Update / PATCH
 (defn update-by-username
   "Partially updates the data of an existing user. The name of an existing user must be specified for the {username} parameter.
 
@@ -62,4 +63,9 @@
     {:pre [(string? username)]}
     (http/delete-uri [:body] (apply build-resource-uri (format "user/%s" username) nil)))
 
-;; Exists can go in database namespace
+;; Exists?
+(defn exists?
+  "Checks if a user with a given username is defined in the system"
+  [username]
+    {:pre [(string? username)]}
+    (contains? (set (map #(get % "user") (get (get-all) "result"))) username))
