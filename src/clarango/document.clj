@@ -6,7 +6,7 @@
 (defn get-by-key
   "Gets a document by its key.
 
-  Takes the document key as first argument. 
+  Takes the document key as first argument.
 
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used.
@@ -21,7 +21,7 @@
 (defn get-by-example
   "Gets a document or a number of documents out of a collection by giving an example to match.
 
-  Takes the example as a map as first argument. 
+  Takes the example as a map as first argument.
 
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used.
@@ -38,7 +38,7 @@
 (defn get-first-by-example
   "Gets the first document out of a collection that matches an example.
 
-  Takes the example as a map as first argument. 
+  Takes the example as a map as first argument.
 
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used."
@@ -49,7 +49,7 @@
 (defn get-info
   "Gets information about a document by its key.
 
-  Takes the document key as first argument. 
+  Takes the document key as first argument.
 
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used.
@@ -65,10 +65,10 @@
   (http/head-uri [:headers] (apply build-resource-uri "document" (remove-options-map args)) (filter-out-options-map args)))
 
 (defn create
-  "Creates a document. 
+  "Creates a document.
 
-  First argument: A map that represents the document. 
-  If you want to specify a key by yourself, add it as the :_key parameter to the document map or use method create-with-key. 
+  First argument: A map that represents the document.
+  If you want to specify a key by yourself, add it as the :_key parameter to the document map or use method create-with-key.
   If you would like the key to be created automatically, just leave this parameter out.
 
   Takes optional a collection name and a db name as further arguments.
@@ -86,7 +86,7 @@
 (defn create-with-key
   "Creates a document with a given key.
 
-  First argument: A map that represents the document. 
+  First argument: A map that represents the document.
   Second argument: The key for the new document (string or clojure keyword).
 
   Takes optional a collection name and a db name as further arguments.
@@ -111,7 +111,7 @@
   If omitted by user, the default db and collection will be used."
   [documents & args]
   {:pre [(vector? documents)]}
-  ;; what about the document key if the user desires to specify it by himself? 
+  ;; what about the document key if the user desires to specify it by himself?
   ;; Should he just pass it in the json document? or allow it as optional argument?
   (http/post-multi-uri [:body] (build-resource-uri "batch") documents (filter-out-collection-name args) (filter-out-database-name args)))
 
@@ -199,7 +199,7 @@
 (defn delete-by-key
   "Deletes a document by its id.
 
-  Takes the document key as first argument. 
+  Takes the document key as first argument.
 
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used.
@@ -218,7 +218,7 @@
 (defn delete-by-example
   "Deletes a document or a number of documents out of a collection by giving an example to match.
 
-  Takes the example as a map as first argument. 
+  Takes the example as a map as first argument.
 
   Takes optional a collection name and a db name as further arguments.
   If omitted by user, the default db and collection will be used.
@@ -231,3 +231,14 @@
   [example & args]
   {:pre [(map? example)]}
   (http/put-uri [:body] (build-resource-uri "simple/remove-by-example" nil nil (filter-out-database-name args)) (merge {:example example :collection (filter-out-collection-name args)} (filter-out-options-map args))))
+
+(defn delete-by-keys
+  "Deletes a number of documents in a single request.
+
+  Takes a vector of keys to delete and the collection name as a string or keyword.
+
+  Optionally takes a collection name and a db as further arguments.
+  If omitted the default db and collection will be used."
+  [keys collection & args]
+  {:pre [(or (vector? keys) (string? keys)) (or (string? collection) (keyword? collection))]}
+  (http/put-uri [:body] (build-resource-uri "simple/remove-by-keys" nil nil (filter-out-database-name args)) {:collection (if (keyword? collection) (name collection) collection) :keys (if (string? keys) (vec keys) (vec (map #(if (string? %) (name %) %) keys)))}))
