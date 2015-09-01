@@ -92,3 +92,21 @@
   (testing "unload and delete collection"
     (pprint (collection/unload-mem "new-name-test-collection"))
     (pprint (collection/delete "new-name-test-collection"))))
+
+(deftest multi-delete-test
+  (collection/create "multi-delete-test-collection" "test-DB")
+  (testing "adding documents for multi-delete testing"
+    (println "\nMulti-Document delete test: Adding multiple documents as test data")
+    (document/create-with-key {:a 1} :doc-key-1 :multi-delete-test-collection :test-DB)
+    (document/create-with-key {:b 2} :doc-key-2 :multi-delete-test-collection :test-DB)
+    (document/create-with-key {:c 3} :doc-key-3 :multi-delete-test-collection :test-DB))
+
+  (testing "document count is 3"
+    (is (count (collection/get-all-documents :multi-delete-test-collection)) 3))
+
+  (testing "multi-delete confirms number of deleted documents"
+    (let [multi-delete-result (document/delete-by-keys ["doc-key-1" "doc-key-2"] :multi-delete-test-collection)]
+      (is (= (multi-delete-result "removed") 2))))
+
+  (testing "document count is now 1"
+    (is (count (collection/get-all-documents :multi-delete-test-collection)) 1)))
