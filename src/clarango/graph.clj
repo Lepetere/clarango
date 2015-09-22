@@ -1,3 +1,10 @@
+;; This namespace was only left to keep the driver as backwards-compatible as possible.
+;; If you are using an ArangoDB version that does not support the 'gharial' endpoint yet
+;; use this namespace, otherwise you should prefer the gharial namespace for graph interactions
+;; since this one will be deleted at some point.
+;;
+;; There is one exception: This namespace currently still contains the graph traversal methods.
+
 (ns clarango.graph
   (:require [clarango.utilities.http-utility :as http])
   (:use [clarango.utilities.core-utility :only [remove-options-map filter-out-options-map]]
