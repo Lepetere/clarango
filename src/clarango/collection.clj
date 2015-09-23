@@ -1,7 +1,7 @@
 (ns clarango.collection
   (:require [clarango.utilities.http-utility :as http])
-  (:use [clarango.utilities.core-utility :only [remove-options-map filter-out-options-map filter-out-database-name]]
-        [clarango.utilities.uri-utility :only [build-resource-uri build-document-uri-from-two-parts]]))
+  (:use [clarango.utilities.core-utility :only [get-safe-connection-url remove-options-map filter-out-options-map filter-out-database-name]]
+        [clarango.utilities.uri-utility :only [build-resource-uri connect-url-parts]]))
 
 (defn get-all-documents
   "Returns a vector with the URIs (or keys or ids) of all documents in the collection.
@@ -15,11 +15,11 @@
       (get-all-documents \"collection-name\" {:type \"id\"}) 
   will return list of document ids."
   [& args]
-  (http/get-uri [:body "documents"] 
-                (clojure.string/join
-                  [(apply build-resource-uri "document/?collection=" nil (remove-options-map args))
-                   "&type=" 
-                   (or (:type (last args)) "path")])))
+  (http/get-uri [:body "documents"]
+    (clojure.string/join
+      [(apply build-resource-uri "document/?collection=" nil (remove-options-map args))
+        "&type=" 
+        (or (:type (last args)) "path")])))
 
 (defn get-delayed-collection
   "Returns a map with all documents in the collection as delays in the form {:document-key (delay (document/get document-name)) ...}.
@@ -30,7 +30,7 @@
   Takes the collection name as first and the database name as second argument. Both are mandatory."
   [& args]
   (reduce #(assoc %1 (keyword (subs %2 (inc (.lastIndexOf %2 "/")))) 
-    (delay (http/get-uri [:body] (build-document-uri-from-two-parts %2 (filter-out-database-name args))))) {} 
+    (delay (http/get-uri [:body] (connect-url-parts (get-safe-connection-url) %2)))) {} 
     (apply get-all-documents args)))
 
 (defn get-info

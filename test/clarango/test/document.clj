@@ -62,17 +62,24 @@
 
 (deftest collection-test
   (collection/create "test-collection-1" "test-DB")
+  (cla-assoc! "test-collection-1" "new-document-1" {:description "good"})
+  (cla-assoc! "test-collection-1" "new-document-2" {:description "good"})
   (testing "get collection information"
     (pprint (collection/get-info "test-collection-1"))
-    (pprint (collection/get-all-documents "test-collection-1")))
+    (let [all-document-paths-vector (collection/get-all-documents "test-collection-1")]
+      (pprint all-document-paths-vector)
+      (is (= (count all-document-paths-vector) 2))))
 
   (testing "get delayed collection and delayed documents with explicit collection and db"
     (println "\ndelayed collection test 1")
     (let [delayed-collection (collection/get-delayed-collection "test-collection-1" "test-DB")
           _ (pprint delayed-collection)]
+      (is (= (count (keys delayed-collection)) 2))
       (doseq [k (keys delayed-collection)]
         (println "\nget document" k ":")
-        (pprint @(get delayed-collection k)))))
+        (let [document @(get delayed-collection k)]
+          (pprint document)
+          (is (= (get document "description") "good"))))))
 
   (testing "get delayed collection and delayed documents with default collection and db"
     (println "\ndelayed collection test 2")
@@ -80,6 +87,7 @@
       (with-collection "test-collection-1"
         (let [delayed-collection (collection/get-delayed-collection)
                     _ (pprint delayed-collection)]
+          (is (= (count (keys delayed-collection)) 2))
           (doseq [k (keys delayed-collection)]
             (println "\nget document" k ":")
             (pprint @(get delayed-collection k)))))))

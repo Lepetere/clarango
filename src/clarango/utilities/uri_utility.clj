@@ -63,13 +63,3 @@
   ([type resource-key collection-name db-name]
     {:pre [(or (string? type) (nil? type)) (or (string? resource-key) (nil? resource-key) (keyword? resource-key))]}
   	(connect-url-parts (get-safe-connection-url) "_db/" db-name "_api/" type collection-name resource-key)))
-
-(defn build-document-uri-from-two-parts
-  "Builds a document uri from the part url that is returned by the collection/get-all-documents method and a db name.
-  The db name can be nil, in which case the default database will be used.
-
-  This method is meant to be used only by the collection/get-delayed-collection method."
-  [document-uri db-name]
-  {:pre [(string? document-uri) (or (string? db-name) (nil? db-name))]}
-  (let [db-name-not-nil (if (nil? db-name) (get-default-db) db-name)]
-    (connect-url-parts (get-safe-connection-url) "_db/" db-name-not-nil document-uri)))
