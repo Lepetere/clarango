@@ -27,7 +27,7 @@
   If omitted the default db and collection will be used."
   [keys & args]
   {:pre [(or (vector? keys) (string? keys))]}
-  (http/put-uri [:body] (build-resource-uri "simple/lookup-by-keys" nil nil (filter-out-database-name args)) {:collection (filter-out-collection-name args) :keys (if (string? keys) (vec keys) (vec (map #(if (string? %) (name %) %) keys)))}))
+  (http/put-uri [:body "documents"] (build-resource-uri "simple/lookup-by-keys" nil nil (filter-out-database-name args)) {:collection (filter-out-collection-name args) :keys (if (string? keys) (vec keys) (vec (map #(if (string? %) (name %) %) keys)))}))
 
 (defn get-by-example
   "Gets a document or a number of documents out of a collection by giving an example to match.

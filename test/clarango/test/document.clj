@@ -80,9 +80,9 @@
       (with-collection "test-collection-1"
         (let [delayed-collection (collection/get-delayed-collection)
                     _ (pprint delayed-collection)]
-                (doseq [k (keys delayed-collection)]
-                  (println "\nget document" k ":")
-                  (pprint @(get delayed-collection k)))))))
+          (doseq [k (keys delayed-collection)]
+            (println "\nget document" k ":")
+            (pprint @(get delayed-collection k)))))))
 
   (testing "rename the collection and modify it's properties"
     (pprint (collection/rename "new-name-test-collection" "test-collection-1"))
@@ -102,21 +102,21 @@
     (document/create-with-key {:c 3} :doc-key-3 :multi-delete-test-collection :test-DB))
 
   (testing "document count is 3"
-    (is (count (collection/get-all-documents :multi-delete-test-collection)) 3))
+    (is (= (count (collection/get-all-documents :multi-delete-test-collection)) 3)))
 
   (testing "multi-lookup returns two requested documents"
     (with-collection :multi-delete-test-collection
       (let [multi-lookup-result (document/get-by-keys ["doc-key-1" "doc-key-2"])]
           (pprint multi-lookup-result)
-          (is (count multi-lookup-result) 2))))
+          (is (= (count multi-lookup-result) 2)))))
 
   (testing "multi-lookup also works if the database name is passed as third argument"
     (let [multi-lookup-result (document/get-by-keys ["doc-key-2" "doc-key-3"] :multi-delete-test-collection "test-DB")]
-      (is (count multi-lookup-result) 2)))
+      (is (= (count multi-lookup-result) 2))))
 
   (testing "multi-delete confirms number of deleted documents"
     (let [multi-delete-result (document/delete-by-keys ["doc-key-1" "doc-key-2"] :multi-delete-test-collection)]
-      (is (= (multi-delete-result "removed") 2))))
+      (is (multi-delete-result "removed") 2)))
 
   (testing "document count is now 1"
     (is (count (collection/get-all-documents :multi-delete-test-collection)) 1)))
