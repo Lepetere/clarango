@@ -93,9 +93,9 @@
     (pprint (collection/unload-mem "new-name-test-collection"))
     (pprint (collection/delete "new-name-test-collection"))))
 
-(deftest multi-delete-test
+(deftest multi-lookup-and-delete-test
   (collection/create "multi-delete-test-collection" "test-DB")
-  (testing "adding documents for multi-delete testing"
+  (testing "adding documents for testing of multi-operations"
     (println "\nMulti-Document delete test: Adding multiple documents as test data")
     (document/create-with-key {:a 1} :doc-key-1 :multi-delete-test-collection :test-DB)
     (document/create-with-key {:b 2} :doc-key-2 :multi-delete-test-collection :test-DB)
@@ -103,6 +103,16 @@
 
   (testing "document count is 3"
     (is (count (collection/get-all-documents :multi-delete-test-collection)) 3))
+
+  (testing "multi-lookup returns two requested documents"
+    (with-collection :multi-delete-test-collection
+      (let [multi-lookup-result (document/get-by-keys ["doc-key-1" "doc-key-2"])]
+          (pprint multi-lookup-result)
+          (is (count multi-lookup-result) 2))))
+
+  (testing "multi-lookup also works if the database name is passed as third argument"
+    (let [multi-lookup-result (document/get-by-keys ["doc-key-2" "doc-key-3"] :multi-delete-test-collection "test-DB")]
+      (is (count multi-lookup-result) 2)))
 
   (testing "multi-delete confirms number of deleted documents"
     (let [multi-delete-result (document/delete-by-keys ["doc-key-1" "doc-key-2"] :multi-delete-test-collection)]
