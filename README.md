@@ -1,19 +1,14 @@
-<!-- img src="https://travis-ci.org/edlich/clarango.png?branch=master" alt="travis-ci.org Build Status" title="Build Status" align="right" /-->
 Clarango: a Clojure driver for ArangoDB
 ========
 
 Clarango is a library to connect Clojure with the incredible database [ArangoDB](http://www.arangodb.com/). Although it is work in progress, the parts which are already there are stable. 
 
-The current library version on clojars is `0.6.0`. Due to changes in ArangoDB's API this version is only compatible with ArangoDB 2.3 upwards (latest test was with version 2.4.1).
+The latest version of Clarango on [Clojars](https://clojars.org/clarango) is `0.7.0`.
 
-To see what changed with version 0.6, see [this blog post](http://www.peterfessel.com/2015/01/from-clojure-to-arangodb-clarango-v0-6-released/).
-
-For compatibility with ArangoDB versions 1.4 to 2.2 use Clarango version `0.5.0`.
-
-For an overview of the features and how to use see below. For more detailed documentation have a look at:
-* The [Clarango API overview](http://edlich.github.io/clarango/doc/index.html)
-* or the [API overview on crossclj](http://crossclj.info/ns/clarango/latest/clarango.core.html) (possibly older version)
-* our book as [pdf](https://leanpub.com/clarango) for printing / download or as [html readable online](https://leanpub.com/clarango/read) (possibly older version)
+The compatibility is as follows:
+* `0.7.0` is only fully compatible with ArangoDB version `2.6` (and possibly upwards; latest test was with version `2.6.8`).
+* `0.6.0` is compatible with ArangoDB `2.3` and `2.4` (sorry, ArangoDB `2.5` is untested; to see what changed with version 0.6, check out [this blog post](http://www.peterfessel.com/2015/01/from-clojure-to-arangodb-clarango-v0-6-released/)).
+* `0.5.0` is compatible with ArangoDB versions `1.4` to `2.2`.
 
 ## Features
 
@@ -28,11 +23,18 @@ For an overview of the features and how to use see below. For more detailed docu
 * experimental clojure idiomatic collection methods like `cla-assoc!` and `cla-conj!`
 * simple exception handling
 
+## Documentation
+
+For an overview of the features and how to use see below. For more detailed documentation have a look at:
+* The [Clarango API overview](http://edlich.github.io/clarango/doc/index.html)
+* or the [API overview on crossclj](http://crossclj.info/ns/clarango/latest/clarango.core.html) (possibly older version)
+* our book as [pdf](https://leanpub.com/clarango) for printing / download or as [html readable online](https://leanpub.com/clarango/read) (possibly older version)
+
 ## Installation
 
 The driver is hosted on [Clojars](https://clojars.org/clarango). Add this Leiningen dependency to your project.clj:
 ```
-[clarango "0.6.1"]
+[clarango "0.7.0"]
 ```
 Then require the lib in your clojure file. For example:
 ``` Clojure
