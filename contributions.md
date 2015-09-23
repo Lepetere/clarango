@@ -12,7 +12,6 @@ Here are a couple of features that Clarango is still missing (please remove when
 
 * user management
 * document batch requests (clj-http may give you a hard time doing that, let’s hope it will be easier with future versions)
-* update the `graph` namespace to use [ArangoDBs new graph interface](https://docs.arangodb.com/HttpGharial/README.html) (this has been started with v0.6.0, but there is still a lot to do)
 * sharding
 * async functions (check out [travesedo](https://github.com/deusdat/travesedo) which already has implemented this)
 

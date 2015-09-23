@@ -1,7 +1,7 @@
 Clarango: a Clojure driver for ArangoDB
 ========
 
-Clarango is a library to connect Clojure with the incredible database [ArangoDB](http://www.arangodb.com/). Although it is work in progress, the parts which are already there are stable. 
+Clarango is a library to connect Clojure with the database [ArangoDB](http://www.arangodb.com/). Although it is work in progress, the parts which are already there are stable. 
 
 The latest version of Clarango on [Clojars](https://clojars.org/clarango) is `0.7.0`.
 
