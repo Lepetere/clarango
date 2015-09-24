@@ -1,7 +1,7 @@
 (ns clarango.function
-    (:require [clarango.utilities.http-utility :as http]
+    (:require [clarango.utilities.http-utility :as http])
     (:use [clarango.utilities.core-utility :only [remove-options-map filter-out-options-map filter-out-collection-name filter-out-database-name]]
-          [clarango.utilities.uri-utility :only [build-resource-uri]])))
+          [clarango.utilities.uri-utility :only [build-resource-uri]]))
 ;; POST function
 (defn new-function
     "Create a new user defined function.
@@ -21,10 +21,8 @@
         {:name name :code code}))
 
 ;; get
-(defn get-function
+(defn get-functions
     "Returns all user defined functions in the database.
-
-    Argument?
 
     Will return a JSON array with all user defined functions in the format:
     [
