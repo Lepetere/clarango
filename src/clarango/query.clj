@@ -55,11 +55,11 @@
   First argument must be the query string to be executed.
 
   Second argument must be the batch size. This is the amount of documents that will be returned in the first answer of the
-  server. In case there are more documents, in the server answer there will be the attribute 'hasMore' set to true. 
+  server. In case there are more documents, in the server answer there will be the attribute 'hasMore' set to true.
   In this case you can then use the returned cursor 'id' with the method get-more-results to get the remaining results.
 
-  Third argument is 'count', a boolean flag indicating whether or not the number of documents that were found for the query 
-  should be included in the result of the query as 'count' attribute. This is turned off by default because it might have 
+  Third argument is 'count', a boolean flag indicating whether or not the number of documents that were found for the query
+  should be included in the result of the query as 'count' attribute. This is turned off by default because it might have
   an influence on the performance of the query.
 
   If the query references any bind variables, you must additionally pass these in a map as the fourth argument like this:
@@ -94,10 +94,54 @@
   If you don't intend to make further use of a cursor, you should always delete it to free resources on the server.
   If all available documents of the query were already retrieved by the client, the cursor was already destroyed automatically.
 
-  Takes as first argument the id of the cursor to be deleted. 
+  Takes as first argument the id of the cursor to be deleted.
   The id was returned by the execute and the get-more-results method.
 
   Optionally you can pass a database name. If omitted, the default db will be used."
   [cursor-id & args]
   {:pre [(or (keyword? cursor-id) (string? cursor-id))]}
   (http/delete-uri [:body] (apply build-resource-uri "cursor" cursor-id nil args)))
+
+(defn new-function
+  "Create a new user defined function.
+
+  First argument: A string representing the new function name
+  (e.g. 'myfunctions::temperature::celsiustofahrenheit')
+  Second argument: A stringified JavaScript function representing the code to be run
+  (e.g. 'function (celsius) { return celsius * 1.8 + 32; }')
+
+  Respoonse codes are as follows:
+  HTTP 200: Function was found and replaced by this call.
+  HTTP 201: Function did not exist but was created.
+  HTTP 400: Malformed request."
+  [name code & args]
+  {:pre [(string? name) (string? code)]}
+  (http/post-uri [:body] (apply build-resource-uri "aqlfunction" nil)
+      {:name name :code code}))
+
+;; get
+(defn get-functions
+  "Returns all user defined functions in the database.
+
+  Will return a JSON array with all user defined functions in the format:
+  [
+      {
+          \"name\" : \"myfunctions::temperature::celsiustofahrenheit\",
+          \"code\" : \"function (celsius) { return celsius * 1.8 + 32; }\"
+      }
+  ]"
+  [& args]
+  (http/get-uri [:body] (apply build-resource-uri "aqlfunction" nil)))
+
+;; delete
+(defn delete-function
+  "Deletes a user defined function with the given name.
+
+  First argument: A string representing the full user defined function name.
+
+  Response codes are as follows:
+  HTTP 200: The function will be removed by the server.
+  HTTP 400: The request is badly formed.
+  HTTP 404: The specified function was not found."
+  [function-name & args]
+  (http/delete-uri [:body] (apply build-resource-uri (format "aqlfunction/%s" function-name) nil)))
