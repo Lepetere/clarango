@@ -15,11 +15,12 @@ The compatibility is as follows:
 * various options for connecting
 * document CRUD including various options
 * querying by example
-* AQL queries
+* AQL queries & custom functions
 * collection management
 * database management
 * graph functions
-* index managing
+* managing indices
+* transactions
 * experimental clojure idiomatic collection methods like `cla-assoc!` and `cla-conj!`
 * simple exception handling
 
@@ -41,7 +42,7 @@ Then require the lib in your clojure file. For example:
 (:require [clarango.core :as clacore]
           [clarango.document :as document]
           [clarango.collection :as collection]
-          [clarango.gharial :as gharial])
+          [clarango.graph :as graph])
 ```
 
 ## Setting the Connection
@@ -92,9 +93,9 @@ The server url is mandatory. Default database and collection are optional.
 ```clojure
 (collection/create "people" {"type" 2})
 (collection/create "content" {"type" 2})
-(gharial/create :test-graph [{:edge-collection "my-test-edges" :from [:people] :to [:content]}])
+(graph/create :test-graph [{:edge-collection "my-test-edges" :from [:people] :to [:content]}])
 (with-graph :test-graph
-  (gharial/create-vertex {:name "Rich Hickey"} :people))
+  (graph/create-vertex {:name "Rich Hickey"} :people))
 ```
 
 All methods will use the default database and collection unless the names of different ones are passed as optional arguments. For a complete list of methods see the [API overview](http://edlich.github.io/clarango/doc/index.html)
