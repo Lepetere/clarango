@@ -6,7 +6,7 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [clj-http "1.1.2"]
                  [cheshire "5.5.0"]]
-  :plugins [[codox "0.8.0"]]
+  :plugins [[lein-codox "0.9.0"]]
   :codox  {:src-dir-uri "https://github.com/lepetere/clarango/blob/master/"
            :src-linenum-anchor-prefix "L"
            :exclude [clarango.utilities.core-utility
