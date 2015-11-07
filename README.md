@@ -27,7 +27,7 @@ The compatibility is as follows:
 ## Documentation
 
 For an overview of the features and how to use see below. For more detailed documentation have a look at:
-* The [Clarango API overview](http://edlich.github.io/clarango/doc/index.html)
+* The [Clarango API overview](http://lepetere.github.io/clarango/doc/index.html)
 * or the [API overview on crossclj](http://crossclj.info/ns/clarango/latest/clarango.core.html) (possibly older version)
 * our book as [pdf](https://leanpub.com/clarango) for printing / download or as [html readable online](https://leanpub.com/clarango/read) (possibly older version)
 
