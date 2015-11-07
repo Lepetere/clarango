@@ -18,6 +18,17 @@
   [& args]
   (http/get-uri [:body] (apply build-resource-uri "document" (remove-options-map args)) (filter-out-options-map args)))
 
+(defn get-by-keys
+  "Gets a number of documents in a single request.
+
+  Takes a vector of keys as first argument.
+
+  Optionally takes a collection name and a db as further arguments.
+  If omitted the default db and collection will be used."
+  [keys & args]
+  {:pre [(or (vector? keys) (string? keys))]}
+  (http/put-uri [:body "documents"] (build-resource-uri "simple/lookup-by-keys" nil nil (filter-out-database-name args)) {:collection (filter-out-collection-name args) :keys (if (string? keys) (vec keys) (vec (map #(if (string? %) (name %) %) keys)))}))
+
 (defn get-by-example
   "Gets a document or a number of documents out of a collection by giving an example to match.
 
@@ -235,10 +246,10 @@
 (defn delete-by-keys
   "Deletes a number of documents in a single request.
 
-  Takes a vector of keys to delete and the collection name as a string or keyword.
+  Takes a vector of keys to delete as first argument.
 
   Optionally takes a collection name and a db as further arguments.
   If omitted the default db and collection will be used."
-  [keys collection & args]
-  {:pre [(or (vector? keys) (string? keys)) (or (string? collection) (keyword? collection))]}
-  (http/put-uri [:body] (build-resource-uri "simple/remove-by-keys" nil nil (filter-out-database-name args)) {:collection (if (keyword? collection) (name collection) collection) :keys (if (string? keys) (vec keys) (vec (map #(if (string? %) (name %) %) keys)))}))
+  [keys & args]
+  {:pre [(or (vector? keys) (string? keys))]}
+  (http/put-uri [:body] (build-resource-uri "simple/remove-by-keys" nil nil (filter-out-database-name args)) {:collection (filter-out-collection-name args) :keys (if (string? keys) (vec keys) (vec (map #(if (string? %) (name %) %) keys)))}))

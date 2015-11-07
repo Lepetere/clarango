@@ -10,14 +10,10 @@ While you are working on Clarango you may want to activate some verbose console 
 
 Here are a couple of features that Clarango is still missing (please remove when done and feel free to add points):
 
-* user management
 * document batch requests (clj-http may give you a hard time doing that, let’s hope it will be easier with future versions)
-* update the `graph` namespace to use [ArangoDBs new graph interface](https://docs.arangodb.com/HttpGharial/README.html) (this has been started with v0.6.0, but there is still a lot to do)
 * sharding
 * async functions (check out [travesedo](https://github.com/deusdat/travesedo) which already has implemented this)
 
 ###Contribute
 
-If you have questions or just want to get in touch, email to `peter [dot] fessel [at] live [dot] de` or `edlich [at] gmail [dot] com`.
-
-After your pull request, we will validate your contribution and depending on how much is changed, make a new release out of it or wait for a couple of more contributions.
+If you have questions or just want to get in touch, email `peter [dot] fessel [at] live [dot] de` .
