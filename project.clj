@@ -1,4 +1,4 @@
-(defproject clarango "0.8.0-SNAPSHOT"
+(defproject clarango "0.7.1"
   :description "A Clojure client for the HTTP API of ArangoDB"
   :url "https://github.com/lepetere/clarango"
   :license {:name "Apache License 2.0"
