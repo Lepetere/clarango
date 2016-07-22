@@ -1,11 +1,12 @@
 Clarango: a Clojure driver for ArangoDB
 ========
 
-Clarango is a library to connect Clojure with the database [ArangoDB](http://www.arangodb.com/). Although it is work in progress, the parts which are already there are stable. 
+Clarango is a library to connect Clojure with the database [ArangoDB](http://www.arangodb.com/). Although it is work in progress, the parts which are already there are stable.
 
-The latest version of Clarango on [Clojars](https://clojars.org/clarango) is `0.7.0`.
+The latest version of Clarango on [Clojars](https://clojars.org/clarango) is `0.7.1`.
 
 The compatibility is as follows:
+* `0.7.1` is compatible with ArangoDB versions `2.6` to `2.8` (and possibly higher; latest test was with version `2.8.6`).
 * `0.7.0` is only fully compatible with ArangoDB version `2.6` (and possibly upwards; latest test was with version `2.6.8`).
 * `0.6.0` is compatible with ArangoDB `2.3` and `2.4` (sorry, ArangoDB `2.5` is untested; to see what changed with version 0.6, check out [this blog post](http://www.peterfessel.com/2015/01/from-clojure-to-arangodb-clarango-v0-6-released/)).
 * `0.5.0` is compatible with ArangoDB versions `1.4` to `2.2`.
@@ -35,7 +36,7 @@ For an overview of the features and how to use see below. For more detailed docu
 
 The driver is hosted on [Clojars](https://clojars.org/clarango). Add this Leiningen dependency to your project.clj:
 ```
-[clarango "0.7.0"]
+[clarango "0.7.1"]
 ```
 Then require the lib in your clojure file. For example:
 ``` Clojure
@@ -52,7 +53,7 @@ Then require the lib in your clojure file. For example:
 (clacore/set-connection!)
 
 ;; pass a connection map
-(clacore/set-connection! 
+(clacore/set-connection!
   {
     :connection-url "http://localhost:8529/"
     :db-name "my-db"
@@ -102,7 +103,7 @@ All methods will use the default database and collection unless the names of dif
 
 ## Bugs / Contributors
 
-If you find bugs or are missing a feature open an issue or feel free to pull request. Furthermore we have easy and hard [open issues](https://github.com/edlich/clarango/issues). So if you like to help us, contact us or / and pick an issue. Also check out [contributions.md](https://github.com/edlich/clarango/blob/master/contributions.md). 
+If you find bugs or are missing a feature open an issue or feel free to pull request. Furthermore we have easy and hard [open issues](https://github.com/edlich/clarango/issues). So if you like to help us, contact us or / and pick an issue. Also check out [contributions.md](https://github.com/edlich/clarango/blob/master/contributions.md).
 
 We are looking for contributors to keep the project running, so please get in touch or just pull!
 
