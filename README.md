@@ -6,9 +6,8 @@ Clarango is a library to connect Clojure with the database [ArangoDB](http://www
 The latest version of Clarango on [Clojars](https://clojars.org/clarango) is `0.7.1`.
 
 The compatibility is as follows:
-* `0.7.1` is compatible with ArangoDB versions `2.6` to `2.8` (and possibly higher; latest test was with version `2.8.6`).
-* `0.7.0` is only fully compatible with ArangoDB version `2.6` (and possibly upwards; latest test was with version `2.6.8`).
-* `0.6.0` is compatible with ArangoDB `2.3` and `2.4` (sorry, ArangoDB `2.5` is untested; to see what changed with version 0.6, check out [this blog post](http://www.peterfessel.com/2015/01/from-clojure-to-arangodb-clarango-v0-6-released/)).
+* `0.7.1` is compatible with ArangoDB versions `2.6` to `2.8` (and possibly higher; latest test was with version `2.8.11`).
+* `0.6.0` is compatible with ArangoDB `2.3` and `2.4` (ArangoDB `2.5` is untested; to see what changed with version 0.6, check out [this blog post](http://www.peterfessel.com/2015/01/from-clojure-to-arangodb-clarango-v0-6-released/)).
 * `0.5.0` is compatible with ArangoDB versions `1.4` to `2.2`.
 
 ## Features
